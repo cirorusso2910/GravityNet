@@ -1,4 +1,5 @@
 import os
+
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
 import sys
@@ -35,21 +36,28 @@ from net.initialization.dict.metrics import metrics_dict
 from net.initialization.dict.plot_title import plot_title_dict
 from net.initialization.init import initialization
 from net.loss.GravityLoss import GravityLoss
+from net.metrics.metrics_test import metrics_test_csv
+from net.metrics.metrics_test_NMS import metrics_test_NMS_csv
 from net.metrics.metrics_train import metrics_train_csv
+from net.metrics.show_metrics.show_metrics_test import show_metrics_test
+from net.metrics.show_metrics.show_metrics_test_NMS import show_metrics_test_NMS
 from net.metrics.show_metrics.show_metrics_train import show_metrics_train
 from net.metrics.utility.my_notation import scientific_notation
 from net.model.gravitynet.GravityNet import GravityNet
-from net.model.utility.load_model import load_resume_model
+from net.model.utility.load_model import load_resume_model, check_load_model, load_best_model
 from net.model.utility.save_model import save_resume_model, save_best_model
 from net.optimizer.get_optimizer import get_optimizer
+from net.output.output import output
 from net.output.utility.select_output_gravity_filename import select_output_gravity_filename
 from net.parameters.parameters import parameters_parsing
 from net.parameters.parameters_summary import parameters_summary
 from net.plot.AUC_plot import AUC_plot
 from net.plot.AUFROC_plot import AUFROC_plot
+from net.plot.FROC_linear_plot import FROC_linear_plot
 from net.plot.FROC_plot import FROC_plot
 from net.plot.ROC_plot import ROC_plot
 from net.plot.loss_plot import loss_plot
+from net.plot.score_distribution_plot import score_distribution_plot
 from net.plot.sensitivity_plot import sensitivity_plot
 from net.plot.utility.figure_size import figure_size
 from net.reproducibility.reproducibility import reproducibility
@@ -58,6 +66,8 @@ from net.resume.metrics_train_resume import metrics_train_resume_csv
 from net.resume.resume_output import resume_output_validation
 from net.resume.resume_plot import resume_ROC_plot, resume_FROC_plot
 from net.scheduler.get_scheduler import get_scheduler
+from net.test import test
+from net.test_NMS import test_NMS
 from net.train import train
 from net.utility.execution_mode import execution_mode
 from net.utility.msg.msg_error import msg_error
@@ -635,6 +645,341 @@ def main():
                         AUFROC_0_100=metrics['AUFROC']['[0, 100]'],
                         AUFROC_val_path=path['plots_validation']['AUFROC'])
 
+    # ========== #
+    # MODE: TEST #
+    # ========== #
+    if parser.mode in ['test', 'train_test']:
+
+        # =================== #
+        # INIT METRICS (TEST) #
+        # =================== #
+        metrics = metrics_dict(metrics_type='test')
+
+        # =============== #
+        # LOAD BEST MODEL #
+        # =============== #
+        print("\n----------------"
+              "\nLOAD BEST MODEL:"
+              "\n----------------")
+
+        # check load model option
+        check_load_model(parser=parser)
+
+        # load best model sensitivity work point
+        if parser.load_best_sensitivity_model:
+            load_best_model(net=net,
+                            metrics_type='sensitivity work point',
+                            path=path['model']['best']['sensitivity'])
+
+        # load best model AUFROC [0, 10]
+        if parser.load_best_AUFROC_model:
+            load_best_model(net=net,
+                            metrics_type='AUFROC [0, 10]',
+                            path=path['model']['best']['AUFROC'])
+
+        # ==== #
+        # TEST #
+        # ==== #
+        print("\n-----"
+              "\nTEST:"
+              "\n-----")
+        time_test_start = time.time()
+        test(experiment_ID=experiment_ID,
+             net=net,
+             dataloader=dataloader_test,
+             hook=parser.hook,
+             gravity_points=gravity_points,
+             eval=parser.eval,
+             rescale_factor=parser.rescale,
+             detections_path=path['detections']['test'],
+             FP_list_path=select_FP_list_path(FP_images=parser.FP_images,
+                                              path=path['dataset']),
+             output_gravity_path=path['output']['gravity']['test'],
+             do_output_gravity=parser.do_output_gravity,
+             device=device,
+             debug=parser.debug_test)
+        time_test = time.time() - time_test_start
+
+        # read detections test for evaluation (numpy array)
+        detections_test = read_csv(filepath_or_buffer=path['detections']['test'], usecols=["LABEL", "SCORE"]).dropna(subset='LABEL').values
+        detections_score = detections_test[:, 1]  # detections score
+        # detections_test_filename = path['detections']['test'].split('/')[3]
+        # print("{} reading: COMPLETE".format(detections_test_filename))
+
+        # ============== #
+        # METRICS (TEST) #
+        # ============== #
+        time_metrics_test_start = time.time()
+
+        # compute AUC
+        AUC_test = AUC(detections=detections_test)
+
+        # compute FROC
+        FPS_test, sens_test = FROC(detections=detections_test,
+                                   TotalNumOfImages=select_TotalNumOfImages(FP_images=parser.FP_images,
+                                                                            num_images=num_images['test'],
+                                                                            num_images_normals=num_normal_images['test']),
+                                   TotalNumOfAnnotations=num_annotations['test'],
+                                   debug=parser.debug_FROC)
+
+        # compute sensitivity
+        sens_work_point_test, sens_max_test = sensitivity(FPS=FPS_test,
+                                                          sens=sens_test,
+                                                          work_point=parser.work_point)
+
+        # compute AUFROC
+        AUFROC_0_1_test = AUFROC(FPS=FPS_test, sens=sens_test, FPS_upper_bound=1)
+        AUFROC_0_10_test = AUFROC(FPS=FPS_test, sens=sens_test, FPS_upper_bound=10)
+        AUFROC_0_50_test = AUFROC(FPS=FPS_test, sens=sens_test, FPS_upper_bound=50)
+        AUFROC_0_100_test = AUFROC(FPS=FPS_test, sens=sens_test, FPS_upper_bound=100)
+
+        # compute ROC
+        FPR_test, TPR_test = ROC(detections=detections_test)
+
+        time_metrics_test = time.time() - time_metrics_test_start
+
+        # update performance
+        metrics['AUC'].append(AUC_test)
+        metrics['sensitivity']['work_point'].append(sens_work_point_test)
+        metrics['sensitivity']['max'].append(sens_max_test)
+        metrics['AUFROC']['[0, 1]'].append(AUFROC_0_1_test)
+        metrics['AUFROC']['[0, 10]'].append(AUFROC_0_10_test)
+        metrics['AUFROC']['[0, 50]'].append(AUFROC_0_50_test)
+        metrics['AUFROC']['[0, 100]'].append(AUFROC_0_100_test)
+        metrics['time']['test'].append(time_test)
+        metrics['time']['metrics'].append(time_metrics_test)
+
+        # metrics-test.csv
+        metrics_test_csv(metrics_path=path['metrics']['test'],
+                         metrics=metrics)
+
+        # show metrics test
+        show_metrics_test(metrics=metrics,
+                          work_point=parser.work_point)
+
+        # ====== #
+        # OUTPUT #
+        # ====== #
+        print("\n-------"
+              "\nOUTPUT:"
+              "\n-------")
+        output(type_draw='box',
+               dataset=dataset_test,
+               num_images=parser.num_images,
+               detections_path=path['detections']['test'],
+               output_path=path['output']['test'],
+               suffix="-output|{}".format(experiment_ID))
+
+        # ========= #
+        # PLOT TEST #
+        # ========= #
+        print("\n----------"
+              "\nPLOT TEST:"
+              "\n----------")
+        # FROC plot
+        FROC_plot(title=plot_title['plots_test']['FROC'],
+                  color='green',
+                  experiment_ID=experiment_ID,
+                  FPS=FPS_test,
+                  sens=sens_test,
+                  FROC_path=path['plots_test']['FROC'],
+                  FROC_coords_path=path['plots_test']['coords']['FROC'])
+
+        # FROC linear plot
+        FROC_linear_plot(title=plot_title['plots_test']['FROC'],
+                         color='green',
+                         experiment_ID=experiment_ID,
+                         FPS=FPS_test,
+                         sens=sens_test,
+                         FROC_upper_limit=10,
+                         FROC_path=path['plots_test']['FROC_linear'])
+
+        # ROC plot
+        ROC_plot(title=plot_title['plots_test']['ROC'],
+                 color='green',
+                 experiment_ID=experiment_ID,
+                 FPR=FPR_test,
+                 TPR=TPR_test,
+                 ROC_path=path['plots_test']['ROC'],
+                 ROC_coords_path=path['plots_test']['coords']['ROC'])
+
+        # Score Distribution
+        score_distribution_plot(title=plot_title['plots_test']['score_distribution'],
+                                score=detections_score,
+                                bins=10000,
+                                experiment_ID=experiment_ID,
+                                score_distribution_path=path['plots_test']['score_distribution'])
+
+    # ============== #
+    # MODE: TEST NMS #
+    # ============== #
+    if parser.mode in ['test_NMS']:
+
+        # ======================= #
+        # INIT METRICS (TEST NMS) #
+        # ======================= #
+        metrics = metrics_dict(metrics_type='test_NMS')
+
+        # =============== #
+        # LOAD BEST MODEL #
+        # =============== #
+        print("\n----------------"
+              "\nLOAD BEST MODEL:"
+              "\n----------------")
+
+        # check load model option
+        check_load_model(parser=parser)
+
+        # load best model sensitivity work point
+        if parser.load_best_sensitivity_model:
+            load_best_model(net=net,
+                            metrics_type='sensitivity work point',
+                            path=path['model']['best']['sensitivity'])
+
+        # load best model AUFROC [0, 10]
+        if parser.load_best_AUFROC_model:
+            load_best_model(net=net,
+                            metrics_type='AUFROC [0, 10]',
+                            path=path['model']['best']['AUFROC'])
+
+        # ======== #
+        # TEST NMS #
+        # ======== #
+        print("\n---------"
+              "\nTEST NMS:"
+              "\n---------")
+        time_test_NMS_start = time.time()
+        test_NMS(experiment_ID=experiment_ID,
+                 net=net,
+                 dataloader=dataloader_test,
+                 hook=parser.hook,
+                 gravity_points=gravity_points,
+                 eval=parser.eval,
+                 rescale_factor=parser.rescale,
+                 NMS_box_radius=parser.NMS_box_radius,
+                 detections_path=path['detections']['test_NMS'],
+                 FP_list_path=select_FP_list_path(FP_images=parser.FP_images,
+                                                  path=path['dataset']),
+                 output_gravity_path=path['output']['gravity']['test_NMS'],
+                 do_output_gravity=parser.do_output_gravity,
+                 device=device,
+                 debug=parser.debug_test)
+        time_test_NMS = time.time() - time_test_NMS_start
+
+        # read detections test for evaluation (numpy array)
+        detections_test_NMS = read_csv(filepath_or_buffer=path['detections']['test_NMS'], usecols=["LABEL", "SCORE"]).dropna(subset=['LABEL']).values
+        detections_NMS_score = detections_test_NMS[:, 1]
+        # detections_test_filename = path['detections']['test'].split('/')[3]
+        # print("{} reading: COMPLETE".format(detections_test_filename))
+
+        # ================== #
+        # METRICS (TEST NMS) #
+        # ================== #
+        time_metrics_test_NMS_start = time.time()
+
+        # compute AUC
+        AUC_test_NMS = AUC(detections=detections_test_NMS)
+
+        # compute FROC
+        FPS_test_NMS, sens_test_NMS = FROC(detections=detections_test_NMS,
+                                           TotalNumOfImages=select_TotalNumOfImages(FP_images=parser.FP_images,
+                                                                                    num_images=num_images['test'],
+                                                                                    num_images_normals=num_normal_images['test']),
+                                           TotalNumOfAnnotations=num_annotations['test'],
+                                           debug=False)
+
+        # compute sensitivity
+        sens_work_point_test_NMS, sens_max_test_NMS = sensitivity(FPS=FPS_test_NMS,
+                                                                  sens=sens_test_NMS,
+                                                                  work_point=parser.work_point)
+
+        # compute AUFROC
+        AUFROC_0_1_test_NMS = AUFROC(FPS=FPS_test_NMS, sens=sens_test_NMS, FPS_upper_bound=1)
+        AUFROC_0_10_test_NMS = AUFROC(FPS=FPS_test_NMS, sens=sens_test_NMS, FPS_upper_bound=10)
+        AUFROC_0_50_test_NMS = AUFROC(FPS=FPS_test_NMS, sens=sens_test_NMS, FPS_upper_bound=50)
+        AUFROC_0_100_test_NMS = AUFROC(FPS=FPS_test_NMS, sens=sens_test_NMS, FPS_upper_bound=100)
+
+        # compute ROC
+        FPR_test_NMS, TPR_test_NMS = ROC(detections=detections_test_NMS)
+
+        time_metrics_test_NMS = time.time() - time_metrics_test_NMS_start
+
+        # update performance
+        metrics['AUC'].append(AUC_test_NMS)
+        metrics['sensitivity']['work_point'].append(sens_work_point_test_NMS)
+        metrics['sensitivity']['max'].append(sens_max_test_NMS)
+        metrics['AUFROC']['[0, 1]'].append(AUFROC_0_1_test_NMS)
+        metrics['AUFROC']['[0, 10]'].append(AUFROC_0_10_test_NMS)
+        metrics['AUFROC']['[0, 50]'].append(AUFROC_0_50_test_NMS)
+        metrics['AUFROC']['[0, 100]'].append(AUFROC_0_100_test_NMS)
+        metrics['time']['NMS'].append(time_test_NMS)
+        metrics['time']['metrics'].append(time_metrics_test_NMS)
+
+        # metrics-test-NMS.csv
+        metrics_test_NMS_csv(metrics_path=path['metrics']['test_NMS'],
+                             metrics=metrics)
+
+        # show metrics test NMS
+        show_metrics_test_NMS(metrics=metrics,
+                              NMS_type='{}x{}'.format(parser.NMS_box_radius, parser.NMS_box_radius),
+                              work_point=parser.work_point)
+
+        # ====== #
+        # OUTPUT #
+        # ====== #
+        print("\n-------"
+              "\nOUTPUT:"
+              "\n-------")
+        output(type_draw='box',
+               dataset=dataset_test,
+               num_images=parser.num_images,
+               detections_path=path['detections']['test_NMS'],
+               output_path=path['output']['test_NMS'],
+               suffix="-output-NMS={}x{}|{}".format(parser.NMS_box_radius, parser.NMS_box_radius, experiment_ID))
+
+        # ============= #
+        # PLOT TEST NMS #
+        # ============= #
+        print("\n--------------"
+              "\nPLOT TEST NMS:"
+              "\n--------------")
+        # FROC plot
+        FROC_plot(title=plot_title['plots_test_NMS']['FROC'],
+                  color='green',
+                  experiment_ID=experiment_ID,
+                  FPS=FPS_test_NMS,
+                  sens=sens_test_NMS,
+                  FROC_path=path['plots_test_NMS']['FROC'],
+                  FROC_coords_path=path['plots_test_NMS']['coords']['FROC'])
+
+        # FROC linear plot
+        FROC_linear_plot(title=plot_title['plots_test_NMS']['FROC'],
+                         color='green',
+                         experiment_ID=experiment_ID,
+                         FPS=FPS_test_NMS,
+                         sens=sens_test_NMS,
+                         FROC_upper_limit=10,
+                         FROC_path=path['plots_test_NMS']['FROC_linear'])
+
+        # ROC plot
+        ROC_plot(title=plot_title['plots_test_NMS']['ROC'],
+                 color='green',
+                 experiment_ID=experiment_ID,
+                 FPR=FPR_test_NMS,
+                 TPR=TPR_test_NMS,
+                 ROC_path=path['plots_test_NMS']['ROC'],
+                 ROC_coords_path=path['plots_test_NMS']['coords']['ROC'])
+
+        # Score Distribution
+        score_distribution_plot(title=plot_title['plots_test_NMS']['score_distribution'],
+                                score=detections_NMS_score,
+                                bins=10000,
+                                experiment_ID=experiment_ID,
+                                score_distribution_path=path['plots_test_NMS']['score_distribution'])
+
+    # execution mode complete
+    execution_mode(mode=parser.mode,
+                   option='complete')
 
 if __name__ == "__main__":
     main()
