@@ -2,6 +2,8 @@
 
 **GravityNet** repository
 
+**Paper**: [link]()
+
 ## EXECUTION INSTRUCTIONS
 The following instructions must be followed to properly run the GravityNet:
 
