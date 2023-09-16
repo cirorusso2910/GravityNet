@@ -11,7 +11,7 @@ The following instructions must be followed to properly run the GravityNet:
 
 ### 1. PARAMETERS-PARSING
 The first step is to define parameters by parsing, paying attention to the reference sections <br>
-(for details see [parameters](/doc/code/parameters.markdown)).
+(for details see [parameters](doc/code/parameters.markdown)).
 
 When a new application is to be implemented, parameters must be defined in the **DATASET TRANSFORMS** section: <br>
 where the parameters for the transforms applied to the data to be used **must** be defined.
