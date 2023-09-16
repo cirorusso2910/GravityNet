@@ -7,31 +7,9 @@ parameters_help = {
     # -------------- #
     'mode': "EXECUTION MODE",
     'train': 'train model',
-    'resume': 'resume training from a specific epoch',
     'test': 'test model',
     'test_NMS': 'test model with Non-Maxima-Suppression (NMS) post-processing',
     'train_test': 'train and test model',
-
-    'output_FPS': 'detections output at specific False Positive per scan (FPS)',
-    'sensitivity_FPS': 'sensitivity per image at specific False Positive per scan (FPS)',
-
-    'script_anchors': 'script-anchors execution mode',
-    'script_dataset': 'script-dataset execution mode',
-    'script_debug': 'script-debug execution mode',
-    'script_detections': 'script-detections execution mode',
-    'script_metrics': 'script-metrics execution mode',
-    'script_model': 'script-model execution mode',
-    'script_output': 'script-output execution mode',
-    'script_output_paper': 'script-output-paper execution mode',
-    'script_plot': 'script-plot execution mode',
-    'script_plot_check': 'script-plot-check execution mode',
-    'script_plot_check_complete': 'script-plot-check-complete execution mode',
-    'script_plot_check_paper': 'script-plot-check-paper execution mode',
-    'script_test': 'script-test execution mode',
-    'script_test_complete': 'script-test-complete execution mode',
-    'script_time': 'script-time execution mode',
-    'script_utility': 'script-utility execution mode',
-    'script_vs': 'script-vs execution mode',
 
     'who_is_my_creator': 'who is my creator?',
 
@@ -72,18 +50,6 @@ parameters_help = {
     # ------------------ #
     # DATASET TRANSFORMS #
     # ------------------ #
-    # INbreast (GravityNet-microcalcifications)
-    'orientation': f"image orientation (default: '{parameters_default['orientation']}')",
-    'image_height_crop': f"image height size to crop (default: {parameters_default['image_height_crop']})",
-    'image_width_crop': f"image width size to crop (default: {parameters_default['image_width_crop']})",
-
-    # E-ophtha-MA (GravityNet-microaneurysms)
-    'image_height_resize': f"image height to resize (default: {parameters_default['image_height_resize']})",
-    'image_width_resize': f"image width to resize (default: {parameters_default['image_width_resize']})",
-    'resize_tool': f"resize tool (default: {parameters_default['resize_tool']})",
-    'channel': f"channel to select of image (default: {parameters_default['channel']})",
-
-    # common
     'rescale': f"image rescale factor (default: {parameters_default['rescale']})",
     'max_padding': f"padding size for annotation (default: {parameters_default['max_padding']})",
 

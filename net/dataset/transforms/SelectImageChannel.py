@@ -17,7 +17,6 @@ class SelectImageChannel(object):
         __init__ method: run one when instantiating the object
 
         :param channel: channel
-        :param debug:  debug option
         """
 
         self.channel = channel
@@ -47,6 +46,7 @@ class SelectImageChannel(object):
             image_channels[0] = new_image_G
             image_channels[1] = new_image_G
             image_channels[2] = new_image_G
+
 
         else:
             str_err = msg_error(file=__file__,

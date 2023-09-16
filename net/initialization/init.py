@@ -2,8 +2,7 @@ import argparse
 import os
 import sys
 
-from net.initialization.folders.EophthaMA_dataset_folders import EophthaMA_dataset_folders_dict
-from net.initialization.folders.INbreast_dataset_folders import INbreast_dataset_folders_dict
+from net.initialization.folders.dataset_folders import dataset_folders_dict
 from net.initialization.folders.default_folders import default_folders_dict
 from net.initialization.folders.experiment_folders import experiment_folders_dict
 from net.initialization.path.experiment_result_path import experiment_result_path_dict
@@ -35,11 +34,8 @@ def initialization(network_name: str,
     # default folders
     default_folders = default_folders_dict(where=parser.where)
 
-    # INbreast dataset folders (GravityNet-microcalcifications)
-    INbreast_dataset_folders = INbreast_dataset_folders_dict()
-
-    # E-ophtha-MA dataset folders (GravityNet-microaneurysms)
-    EophthaMA_dataset_folders = EophthaMA_dataset_folders_dict()
+    # $DATASET$ dataset folders
+    dataset_folders = dataset_folders_dict()
 
     # experiment folders
     experiment_folders = experiment_folders_dict(parser=parser)
@@ -47,36 +43,28 @@ def initialization(network_name: str,
     # ------- #
     # DATASET #
     # ------- #
-    # INbreast
-    if parser.dataset == 'INbreast':
+    # $DATASET$
+    if parser.dataset == '$DATASET$':
         # annotations
-        annotations_all_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['annotations'], INbreast_dataset_folders['annotations_subfolder']['csv'], INbreast_dataset_folders['annotations_subfolder']['csv_subfolder']['all'])
-        annotations_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['annotations'], INbreast_dataset_folders['annotations_subfolder']['csv'], INbreast_dataset_folders['annotations_subfolder']['csv_subfolder']['calcifications_cropped'])
-        # annotations w48m14 (for training)
-        annotations_all_w48m14_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['annotations'], INbreast_dataset_folders['annotations_subfolder']['csv'], INbreast_dataset_folders['annotations_subfolder']['csv_subfolder']['calcifications_w48m14'])
-        annotations_w48m14_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['annotations'], INbreast_dataset_folders['annotations_subfolder']['csv'], INbreast_dataset_folders['annotations_subfolder']['csv_subfolder']['calcifications_w48m14_cropped'])
+        annotations_all_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['annotations'], dataset_folders['annotations_subfolder']['csv'])
 
         # images
-        images_all_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['images'], INbreast_dataset_folders['images_subfolder']['all'])
-        images_all_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['images'], INbreast_dataset_folders['images_subfolder']['all_cropped'])
-        images_all_w48m14_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['images'], INbreast_dataset_folders['images_subfolder']['all_w48m14_cropped'])
+        images_all_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['images'], dataset_folders['images_subfolder']['all'])
 
         # images masks
-        images_masks_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['images'], INbreast_dataset_folders['images_subfolder']['masks'])
-        images_masks_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['images'], INbreast_dataset_folders['images_subfolder']['masks_cropped'])
-        images_masks_w48m14_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['images'], INbreast_dataset_folders['images_subfolder']['masks_w48m14_cropped'])
+        images_masks_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['images'], dataset_folders['images_subfolder']['masks'])
 
         # data split
-        data_split_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['split'], 'split-' + parser.split + '.csv')
+        data_split_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['split'], 'split-' + parser.split + '.csv')
 
         # lists
-        lists_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['lists'])
+        lists_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['lists'])
         list_normals_path = os.path.join(lists_path, 'normals.txt')
         list_all_path = os.path.join(lists_path, 'all.txt')
 
         # statistics
         statistics_filename = "split-{}-statistics.csv".format(parser.split)
-        statistics_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['statistics'], "rescale={}".format(parser.rescale), statistics_filename)
+        statistics_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['statistics'], "rescale={}".format(parser.rescale), statistics_filename)
 
         # info
         info_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['info'])
@@ -84,22 +72,12 @@ def initialization(network_name: str,
         path_dataset_dict = {
             'annotations': {
                 'all': annotations_all_path,
-                'cropped': annotations_cropped_path,
-                'w48m14': annotations_all_w48m14_path,
-                'w48m14_cropped': annotations_w48m14_cropped_path,
-
-                'masks': '',
             },
 
             'images': {
                 'all': images_all_path,
-                'cropped': images_all_cropped_path,
-                'w48m14_cropped': images_all_w48m14_cropped_path,
 
                 'masks': images_masks_path,
-                'masks_cropped': images_masks_cropped_path,
-                'masks_w48m14_cropped': images_masks_w48m14_cropped_path,
-
             },
 
             'lists': {
@@ -115,72 +93,11 @@ def initialization(network_name: str,
 
         }
 
-    # E-ophtha-MA
-    elif parser.dataset == 'E-ophtha-MA':
-        # annotations
-        annotations_all_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['annotations'], EophthaMA_dataset_folders['annotations_subfolder']['csv'], EophthaMA_dataset_folders['annotations_subfolder']['csv_subfolder']['all'])
-        annotations_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['annotations'], EophthaMA_dataset_folders['annotations_subfolder']['csv'], EophthaMA_dataset_folders['annotations_subfolder']['csv_subfolder']['cropped'])
-        annotations_resized_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['annotations'], EophthaMA_dataset_folders['annotations_subfolder']['csv'], EophthaMA_dataset_folders['annotations_subfolder']['csv_subfolder']['resized'])
-
-        # images
-        images_all_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['images'], EophthaMA_dataset_folders['images_subfolder']['all'])
-        images_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['images'], EophthaMA_dataset_folders['images_subfolder']['cropped'])
-        images_green_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['images'], EophthaMA_dataset_folders['images_subfolder']['green'])
-        images_resized_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['images'], EophthaMA_dataset_folders['images_subfolder']['resized'])
-
-        # images masks
-        images_masks_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['images'], EophthaMA_dataset_folders['images_subfolder']['masks'], EophthaMA_dataset_folders['images_subfolder']['masks_subfolder']['all'])
-        images_masks_cropped_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['images'], EophthaMA_dataset_folders['images_subfolder']['masks'], EophthaMA_dataset_folders['images_subfolder']['masks_subfolder']['cropped'])
-
-        # data split
-        data_split_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['split'], 'split-' + parser.split + '.csv')
-
-        # lists
-        lists_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['lists'])
-        list_healthy_path = os.path.join(lists_path, 'healthy.txt')
-        list_all_path = os.path.join(lists_path, 'all.txt')
-
-        # statistics
-        statistics_filename = "split-{}-statistics.csv".format(parser.split)
-        statistics_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['statistics'], "rescale={}".format(parser.rescale), statistics_filename)
-
-        # info
-        info_path = os.path.join(default_folders['datasets'], parser.dataset, EophthaMA_dataset_folders['info'])
-
-        path_dataset_dict = {
-            'annotations': {
-                'all': annotations_all_path,
-                'cropped': annotations_cropped_path,
-                'resized': annotations_resized_path
-            },
-
-            'images': {
-                'all': images_all_path,
-                'cropped': images_cropped_path,
-                'green': images_green_path,
-                'resized': images_resized_path,
-
-                'masks': images_masks_path,
-                'masks_cropped': images_masks_cropped_path,
-            },
-
-            'lists': {
-                'all': list_all_path,
-                'normals': list_healthy_path,
-            },
-
-            'info': info_path,
-
-            'split': data_split_path,
-
-            'statistics': statistics_path,
-        }
-
     else:
         str_err = msg_error(file=__file__,
                             variable=parser.dataset,
                             type_variable="dataset name",
-                            choices="[INbreast, E-ophtha-MA]")
+                            choices="[$DATASET$]")
         sys.exit(str_err)
 
     # ---- #

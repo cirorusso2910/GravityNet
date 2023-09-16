@@ -22,61 +22,20 @@ def parameters_parsing() -> argparse.Namespace:
 
     # execution mode
     parser_train = parser_mode.add_parser('train', help=parameters_help['train'])
-    parser_resume = parser_mode.add_parser('resume', help=parameters_help['resume'])
     parser_test = parser_mode.add_parser('test', help=parameters_help['test'])
     parser_test_NMS = parser_mode.add_parser('test_NMS', help=parameters_help['test_NMS'])
     parser_train_test = parser_mode.add_parser('train_test', help=parameters_help['train_test'])
 
-    parser_output_FPS = parser_mode.add_parser('output_FPS', help=parameters_help['output_FPS'])
-    parser_sensitivity_FPS = parser_mode.add_parser('sensitivity_FPS', help=parameters_help['sensitivity_FPS'])
-
     # execution mode script
-    parser_script_anchors = parser_mode.add_parser('script_anchors', help=parameters_help['script_anchors'])
-    parser_script_dataset = parser_mode.add_parser('script_dataset', help=parameters_help['script_dataset'])
-    parser_script_debug = parser_mode.add_parser('script_debug', help=parameters_help['script_debug'])
-    parser_script_detections = parser_mode.add_parser('script_detections', help=parameters_help['script_detections'])
-    parser_script_metrics = parser_mode.add_parser('script_metrics', help=parameters_help['script_metrics'])
-    parser_script_model = parser_mode.add_parser('script_model', help=parameters_help['script_model'])
-    parser_script_output = parser_mode.add_parser('script_output', help=parameters_help['script_output'])
-    parser_script_output_paper = parser_mode.add_parser('script_output_paper', help=parameters_help['script_output_paper'])
-    parser_script_plot = parser_mode.add_parser('script_plot', help=parameters_help['script_plot'])
-    parser_script_plot_check = parser_mode.add_parser('script_plot_check', help=parameters_help['script_plot_check'])
-    parser_script_plot_check_complete = parser_mode.add_parser('script_plot_check_complete', help=parameters_help['script_plot_check_complete'])
-    parser_script_plot_check_paper = parser_mode.add_parser('script_plot_check_paper', help=parameters_help['script_plot_check_paper'])
-    parser_script_test = parser_mode.add_parser('script_test', help=parameters_help['script_test'])
-    parser_script_test_complete = parser_mode.add_parser('script_test_complete', help=parameters_help['script_test_complete'])
-    parser_script_time = parser_mode.add_parser('script_time', help=parameters_help['script_time'])
-    parser_script_utility = parser_mode.add_parser('script_utility', help=parameters_help['script_utility'])
-    parser_script_vs = parser_mode.add_parser('script_vs', help=parameters_help['script_vs'])
 
     # who is my creator
     parser_who_is_my_creator = parser_mode.add_parser('who_is_my_creator', help=parameters_help['who_is_my_creator'])
 
     # execution mode list
     execution_mode = [parser_train,
-                      parser_resume,
                       parser_test,
                       parser_test_NMS,
                       parser_train_test,
-                      parser_output_FPS,
-                      parser_sensitivity_FPS,
-                      parser_script_anchors,
-                      parser_script_dataset,
-                      parser_script_debug,
-                      parser_script_detections,
-                      parser_script_metrics,
-                      parser_script_model,
-                      parser_script_output,
-                      parser_script_output_paper,
-                      parser_script_plot,
-                      parser_script_plot_check,
-                      parser_script_plot_check_complete,
-                      parser_script_plot_check_paper,
-                      parser_script_test,
-                      parser_script_test_complete,
-                      parser_script_time,
-                      parser_script_utility,
-                      parser_script_vs,
                       parser_who_is_my_creator]
 
     # for each subparser 'mode'
@@ -153,44 +112,6 @@ def parameters_parsing() -> argparse.Namespace:
         # ------------------ #
         # DATASET TRANSFORMS #
         # ------------------ #
-        # INbreast (GravityNet-microcalcifications)
-        subparser.add_argument('--orientation',
-                               type=str,
-                               default=parameters_default['orientation'],
-                               help=parameters_help['orientation'])
-
-        subparser.add_argument('--image_height_crop',
-                               type=int,
-                               default=parameters_default['image_height_crop'],
-                               help=parameters_help['image_height_crop'])
-
-        subparser.add_argument('--image_width_crop',
-                               type=int,
-                               default=parameters_default['image_width_crop'],
-                               help=parameters_help['image_width_crop'])
-
-        # E-ophtha-MA (GravityNet-microaneurysms)
-        subparser.add_argument('--image_height_resize',
-                               type=int,
-                               default=parameters_default['image_height_resize'],
-                               help=parameters_help['image_height_resize'])
-
-        subparser.add_argument('--image_width_resize',
-                               type=int,
-                               default=parameters_default['image_width_resize'],
-                               help=parameters_help['image_width_resize'])
-
-        subparser.add_argument('--resize_tool',
-                               type=str,
-                               default=parameters_default['resize_tool'],
-                               help=parameters_help['resize_tool'])
-
-        subparser.add_argument('--channel',
-                               type=str,
-                               default=parameters_default['channel'],
-                               help=parameters_help['channel'])
-
-        # common
         subparser.add_argument('--rescale',
                                type=float,
                                default=parameters_default['rescale'],

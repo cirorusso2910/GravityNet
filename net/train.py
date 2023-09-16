@@ -1,6 +1,7 @@
 import argparse
 import sys
 import time
+
 from typing import Union, Tuple
 
 import numpy as np
@@ -13,7 +14,6 @@ from torch.utils.data import DataLoader
 
 from net.loss.GravityLoss import GravityLoss
 from net.metrics.utility.timer import timer
-from net.utility.msg.msg_error import msg_error
 
 
 def train(dataset: str,
@@ -63,16 +63,7 @@ def train(dataset: str,
         time_batch_start = time.time()
 
         # get data from dataloader
-        if dataset == 'E-ophtha-MA':
-            image, annotation = batch['image'].float().to(device), batch['annotation'].to(device)
-        elif dataset == 'INbreast':  # INbreast training on w48m14
-            image, annotation = batch['image_w48m14'].float().to(device), batch['annotation_w48m14'].to(device)
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=parser.dataset,
-                                type_variable="dataset",
-                                choices="[E-ophtha-MA, INbreast]")
-            sys.exit(str_err)
+        image, annotation = batch['image'].float().to(device), batch['annotation'].to(device)
 
         # zero (init) the parameter gradients
         optimizer.zero_grad()

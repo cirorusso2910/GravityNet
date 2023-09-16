@@ -1,7 +1,4 @@
-import sys
-
 import cv2
-import os
 
 import numpy as np
 
@@ -18,7 +15,6 @@ class Rescale(object):
         __init__ method: run one when instantiating the object
 
         :param rescale: rescale factor
-        :param debug: debug option
         """
 
         self.rescale = rescale

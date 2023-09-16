@@ -182,9 +182,9 @@ class GravityLoss(nn.Module):
             # marks the rejected indices with '-1'
             labels[rejected_indices, :] = -1
 
-            # -------------- #
-            # DEBUG: HOOKING #
-            # -------------- #
+            # ----- #
+            # DEBUG #
+            # ----- #
             if self.debug:
                 print("\nDEBUG HOOKING"
                       "\nConfig: {}".format(self.config),

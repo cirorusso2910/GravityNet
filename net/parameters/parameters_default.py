@@ -37,18 +37,6 @@ parameters_default = {
     # ------------------ #
     # DATASET TRANSFORMS #
     # ------------------ #
-    # INbreast (GravityNet-microcalcifications)
-    'orientation': 'L',
-    'image_height_crop': 3328,
-    'image_width_crop': 2560,
-
-    # E-ophtha-MA (GravityNet-microaneurysms)
-    'image_height_resize': 1216,
-    'image_width_resize': 1408,
-    'resize_tool': 'PyTorch',
-    'channel': 'RGB',
-
-    # common
     'rescale': 1.0,
     'max_padding': 200,
 

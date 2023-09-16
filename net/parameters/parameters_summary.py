@@ -38,23 +38,14 @@ def parameters_summary(parser: argparse.Namespace,
     # ------- #
     # DATASET #
     # ------- #
-    # INbreast
-    if dataset_name == 'INbreast':
-        print("\nDATASET:"
+    # $DATASET$
+    if dataset_name == '$DATASET$':
+        print("\n$DATASET$:"
               "\nDataset name: {}".format(dataset_name),
               "\nData Split: {}".format(parser.split),
-              "\nTraining data: {} with {} calcifications".format(num_images['train'], num_annotations['train']),
-              "\nValidation data: {} with {} calcifications".format(num_images['validation'], num_annotations['validation']),
-              "\nTest data: {} with {} calcifications".format(num_images['test'], num_annotations['test']))
-
-    # E-ophtha-MA
-    elif dataset_name == 'E-ophtha-MA':
-        print("\nDATASET:"
-              "\nDataset name: {}".format(dataset_name),
-              "\nData Split: {}".format(parser.split),
-              "\nTraining data: {} with {} microaneurysms".format(num_images['train'], num_annotations['train']),
-              "\nValidation data: {} with {} microaneurysms".format(num_images['validation'], num_annotations['validation']),
-              "\nTest data: {} with {} microaneurysms".format(num_images['test'], num_annotations['test']))
+              "\nTraining data: {} with {} $TYPE_OF_LESION$".format(num_images['train'], num_annotations['train']),
+              "\nValidation data: {} with {} $TYPE_OF_LESION$".format(num_images['validation'], num_annotations['validation']),
+              "\nTest data: {} with {} $TYPE_OF_LESION$".format(num_images['test'], num_annotations['test']))
 
     print("\nIMAGE NORMALS:"
           "\nTraining image normals: {}".format(num_images_normals['train']),
@@ -64,21 +55,12 @@ def parameters_summary(parser: argparse.Namespace,
     # ------------------ #
     # DATASET TRANSFORMS #
     # ------------------ #
-    # INbreast
-    if dataset_name == 'INbreast':
+    # $DATASET$
+    if dataset_name == '$DATASET$':
         print("\nDATASET TRANSFORMS:"
-              "\nOrientation: {}".format(parser.orientation),
-              "\nImage Crop shape (H x W): {} x {}".format(parser.image_height_crop, parser.image_width_crop),
-              "\nRescale factor: {} ({} %)".format(parser.rescale, int(parser.rescale * 100)),
-              "\nMax padding: {}".format(parser.max_padding))
-
-    # E-ophtha-MA
-    elif dataset_name == 'E-ophtha-MA':
-        print("\nDATASET TRANSFORMS:"
-              "\nChannel: {}".format(parser.channel),
-              "\nImage Resize shape (H x W): {} x {}".format(parser.image_height_resize, parser.image_width_resize),
-              "\nResize Tool: {}".format(parser.resize_tool),
-              "\nRescale factor: {} ({} %)".format(parser.rescale, int(parser.rescale * 100)),
+              "\n",
+              "\n",
+              "\n",
               "\nMax padding: {}".format(parser.max_padding))
 
     # -------------------- #

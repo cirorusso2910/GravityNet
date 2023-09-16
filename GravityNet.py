@@ -1,6 +1,5 @@
 import os
-
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
 import sys
 import time
@@ -13,8 +12,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 
 from net.anchors.gravity_points_config import gravity_points_config
-from net.dataset.EophthaMA import EophthaMA
-from net.dataset.INbreast import INbreast
+from net.dataset.dataset import DatasetName
 from net.dataset.dataset_augmentation import dataset_augmentation
 from net.dataset.dataset_num_annotations import dataset_num_annotations
 from net.dataset.dataset_num_images import dataset_num_images
@@ -145,27 +143,18 @@ def main():
     print("\n-------------"
           "\nLOAD DATASET:"
           "\n-------------")
-    # E-ophtha-MA
-    if parser.dataset == 'E-ophtha-MA':
-        dataset = EophthaMA(images_dir=path['dataset']['images']['cropped'],
-                            images_masks_dir=path['dataset']['images']['masks_cropped'],
-                            annotations_dir=path['dataset']['annotations']['cropped'],
-                            filename_list=data_split['filename'],
-                            transforms=None)
-
-    # INbreast
-    elif parser.dataset == 'INbreast':
-        dataset = INbreast(images_dir=path['dataset']['images']['all'],
-                           images_masks_dir=path['dataset']['images']['masks'],
-                           annotations_dir=path['dataset']['annotations']['all'],
-                           annotations_w48m14_dir=path['dataset']['annotations']['w48m14'],
-                           filename_list=data_split['filename'],
-                           transforms=None)
+    # $DATASET$
+    if parser.dataset == '$DATASET$':
+        dataset = DatasetName(images_dir=path['dataset']['images']['cropped'],
+                              images_masks_dir=path['dataset']['images']['masks_cropped'],
+                              annotations_dir=path['dataset']['annotations']['cropped'],
+                              filename_list=data_split['filename'],
+                              transforms=None)
     else:
         str_err = msg_error(file=__file__,
                             variable=parser.dataset,
                             type_variable="dataset",
-                            choices="[E-ophtha-MA, INbreast]")
+                            choices="[$DATASET$]")
         sys.exit(str_err)
 
     msg_load_dataset_complete(dataset_name=parser.dataset)
@@ -266,16 +255,7 @@ def main():
           "\nGRAVITY POINTS:"
           "\n---------------")
     # image shape (H x W) -> after pre-processing (transforms)
-    if parser.dataset == 'E-ophtha-MA':
-        image_shape = np.array((int(parser.image_height_resize * parser.rescale), int(parser.image_width_resize * parser.rescale)))  # converts to numpy.array
-    elif parser.dataset == 'INbreast':
-        image_shape = np.array((int(parser.image_height_crop * parser.rescale), int(parser.image_width_crop * parser.rescale)))  # converts to numpy.array
-    else:
-        str_err = msg_error(file=__file__,
-                            variable=parser.dataset,
-                            type_variable="dataset",
-                            choices="[E-ophtha-MA, INbreast]")
-        sys.exit(str_err)
+    image_shape = np.array((int(parser.image_height), int(parser.image_width)))  # converts to numpy.array
 
     # generate gravity points
     gravity_points, gravity_points_feature_map, feature_map_shape = gravity_points_config(config=parser.config,

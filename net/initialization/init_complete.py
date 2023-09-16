@@ -57,9 +57,9 @@ def initialization_complete(network_name: str,
     else:
         print("Debug Initialization")
 
-    # ---- #
-    # PATH #
-    # ---- #
+    # ----------- #
+    # RESULT PATH #
+    # ----------- #
     # detections
     detections_test_complete_filename = "detections-test|" + experiment_complete_ID + ".csv"
     detections_test_complete_path = os.path.join(experiment_complete_results_path['detections'], detections_test_complete_filename)
@@ -114,7 +114,6 @@ def initialization_complete(network_name: str,
     ROC_test_NMS_complete_coords_filename = "ROC-NMS={}x{}-coords|".format(parser.NMS_box_radius, parser.NMS_box_radius) + experiment_complete_ID + ".csv"
     ROC_test_NMS_complete_coords_path = os.path.join(experiment_complete_results_path['coords_test_NMS'], ROC_test_NMS_complete_coords_filename)
 
-    # path
     path = {
         'detections': {
             'test': detections_test_complete_path,

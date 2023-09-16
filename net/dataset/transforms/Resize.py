@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import os
 import sys
 import torch
 
@@ -23,7 +24,6 @@ class Resize(object):
 
         :param size: image size
         :param tool: resize tool
-        :param debug: debug option
         """
 
         self.size = size
@@ -40,7 +40,6 @@ class Resize(object):
         """
 
         # read sample
-        filename = sample['filename']
         image = sample['image']
         annotation = sample['annotation']
         image_mask = sample['image_mask']

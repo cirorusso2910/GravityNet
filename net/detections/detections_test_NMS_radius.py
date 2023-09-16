@@ -268,6 +268,7 @@ def detections_test_NMS_distance(experiment_ID: str,
         # delete predictions with label '-2' (negative & out image)
         detections = detections[detections[:, 1] != -2]
 
+        # index out mask
         mask_value = mask[detections[:, 4].long(), detections[:, 3].long()]
         index_out_mask = torch.not_equal(input=mask_value, other=255.)
         detections[index_out_mask, 1] = -4

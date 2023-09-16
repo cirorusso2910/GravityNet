@@ -13,43 +13,25 @@ def annotation_header(dataset: str,
     :return: header
     """
 
-    # INbreast
-    if dataset == 'INbreast':
+    # $DATASET$
+    if dataset == '$DATASET$':
 
         # default
         if annotation_type == 'default':
-            header = ["ROI", "X", "Y", "RADIUS"]
-
-        # w48m14
-        elif annotation_type == 'w48m14':
-            header = ["ROI", "X", "Y"]
+            header = ["X", "Y", "RADIUS"]
 
         else:
             str_err = msg_error(file=__file__,
                                 variable=annotation_type,
-                                type_variable='INbreast annotation-type',
-                                choices='[default, w48m14')
-            sys.exit(str_err)
-
-    # E-ophtha-MA
-    elif dataset == 'E-ophtha-MA':
-
-        # default
-        if annotation_type == 'default':
-            header = ["X", "Y", "RADIUS X", "RADIUS Y"]
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=annotation_type,
-                                type_variable="annotation type",
-                                choices="[default]")
+                                type_variable='$DATASET$ annotation-type',
+                                choices='[default')
             sys.exit(str_err)
 
     else:
         str_err = msg_error(file=__file__,
                             variable=dataset,
                             type_variable="dataset",
-                            choices="[INbreast, E-ophtha-MA]")
+                            choices="[$DATASET$]")
         sys.exit(str_err)
 
     return header

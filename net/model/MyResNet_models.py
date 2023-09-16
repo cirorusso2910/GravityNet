@@ -1,4 +1,5 @@
 import sys
+from typing import Tuple, Union
 
 from torchvision import models
 from torchvision.models import ResNet18_Weights, ResNet34_Weights, ResNet50_Weights, ResNet101_Weights, ResNet152_Weights
@@ -11,9 +12,15 @@ from net.model.backbone.ResNet.MyResNet50 import MyResNet50
 from net.utility.msg.msg_error import msg_error
 
 
-def MyResNet_models(resnet, pretrained):
-    """ get ResNet Models based on resnet type
-                [18, 34, 50, 101, 152]
+def MyResNet_models(resnet: int,
+                    pretrained: bool) -> Tuple[Union[MyResNet18, MyResNet34, MyResNet50, MyResNet101, MyResNet152], int]:
+    """
+    Get ResNet models
+
+    :param resnet: ResNet [18, 34, 50, 101, 152]
+    :param pretrained: pretrained flag
+    :return: ResNet model,
+             num features
     """
 
     # --------- #

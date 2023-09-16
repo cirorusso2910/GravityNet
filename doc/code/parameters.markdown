@@ -43,15 +43,19 @@
 | **norm**      | dataset normalization |
 
 ### DATASET TRANSFORMS
+### INbreast
+
 | **PARAMETER**           | **DESCRIPTION**                               |
 |-------------------------|-----------------------------------------------|
-| **INbreast**            | **INbreast parameters dataset-transforms**    |
 | **orientation**         | image orientation                             |
 | **image_height_crop**   | image height size to crop                     |
 | **image_width_crop**    | image width size to crop                      |
 | **rescale**             | image rescale factor                          |
 | **max_padding**         | padding size for annotation                   |
-| **E-ophtha-MA**         | **E-ophtha-MA parameters dataset-transforms** |
+
+### E-ophtha-MA
+| **PARAMETER**           | **DESCRIPTION**                               |
+|-------------------------|-----------------------------------------------|
 | **image_height_resize** | image height to resize                        |
 | **image_width_resize**  | image width to resize                         |
 | **resize_tool**         | resize tool                                   |

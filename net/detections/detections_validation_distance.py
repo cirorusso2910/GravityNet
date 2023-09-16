@@ -234,19 +234,10 @@ def detections_validation_distance(filenames: torch.Tensor,
         # delete predictions with label '-2' (negative & out image)
         detections = detections[detections[:, 1] != -2]
 
-        # -------------------------------------------------------------------------------- #
-        # NOTE: image-mask can have a row of pixel zeros (on the left) of the mammogram    #
-        # that does not match the original mask,                                           #
-        # so it can happen that first row of predictions are "ignored" incorrectly         #
-        # -------------------------------------------------------------------------------- #
-
-        # mask_value = mask[detections[:, 4].long(), detections[:, 3].long()]
-        # index_out_mask = torch.not_equal(input=mask_value, other=255.)
-        # detections[index_out_mask, 1] = -4
-
-        image_value = image[0, detections[:, 4].long(), detections[:, 3].long()]
-        index_out_image = torch.eq(input=image_value, other=0.)
-        detections[index_out_image, 1] = -4
+        # index out mask
+        mask_value = mask[detections[:, 4].long(), detections[:, 3].long()]
+        index_out_mask = torch.not_equal(input=mask_value, other=255.)
+        detections[index_out_mask, 1] = -4
 
         # -------------- #
         # OUTPUT GRAVITY #

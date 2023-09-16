@@ -26,78 +26,36 @@ def dataset_num_images(dataset: str,
     # ------- #
     # DEFINED #
     # ------- #
-    # E-ophtha-MA
-    if dataset == 'E-ophtha-MA':
+    # $DATASET$
+    if dataset == '$DATASET$':
 
-        # split 1-fold
-        if split == '1-fold':
-            num_images_train = 154
-            num_images_val = 38
-            num_images_test = 189
-
-            if do_dataset_augmentation:
-                num_images_train = 154 * 4
-                num_images_val = 38
-                num_images_test = 189
-
-        # split 2-fold
-        elif split == '2-fold':
-            num_images_train = 151
-            num_images_val = 38
-            num_images_test = 192
+        # split $N$-fold
+        if split == '$N$-fold':
+            num_images_train = '$NUM_IMAGES_TRAIN$'
+            num_images_val = '$NUM_IMAGES_VALIDATION$'
+            num_images_test = '$NUM_IMAGES_TEST$'
 
             if do_dataset_augmentation:
-                num_images_train = 151 * 4
-                num_images_val = 38
-                num_images_test = 192
+                num_images_train = '$NUM_IMAGES_TRAIN$' '*' '$NUM_AUGMENTATION_TRANSFORMS$'
+                num_images_val = '$NUM_IMAGES_VALIDATION$'
+                num_images_test = '$NUM_IMAGES_TEST$'
 
         else:
             str_err = msg_error(file=__file__,
                                 variable=split,
-                                type_variable="E-ophtha-MA split",
-                                choices="[1-fold, 2-fold]")
+                                type_variable="$DATASET$ split",
+                                choices="[$N$-fold]")
             sys.exit(str_err)
-
-    # INbreast
-    elif dataset == 'INbreast':
-
-        # split 1-fold
-        if split == '1-fold':
-            num_images_train = 143
-            num_images_val = 62
-            num_images_test = 205
-
-            # augmentation
-            if do_dataset_augmentation:
-                num_images_train = 143 * 4
-                num_images_val = 62
-                num_images_test = 205
-
-        # split 2-fold
-        elif split == '2-fold':
-            num_images_train = 143
-            num_images_val = 62
-            num_images_test = 205
-
-            # augmentation
-            if do_dataset_augmentation:
-                num_images_train = 143 * 4
-                num_images_val = 62
-                num_images_test = 205
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=split,
-                                type_variable="INbreast split",
-                                choices="[1-fold, 2-fold]")
-            sys.exit(str_err)
-
 
     # ---------- #
     # TO COMPUTE #
     # ---------- #
     else:
         num_images_train = dataset_train.__len__()
+
+        if do_dataset_augmentation:
+            num_images_train = dataset_train.__len__() * '$NUM_AUGMENTATION_TRANSFORMS$'
+
         num_images_val = dataset_val.__len__()
         num_images_test = dataset_test.__len__()
 

@@ -26,70 +26,25 @@ def dataset_num_normal_images(dataset: str,
     # ------- #
     # DEFINED #
     # ------- #
-    # E-ophtha-MA
-    if dataset == 'E-ophtha-MA':
+    # $DATASET$
+    if dataset == '$DATASET$':
 
-        # split 1-fold
-        if split == '1-fold':
-            num_normal_images_train = 94
-            num_normal_images_val = 24
-            num_normal_images_test = 115
-
-            if do_dataset_augmentation:
-                num_normal_images_train = 94 * 4
-                num_normal_images_val = 24
-                num_normal_images_test = 115
-
-        # split 2-fold
-        elif split == '2-fold':
-            num_normal_images_train = 91
-            num_normal_images_val = 24
-            num_normal_images_test = 118
+        # split $N$-fold
+        if split == '$N$-fold':
+            num_normal_images_train = '$NUM_NORMAL_IMAGES_TRAIN$'
+            num_normal_images_val = '$NUM_NORMAL_IMAGES_VALIDATION$'
+            num_normal_images_test = '$NUM_NORMAL_IMAGES_TEST$'
 
             if do_dataset_augmentation:
-                num_normal_images_train = 91 * 4
-                num_normal_images_val = 24
-                num_normal_images_test = 118
+                num_normal_images_train = '$NUM_NORMAL_IMAGES_TRAIN$' '*' '$NUM_AUGMENTATION_TRANSFORMS$'
+                num_normal_images_val = '$NUM_NORMAL_IMAGES_VALIDATION$'
+                num_normal_images_test = '$NUM_NORMAL_IMAGES_TEST$'
 
         else:
             str_err = msg_error(file=__file__,
                                 variable=split,
-                                type_variable="E-ophtha-MA split",
-                                choices="[1-fold, 2-fold]")
-            sys.exit(str_err)
-
-    # INbreast
-    elif dataset == 'INbreast':
-
-        # split 1-fold
-        if split == '1-fold':
-            num_normal_images_train = 35
-            num_normal_images_val = 19
-            num_normal_images_test = 43
-
-            # augmentation
-            if do_dataset_augmentation:
-                num_normal_images_train = 35 * 4
-                num_normal_images_val = 19
-                num_normal_images_test = 43
-
-        # split 2-fold
-        elif split == '2-fold':
-            num_normal_images_train = 26
-            num_normal_images_val = 17
-            num_normal_images_test = 54
-
-            # augmentation
-            if do_dataset_augmentation:
-                num_normal_images_train = 26 * 4
-                num_normal_images_val = 17
-                num_normal_images_test = 54
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=split,
-                                type_variable="INbreast split",
-                                choices="[1-fold, 2-fold]")
+                                type_variable="$DATASET$ split",
+                                choices="[$N$-fold]")
             sys.exit(str_err)
 
     # ---------- #
@@ -97,23 +52,8 @@ def dataset_num_normal_images(dataset: str,
     # ---------- #
     else:
 
-        # E-ophtha-MA
-        if dataset == 'E-ophtha-MA':
-
-            # num normal images in dataset-train
-            num_normal_images_train = get_num_normal_images(dataset=dataset_train,
-                                                            annotation_type_dict='annotation')
-
-            # num normal images in dataset-validation
-            num_normal_images_val = get_num_normal_images(dataset=dataset_val,
-                                                          annotation_type_dict='annotation')
-
-            # num normal images in dataset-test
-            num_normal_images_test = get_num_normal_images(dataset=dataset_test,
-                                                           annotation_type_dict='annotation')
-
-        # INbreast
-        elif dataset == 'INbreast':
+        # $DATASET$
+        if dataset == '$DATASET$':
 
             # num normal images in dataset-train
             num_normal_images_train = get_num_normal_images(dataset=dataset_train,
@@ -131,7 +71,7 @@ def dataset_num_normal_images(dataset: str,
             str_err = msg_error(file=__file__,
                                 variable=dataset,
                                 type_variable="dataset",
-                                choices="[INbreast, E-ophtha-MA]")
+                                choices="[$DATASET$]")
             sys.exit(str_err)
 
     num_normal_images = {

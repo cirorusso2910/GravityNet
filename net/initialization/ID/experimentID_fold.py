@@ -29,18 +29,15 @@ def experimentID_fold(parser: argparse.Namespace) -> Tuple[str, str]:
         experiment_1_fold_ID = parameters_ID_dict['dataset'] + "|" + parameters_ID_dict['split_1_fold'] + "|" + parameters_ID_dict['rescale'] + "|" + parameters_ID_dict['channel'] + "|" + parameters_ID_dict['norm'] + "|" + parameters_ID_dict['ep'] + "|" + parameters_ID_dict['lr'] + "|" + parameters_ID_dict['bs'] + "|" + parameters_ID_dict['backbone'] + "|" + parameters_ID_dict['config'] + "|" + parameters_ID_dict['hook'] + "|" + parameters_ID_dict['eval'] + "|" + parameters_ID_dict['GPU']
         experiment_2_fold_ID = parameters_ID_dict['dataset'] + "|" + parameters_ID_dict['split_2_fold'] + "|" + parameters_ID_dict['rescale'] + "|" + parameters_ID_dict['channel'] + "|" + parameters_ID_dict['norm'] + "|" + parameters_ID_dict['ep'] + "|" + parameters_ID_dict['lr'] + "|" + parameters_ID_dict['bs'] + "|" + parameters_ID_dict['backbone'] + "|" + parameters_ID_dict['config'] + "|" + parameters_ID_dict['hook'] + "|" + parameters_ID_dict['eval'] + "|" + parameters_ID_dict['GPU']
 
-    # ---------- #
-    # NO-HEALTHY #
-    # ---------- #
-    elif parser.typeID == 'no-healthy':
-        experiment_1_fold_ID = parameters_ID_dict['dataset'] + "|" + parameters_ID_dict['split_1_fold_no_healthy'] + "|" + parameters_ID_dict['rescale'] + "|" + parameters_ID_dict['channel'] + "|" + parameters_ID_dict['norm'] + "|" + parameters_ID_dict['ep'] + "|" + parameters_ID_dict['lr'] + "|" + parameters_ID_dict['bs'] + "|" + parameters_ID_dict['backbone'] + "|" + parameters_ID_dict['config'] + "|" + parameters_ID_dict['hook'] + "|" + parameters_ID_dict['eval'] + "|" + parameters_ID_dict['GPU']
-        experiment_2_fold_ID = parameters_ID_dict['dataset'] + "|" + parameters_ID_dict['split_2_fold_no_healthy'] + "|" + parameters_ID_dict['rescale'] + "|" + parameters_ID_dict['channel'] + "|" + parameters_ID_dict['norm'] + "|" + parameters_ID_dict['ep'] + "|" + parameters_ID_dict['lr'] + "|" + parameters_ID_dict['bs'] + "|" + parameters_ID_dict['backbone'] + "|" + parameters_ID_dict['config'] + "|" + parameters_ID_dict['hook'] + "|" + parameters_ID_dict['eval'] + "|" + parameters_ID_dict['GPU']
+        if parser.do_dataset_augmentation:
+            experiment_1_fold_ID = parameters_ID_dict['dataset_augmented'] + "|" + parameters_ID_dict['split_1_fold'] + "|" + parameters_ID_dict['rescale'] + "|" + parameters_ID_dict['channel'] + "|" + parameters_ID_dict['norm'] + "|" + parameters_ID_dict['ep'] + "|" + parameters_ID_dict['lr'] + "|" + parameters_ID_dict['bs'] + "|" + parameters_ID_dict['backbone'] + "|" + parameters_ID_dict['config'] + "|" + parameters_ID_dict['hook'] + "|" + parameters_ID_dict['eval'] + "|" + parameters_ID_dict['GPU']
+            experiment_2_fold_ID = parameters_ID_dict['dataset_augmented'] + "|" + parameters_ID_dict['split_2_fold'] + "|" + parameters_ID_dict['rescale'] + "|" + parameters_ID_dict['channel'] + "|" + parameters_ID_dict['norm'] + "|" + parameters_ID_dict['ep'] + "|" + parameters_ID_dict['lr'] + "|" + parameters_ID_dict['bs'] + "|" + parameters_ID_dict['backbone'] + "|" + parameters_ID_dict['config'] + "|" + parameters_ID_dict['hook'] + "|" + parameters_ID_dict['eval'] + "|" + parameters_ID_dict['GPU']
 
     else:
         str_err = msg_error(file=__file__,
                             variable=parser.typeID,
                             type_variable='type experiment ID fold',
-                            choices='[default, no-healthy]')
+                            choices='[default]')
         sys.exit(str_err)
 
     return experiment_1_fold_ID, experiment_2_fold_ID

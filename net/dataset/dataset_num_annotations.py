@@ -28,68 +28,25 @@ def dataset_num_annotations(dataset: str,
     # ------- #
     # DEFINED #
     # ------- #
-    # E-ophtha-MA
-    if dataset == 'E-ophtha-MA':
+    # $DATASET$
+    if dataset == '$DATASET$':
 
-        # split 1-fold
-        if split == '1-fold':
-            num_annotations_train = 542
-            num_annotations_val = 105
-            num_annotations_test = 659
-
-            if do_dataset_augmentation:
-                num_annotations_train = 542 * 4
-                num_annotations_val = 105
-                num_annotations_test = 659
-
-        # split 2-fold
-        elif split == '2-fold':
-            num_annotations_train = 552
-            num_annotations_val = 107
-            num_annotations_test = 647
+        # split $N$-fold
+        if split == '$N$-fold':
+            num_annotations_train = '$NUM_ANNOTATIONS_TRAIN$'
+            num_annotations_val = '$NUM_ANNOTATIONS_VALIDATION$'
+            num_annotations_test = '$NUM_ANNOTATIONS_TEST$'
 
             if do_dataset_augmentation:
-                num_annotations_train = 552 * 4
-                num_annotations_val = 107
-                num_annotations_test = 647
+                num_annotations_train = '$NUM_ANNOTATIONS_TRAIN$' '*' '$NUM_AUGMENTATION_TRANSFORMS$'
+                num_annotations_val = '$NUM_ANNOTATIONS_VALIDATION$'
+                num_annotations_test = '$NUM_ANNOTATIONS_TEST$'
 
         else:
             str_err = msg_error(file=__file__,
                                 variable=split,
-                                type_variable="E-ophtha-MA split",
-                                choices="[1-fold, 2-fold]")
-            sys.exit(str_err)
-
-    # INbreast
-    elif dataset == 'INbreast':
-
-        # split 1-fold
-        if split == '1-fold':
-            num_annotations_train = 2408  # w48m14
-            num_annotations_val = 516  # filtered calcifications (radius < 7)
-            num_annotations_test = 2756  # filtered calcifications (radius < 7)
-
-            if do_dataset_augmentation:
-                num_annotations_train = 2408 * 4  # w48m14 (x4)
-                num_annotations_val = 516  # filtered calcifications (radius < 7)
-                num_annotations_test = 2756  # filtered calcifications (radius < 7)
-
-        # split 2-fold
-        elif split == '2-fold':
-            num_annotations_train = 2051  # w48m14
-            num_annotations_val = 724  # filtered calcifications (radius < 7)
-            num_annotations_test = 2901  # filtered calcifications (radius < 7)
-
-            if do_dataset_augmentation:
-                num_annotations_train = 2051 * 4  # w48m14 (x4)
-                num_annotations_val = 724  # filtered calcifications (radius < 7)
-                num_annotations_test = 2901  # filtered calcifications (radius < 7)
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=split,
-                                type_variable="INbreast split",
-                                choices="[1-fold, 2-fold]")
+                                type_variable="$DATASET$ split",
+                                choices="[$N$-fold]")
             sys.exit(str_err)
 
     # ---------- #
@@ -98,8 +55,8 @@ def dataset_num_annotations(dataset: str,
     else:
         time_annotations_start = time.time()
 
-        # E-ophtha-MA
-        if dataset == 'E-ophtha-MA':
+        # $DATASET$
+        if dataset == '$DATASET$':
 
             # num annotations dataset-train
             num_annotations_train = get_num_annotations(dataset=dataset_train,
@@ -113,26 +70,11 @@ def dataset_num_annotations(dataset: str,
             num_annotations_test = get_num_annotations(dataset=dataset_test,
                                                        annotation_type_dict='annotation')
 
-        # INbreast
-        elif dataset == 'INbreast':
-
-            # num annotations dataset-train
-            num_annotations_train = get_num_annotations(dataset=dataset_train,
-                                                        annotation_type_dict='annotation_w48m14')
-
-            # num annotations dataset-val
-            num_annotations_val = get_num_annotations(dataset=dataset_val,
-                                                      annotation_type_dict='annotation')
-
-            # num annotations dataset-test
-            num_annotations_test = get_num_annotations(dataset=dataset_test,
-                                                       annotation_type_dict='annotation')
-
         else:
             str_err = msg_error(file=__file__,
                                 variable=dataset,
                                 type_variable="dataset",
-                                choices="[E-ophtha-MA, INbreast]")
+                                choices="[$DATASET$]")
             sys.exit(str_err)
 
         time_annotations = time.time() - time_annotations_start
