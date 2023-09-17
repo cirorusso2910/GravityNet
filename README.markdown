@@ -8,6 +8,15 @@
 The following instructions must be followed to properly run the GravityNet:
 
 1. Parameters-parsing
+2. Initialization
+3. Class Dataset
+4. Split data
+5. Dataset information
+6. Dataset transforms
+7. Gravity points configuration
+8. Parameters summary
+9. Execution mode
+10. Example of execution
 
 ### 1. PARAMETERS-PARSING
 The first step is to define parameters by parsing, paying attention to the reference sections <br>
