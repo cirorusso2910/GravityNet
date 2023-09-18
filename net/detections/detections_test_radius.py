@@ -6,8 +6,8 @@ import torch
 
 from net.debug.debug_detections import debug_detections
 from net.detections.utility.check_index import check_index
-from net.detections.utility.conversion_item_list import conversion_item_list
-from net.detections.utility.init_detections_radius import init_detections_radius
+from net.detections.utility.conversion_item_list import conversion_item_list_radius
+from net.detections.utility.init_detections import init_detections_radius
 from net.initialization.header.detections import detections_radius_header
 from net.output.output_gravity import output_gravity
 from net.utility.read_file import read_file
@@ -270,7 +270,7 @@ def detections_test_radius(experiment_ID: str,
         for item in detections:
             item.insert(0, filename)
             # item conversion
-            conversion_item_list(item=item)
+            conversion_item_list_radius(item=item)
 
         # add annotations not detected to detections
         detections_complete = detections + annotation_not_detected_hist

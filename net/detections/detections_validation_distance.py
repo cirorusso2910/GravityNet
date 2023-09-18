@@ -6,8 +6,8 @@ import torch
 
 from net.debug.debug_detections import debug_detections
 from net.detections.utility.check_index import check_index
-from net.detections.utility.conversion_item_list import conversion_item_list
-from net.detections.utility.init_detections_distance import init_detections_distance
+from net.detections.utility.conversion_item_list import conversion_item_list_distance
+from net.detections.utility.init_detections import init_detections_distance
 from net.initialization.header.detections import detections_distance_header
 from net.output.output_gravity import output_gravity
 from net.utility.read_file import read_file
@@ -270,7 +270,7 @@ def detections_validation_distance(filenames: torch.Tensor,
         for item in detections:
             item.insert(0, filename)
             # item conversion
-            conversion_item_list(item=item)
+            conversion_item_list_distance(item=item)
 
         # add annotations not detected to detections
         detections_complete = detections + annotation_not_detected_hist
