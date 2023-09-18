@@ -31,19 +31,17 @@ def detections_test_radius(experiment_ID: str,
     Compute detections in test with radius metrics and save detections.csv
 
     DETECTIONS CRITERION:
-        - TP: predictions whose distance to the annotation (microaneurysms) is less than radius
-              (radius is different for each microaneurysms)
+        - TP: predictions whose distance to the annotation is less than radius
 
         - possibleTP: predictions that fit the described criterion
                      (among them the one with the highest score is chosen as TP)
 
         - FP: predictions that do not fit the described criterion
-              (FP all images or FP normals images)
 
-        - FN: annotation (microaneurysms) missed
+        - FN: annotation missed
 
     FALSE POSITIVE REDUCTION:
-        gravity points outside the color fundus image mask are not considered
+        gravity points outside the image mask are not considered
 
     OUTPUT GRAVITY:
         saves the output-gravity of each image

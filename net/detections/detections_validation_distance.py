@@ -32,7 +32,6 @@ def detections_validation_distance(filenames: torch.Tensor,
 
     DETECTIONS CRITERION:
         - TP: predictions whose distance to the annotation is less than 'distance'
-                (default: 7 pixel)
 
         - possibleTP: predictions that fit the described criterion
                       (among them the one with the highest score is chosen as TP)
@@ -42,7 +41,7 @@ def detections_validation_distance(filenames: torch.Tensor,
         - FN: annotation missed
 
     FALSE POSITIVE REDUCTION:
-        gravity points outside the mammograms mask are not considered
+        gravity points outside the image mask are not considered
 
     OUTPUT GRAVITY:
         for each epoch, saves the output-gravity of a specific image (filename_output_gravity)

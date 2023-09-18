@@ -34,7 +34,6 @@ def detections_test_NMS_distance(experiment_ID: str,
 
     DETECTIONS CRITERION:
         - TP: predictions whose distance to the annotation is less than 'distance'
-                (default: 7 pixel)
 
         - possibleTP: predictions that fit the described criterion
                       (among them the one with the highest score is chosen as TP)
@@ -47,7 +46,7 @@ def detections_test_NMS_distance(experiment_ID: str,
         apply Non-Maxima-Suppression (NMS) with a specific NMS_box_radius (before evaluation detection)
 
     FALSE POSITIVE REDUCTION:
-        gravity points outside the mammograms mask are not considered
+        gravity points outside the image mask are not considered
 
     OUTPUT GRAVITY:
         saves the output-gravity of each image
@@ -96,7 +95,7 @@ def detections_test_NMS_distance(experiment_ID: str,
 
         # get annotation
         annotation = annotations[i]
-        annotation = annotation[annotation[:, 0] != -1]  # the real annotation annotation (not -1)
+        annotation = annotation[annotation[:, 0] != -1]  # the real annotation (not -1)
         annotation = annotation[:, :2].to(device)  # (x, y)
         # get num annotations
         num_annotations = annotation.shape[0]

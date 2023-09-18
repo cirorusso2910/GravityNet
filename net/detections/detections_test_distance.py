@@ -41,7 +41,7 @@ def detections_test_distance(experiment_ID: str,
         - FN: annotation missed
 
     FALSE POSITIVE REDUCTION:
-        gravity points outside the mammograms mask are not considered
+        gravity points outside the image mask are not considered
 
     OUTPUT GRAVITY:
         saves the output-gravity of each image

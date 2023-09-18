@@ -14,41 +14,39 @@ from net.output.output_gravity import output_gravity
 from net.utility.read_file import read_file
 
 
-def detections_test_NMS_distance(experiment_ID: str,
-                                 filenames: torch.Tensor,
-                                 predictions: torch.Tensor,
-                                 classifications: torch.Tensor,
-                                 images: torch.Tensor,
-                                 masks: torch.Tensor,
-                                 annotations: torch.Tensor,
-                                 factor: int,
-                                 NMS_box_radius: int,
-                                 detections_path: str,
-                                 FP_list_path: str,
-                                 output_gravity_path: str,
-                                 device: torch.device,
-                                 do_output_gravity: bool,
-                                 debug: bool):
+def detections_test_NMS_radius(experiment_ID: str,
+                               filenames: torch.Tensor,
+                               predictions: torch.Tensor,
+                               classifications: torch.Tensor,
+                               images: torch.Tensor,
+                               masks: torch.Tensor,
+                               annotations: torch.Tensor,
+                               factor: int,
+                               NMS_box_radius: int,
+                               detections_path: str,
+                               FP_list_path: str,
+                               output_gravity_path: str,
+                               device: torch.device,
+                               do_output_gravity: bool,
+                               debug: bool):
     """
     Compute detections in test NMS with RADIUS metrics and save in detections.csv
 
     DETECTIONS CRITERION:
-        - TP: predictions whose distance to the annotation (microaneurysms) is less than radius
-              (radius is different for each microaneurysms)
+        - TP: predictions whose distance to the annotation is less than radius
 
         - possibleTP: predictions that fit the described criterion
                      (among them the one with the highest score is chosen as TP)
 
         - FP: predictions that do not fit the described criterion
-              (FP all images or FP normals images)
 
-        - FN: annotation (microaneurysms) missed
+        - FN: annotation missed
 
     NON-MAXIMA-SUPPRESION:
         apply Non-Maxima-Suppression (NMS) with a specific NMS_box_radius (before evaluation detection)
 
     FALSE POSITIVE REDUCTION:
-        gravity points outside the color fundus image mask are not considered
+        gravity points outside the image mask are not considered
 
     OUTPUT GRAVITY:
         saves the output-gravity of each image

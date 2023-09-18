@@ -1,11 +1,15 @@
 import os
+import sys
 import time
 import torch
 from torch.utils.data import DataLoader
 
 from net.anchors.gravity_points_prediction import gravity_points_prediction
-from net.detections.detections_test_NMS_radius import detections_test_NMS_distance
+from net.detections.detections_test_NMS_distance import detections_test_NMS_distance
+from net.detections.detections_test_NMS_radius import detections_test_NMS_radius
+from net.evaluation.utility.distance_eval_rescale import distance_eval_rescale
 from net.evaluation.utility.radius_eval import radius_eval
+from net.utility.msg.msg_error import msg_error
 
 
 def test_NMS(experiment_ID: str,
@@ -67,24 +71,53 @@ def test_NMS(experiment_ID: str,
                                                     gravity_points=gravity_points,
                                                     regression=regressions)
 
-            # save detections.csv (with radius metrics)
-            detections_test_NMS_distance(experiment_ID=experiment_ID,
-                                         filenames=filename,
-                                         predictions=predictions,
-                                         classifications=classifications,
-                                         images=image,
-                                         masks=mask,
-                                         annotations=annotation,
-                                         factor=radius_eval(eval=eval),
-                                         NMS_box_radius=NMS_box_radius,
-                                         detections_path=detections_path,
-                                         FP_list_path=FP_list_path,
-                                         output_gravity_path=output_gravity_path,
-                                         device=device,
-                                         do_output_gravity=do_output_gravity,
-                                         debug=debug)
+            # evaluation with distance
+            if 'distance' in eval:
+                # save detections.csv (with distance metrics)
+                detections_test_NMS_distance(experiment_ID=experiment_ID,
+                                             filenames=filename,
+                                             predictions=predictions,
+                                             classifications=classifications,
+                                             images=image,
+                                             masks=mask,
+                                             annotations=annotation,
+                                             distance=distance_eval_rescale(eval=eval,
+                                                                            rescale=rescale_factor),
+                                             NMS_box_radius=NMS_box_radius,
+                                             detections_path=detections_path,
+                                             normals_path=FP_list_path,
+                                             output_gravity_path=output_gravity_path,
+                                             device=device,
+                                             do_output_gravity=do_output_gravity,
+                                             debug=debug)
 
-            # batch time
+            # evaluation with radius
+            elif 'radius' in eval:
+                # save detections.csv (with radius metrics)
+                detections_test_NMS_radius(experiment_ID=experiment_ID,
+                                           filenames=filename,
+                                           predictions=predictions,
+                                           classifications=classifications,
+                                           images=image,
+                                           masks=mask,
+                                           annotations=annotation,
+                                           factor=radius_eval(eval=eval),
+                                           NMS_box_radius=NMS_box_radius,
+                                           detections_path=detections_path,
+                                           FP_list_path=FP_list_path,
+                                           output_gravity_path=output_gravity_path,
+                                           device=device,
+                                           do_output_gravity=do_output_gravity,
+                                           debug=debug)
+
+            else:
+                str_err = msg_error(file=__file__,
+                                    variable=eval,
+                                    type_variable="evaluation",
+                                    choices="[distance, radius]")
+                sys.exit(str_err)
+
+                # batch time
             time_batch = time.time() - time_batch_start
 
             # show
