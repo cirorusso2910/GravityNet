@@ -2,12 +2,12 @@ import numpy as np
 import torch
 
 
-def init_detections(num_predictions: int,
-                    classification: torch.Tensor,
-                    prediction: torch.Tensor,
-                    device: torch.device) -> torch.Tensor:
+def init_detections_distance(num_predictions: int,
+                             classification: torch.Tensor,
+                             prediction: torch.Tensor,
+                             device: torch.device) -> torch.Tensor:
     """
-    initialize detections
+    initialize detections distance
 
     HEADER:
     - NUM PREDICTION: num prediction
@@ -17,7 +17,6 @@ def init_detections(num_predictions: int,
     - PREDICTION Y: coord y gravity points prediction
     - TARGET X: coord x annotation detected
     - TARGET Y: coord y annotation detected
-    - RADIUS: radius annotation detected
 
     :param num_predictions: num prediction
     :param classification: classification score
@@ -27,7 +26,7 @@ def init_detections(num_predictions: int,
     """
 
     # init detections (tensor)
-    detections = torch.zeros((num_predictions, 8), dtype=torch.float32).to(device)
+    detections = torch.zeros((num_predictions, 7), dtype=torch.float32).to(device)
 
     # init num predictions [NUM PREDICTIONS]
     detections[:, 0] = torch.arange(0, num_predictions)
@@ -49,8 +48,5 @@ def init_detections(num_predictions: int,
 
     # init coord annotation x [TARGET Y]
     detections[:, 6] = torch.zeros(num_predictions) * np.nan
-
-    # init radius annotation [RADIUS]
-    detections[:, 7] = torch.zeros(num_predictions) * np.nan
 
     return detections

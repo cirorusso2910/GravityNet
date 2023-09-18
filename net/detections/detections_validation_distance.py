@@ -7,8 +7,8 @@ import torch
 from net.debug.debug_detections import debug_detections
 from net.detections.utility.check_index import check_index
 from net.detections.utility.conversion_item_list import conversion_item_list
-from net.detections.utility.init_detections import init_detections
-from net.initialization.header.detections import detections_header
+from net.detections.utility.init_detections_distance import init_detections_distance
+from net.initialization.header.detections import detections_distance_header
 from net.output.output_gravity import output_gravity
 from net.utility.read_file import read_file
 
@@ -123,10 +123,10 @@ def detections_validation_distance(filenames: torch.Tensor,
         # --------------- #
         # INIT DETECTIONS #
         # --------------- #
-        detections = init_detections(num_predictions=num_predictions,
-                                     classification=score,
-                                     prediction=prediction,
-                                     device=device)
+        detections = init_detections_distance(num_predictions=num_predictions,
+                                              classification=score,
+                                              prediction=prediction,
+                                              device=device)
 
         # -------- #
         # DISTANCE #
@@ -281,8 +281,7 @@ def detections_validation_distance(filenames: torch.Tensor,
         # detections_np = detections.cpu().detach().numpy()  # convert detections (tensor) to numpy
         detections_np = np.array(detections_complete)  # convert detections (list) to numpy
         detections_csv = pd.DataFrame(detections_np)
-        header = detections_header()
         if not os.path.exists(detections_path):
-            detections_csv.to_csv(detections_path, mode='a', index=False, header=header, float_format='%g')  # write header
+            detections_csv.to_csv(detections_path, mode='a', index=False, header=detections_distance_header(), float_format='%g')  # write header
         else:
             detections_csv.to_csv(detections_path, mode='a', index=False, header=False, float_format='%g')  # write without header

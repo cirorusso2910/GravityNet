@@ -7,8 +7,8 @@ import torch
 from net.debug.debug_detections import debug_detections
 from net.detections.utility.check_index import check_index
 from net.detections.utility.conversion_item_list import conversion_item_list
-from net.detections.utility.init_detections import init_detections
-from net.initialization.header.detections import detections_header
+from net.detections.utility.init_detections_radius import init_detections_radius
+from net.initialization.header.detections import detections_radius_header
 from net.output.output_gravity import output_gravity
 from net.utility.read_file import read_file
 
@@ -124,10 +124,10 @@ def detections_validation_radius(filenames: torch.Tensor,
         # --------------- #
         # INIT DETECTIONS #
         # --------------- #
-        detections = init_detections(num_predictions=num_predictions,
-                                     classification=score,
-                                     prediction=prediction,
-                                     device=device)
+        detections = init_detections_radius(num_predictions=num_predictions,
+                                            classification=score,
+                                            prediction=prediction,
+                                            device=device)
 
         # -------- #
         # DISTANCE #
@@ -281,10 +281,11 @@ def detections_validation_radius(filenames: torch.Tensor,
         # --------------- #
         # SAVE DETECTIONS #
         # --------------- #
-        # detections_np = detections.cpu().detach().numpy()  # convert detections (tensor) to numpy
-        detections_np = np.array(detections_complete)  # convert detections (list) to numpy
-        detections_csv = pd.DataFrame(detections_np)
-        if not os.path.exists(detections_path):
-            detections_csv.to_csv(detections_path, mode='a', index=False, header=detections_header(), float_format='%g')  # write header
-        else:
-            detections_csv.to_csv(detections_path, mode='a', index=False, header=False, float_format='%g')  # write without header
+        if len(detections_complete) > 0:
+            # detections_np = detections.cpu().detach().numpy()  # convert detections (tensor) to numpy
+            detections_np = np.array(detections_complete)  # convert detections (list) to numpy
+            detections_csv = pd.DataFrame(detections_np)
+            if not os.path.exists(detections_path):
+                detections_csv.to_csv(detections_path, mode='a', index=False, header=detections_radius_header(), float_format='%g')  # write header
+            else:
+                detections_csv.to_csv(detections_path, mode='a', index=False, header=False, float_format='%g')  # write without header
