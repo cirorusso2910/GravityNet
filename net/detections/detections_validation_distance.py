@@ -278,10 +278,11 @@ def detections_validation_distance(filenames: torch.Tensor,
         # --------------- #
         # SAVE DETECTIONS #
         # --------------- #
-        # detections_np = detections.cpu().detach().numpy()  # convert detections (tensor) to numpy
-        detections_np = np.array(detections_complete)  # convert detections (list) to numpy
-        detections_csv = pd.DataFrame(detections_np)
-        if not os.path.exists(detections_path):
-            detections_csv.to_csv(detections_path, mode='a', index=False, header=detections_distance_header(), float_format='%g')  # write header
-        else:
-            detections_csv.to_csv(detections_path, mode='a', index=False, header=False, float_format='%g')  # write without header
+        if len(detections_complete) > 0:
+            # detections_np = detections.cpu().detach().numpy()  # convert detections (tensor) to numpy
+            detections_np = np.array(detections_complete)  # convert detections (list) to numpy
+            detections_csv = pd.DataFrame(detections_np)
+            if not os.path.exists(detections_path):
+                detections_csv.to_csv(detections_path, mode='a', index=False, header=detections_distance_header(), float_format='%g')  # write header
+            else:
+                detections_csv.to_csv(detections_path, mode='a', index=False, header=False, float_format='%g')  # write without header
