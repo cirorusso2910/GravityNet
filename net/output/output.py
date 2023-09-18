@@ -1,4 +1,6 @@
 import os
+import sys
+
 import cv2
 import numpy as np
 
@@ -7,6 +9,7 @@ from torch.utils.data import Dataset
 
 from net.dataset.utility.read_dataset_sample import read_dataset_sample
 from net.colors.colors import *
+from net.initialization.header.detections import detections_distance_header, detections_radius_header
 from net.metrics.utility.my_round_value import my_round_value
 from net.output.utility.image_tensor_to_numpy import image_tensor_to_numpy
 from net.output.utility.select_image_channel import select_image_channel
@@ -14,6 +17,8 @@ from net.utility.msg.msg_error import msg_error
 
 
 def output(type_draw: str,
+           eval: str,
+           box_draw_radius: int,
            dataset: Dataset,
            num_images: int,
            detections_path: str,
@@ -23,6 +28,8 @@ def output(type_draw: str,
     Save detections output results
 
     :param type_draw: type draw
+    :param eval: evaluation type
+    :param box_draw_radius: box draw radius
     :param dataset: dataset
     :param num_images: num images
     :param detections_path: detections path
@@ -31,7 +38,16 @@ def output(type_draw: str,
     """
 
     # read detections test for showing output (numpy array)
-    detections = read_csv(filepath_or_buffer=detections_path, usecols=["FILENAME", "LABEL", "SCORE", "PREDICTION X", "PREDICTION Y", "TARGET X", "TARGET Y", "RADIUS"]).dropna(subset=['LABEL']).values
+    if 'distance' in eval:
+        detections = read_csv(filepath_or_buffer=detections_path, usecols=detections_distance_header()).dropna(subset=['LABEL']).values
+    elif 'radius' in eval:
+        detections = read_csv(filepath_or_buffer=detections_path, usecols=detections_radius_header()).dropna(subset=['LABEL']).values
+    else:
+        str_err = msg_error(file=__file__,
+                            variable=eval,
+                            type_variable="evaluation",
+                            choices="[distance, radius]")
+        sys.exit(str_err)
 
     # for each sample in dataset
     for i in range(dataset.__len__()):
@@ -51,26 +67,38 @@ def output(type_draw: str,
         detections_subset = detections[index]
 
         # labels
-        labels = detections_subset[:, 1]
+        labels = detections_subset[:, 2]
 
         # scores
-        scores = detections_subset[:, 2]
+        scores = detections_subset[:, 3]
 
         # predictions
-        predictions = detections_subset[:, 3:5]
+        predictions = detections_subset[:, 4:6]
 
         # annotations detected
-        annotations_detected = detections_subset[:, 5:8]
+        if 'distance' in eval:
+            annotations_detected = detections_subset[:, 6:8]
+        elif 'radius' in eval:
+            annotations_detected = detections_subset[:, 6:9]
+        else:
+            str_err = msg_error(file=__file__,
+                                variable=eval,
+                                type_variable="evaluation",
+                                choices="[distance, radius]")
+            sys.exit(str_err)
 
         # num prediction
         num_prediction = predictions.shape[0]
 
-        # image conversion
-        image = image_tensor_to_numpy(image=sample['image'])
+        # image
+        if len(sample['image']) == 3:  # image 3 channels
+            image = image_tensor_to_numpy(image=sample['image'])
 
-        # select image channel [default: 'RGB']
-        image = select_image_channel(image=image,
-                                     channel='RGB')
+            # select image channel [default: 'RGB']
+            image = select_image_channel(image=image,
+                                         channel='RGB')
+        else:  # image 1 channel (gray-scale)
+            image = sample['image']
 
         # ---------------- #
         # DRAW ANNOTATIONS #
@@ -78,9 +106,20 @@ def output(type_draw: str,
         for t in range(num_annotations):
 
             # annotation
-            coord_annotation_x = int(round(sample['annotation'][t, 0].item(), ndigits=3))
-            coord_annotation_y = int(round(sample['annotation'][t, 1].item(), ndigits=3))
-            radius_annotation = int(sample['annotation'][t, 2].item())
+            if 'distance' in eval:
+                coord_annotation_x = int(sample['annotation'][t, 0])
+                coord_annotation_y = int(sample['annotation'][t, 1])
+                radius_annotation = np.nan  # to avoid warning
+            elif 'radius' in eval:
+                coord_annotation_x = int(round(sample['annotation'][t, 0].item(), ndigits=3))
+                coord_annotation_y = int(round(sample['annotation'][t, 1].item(), ndigits=3))
+                radius_annotation = int(sample['annotation'][t, 2].item())
+            else:
+                str_err = msg_error(file=__file__,
+                                    variable=eval,
+                                    type_variable="evaluation",
+                                    choices="[distance, radius]")
+                sys.exit(str_err)
 
             # draw annotations (circle)
             if type_draw == 'circle':
@@ -88,9 +127,20 @@ def output(type_draw: str,
 
             # draw annotations (bounding box)
             if type_draw == 'box':
-                start_point_annotation = (coord_annotation_x - radius_annotation, coord_annotation_y - radius_annotation)  # start point (top left corner of rectangle)
-                end_point_annotation = (coord_annotation_x + radius_annotation, coord_annotation_y + radius_annotation)  # end point (bottom right corner of rectangle)
-                cv2.rectangle(image, pt1=start_point_annotation, pt2=end_point_annotation, color=RED1, thickness=1)
+                if 'distance' in eval:
+                    start_point_annotation = (coord_annotation_x - box_draw_radius, coord_annotation_y - box_draw_radius)  # start point (top left corner of rectangle)
+                    end_point_annotation = (coord_annotation_x + box_draw_radius, coord_annotation_y + box_draw_radius)  # end point (bottom right corner of rectangle)
+                    cv2.rectangle(sample['image'], pt1=start_point_annotation, pt2=end_point_annotation, color=RED1, thickness=1)
+                elif 'radius' in eval:
+                    start_point_annotation = (coord_annotation_x - radius_annotation, coord_annotation_y - radius_annotation)  # start point (top left corner of rectangle)
+                    end_point_annotation = (coord_annotation_x + radius_annotation, coord_annotation_y + radius_annotation)  # end point (bottom right corner of rectangle)
+                    cv2.rectangle(image, pt1=start_point_annotation, pt2=end_point_annotation, color=RED1, thickness=1)
+                else:
+                    str_err = msg_error(file=__file__,
+                                        variable=eval,
+                                        type_variable="evaluation",
+                                        choices="[distance, radius]")
+                    sys.exit(str_err)
 
         # ---------------- #
         # DRAW PREDICTIONS #
@@ -134,9 +184,20 @@ def output(type_draw: str,
             if label == 1:
 
                 # annotation detected
-                coord_annotation_detected_x = int(round(annotations_detected[p, 0], ndigits=3))
-                coord_annotation_detected_y = int(round(annotations_detected[p, 1], ndigits=3))
-                radius_annotation_detected = int(annotations_detected[p, 2])
+                if 'distance' in eval:
+                    coord_annotation_detected_x = int(round(annotations_detected[p, 0], ndigits=3))
+                    coord_annotation_detected_y = int(round(annotations_detected[p, 1], ndigits=3))
+                    radius_annotation_detected = np.nan  # to avoid warning
+                elif 'radius' in eval:
+                    coord_annotation_detected_x = int(round(annotations_detected[p, 0], ndigits=3))
+                    coord_annotation_detected_y = int(round(annotations_detected[p, 1], ndigits=3))
+                    radius_annotation_detected = int(annotations_detected[p, 2])
+                else:
+                    str_err = msg_error(file=__file__,
+                                        variable=eval,
+                                        type_variable="evaluation",
+                                        choices="[distance, radius]")
+                    sys.exit(str_err)
 
                 if type_draw == 'circle':
                     # draw prediction (TP) (circle)
@@ -149,22 +210,40 @@ def output(type_draw: str,
 
                 elif type_draw == 'box':
                     # draw prediction (TP) (bounding box)
-                    start_point_prediction = (coord_prediction_x - radius_annotation_detected, coord_prediction_y - radius_annotation_detected)  # start point (top left corner of rectangle)
-                    end_point_prediction = (coord_prediction_x + radius_annotation_detected, coord_prediction_y + radius_annotation_detected)  # end point (bottom right corner of rectangle)# draw prediction (TP)
-                    cv2.rectangle(image, pt1=start_point_prediction, pt2=end_point_prediction, color=BLUE, thickness=1)
+                    if 'distance' in eval:
+                        start_point_prediction = (coord_prediction_x - box_draw_radius, coord_prediction_y - box_draw_radius)  # start point (top left corner of rectangle)
+                        end_point_prediction = (coord_prediction_x + box_draw_radius, coord_prediction_y + box_draw_radius)  # end point (bottom right corner of rectangle)
+                        cv2.rectangle(image, pt1=start_point_prediction, pt2=end_point_prediction, color=BLUE, thickness=1)
+                    elif 'radius' in eval:
+                        start_point_prediction = (coord_prediction_x - radius_annotation_detected, coord_prediction_y - radius_annotation_detected)  # start point (top left corner of rectangle)
+                        end_point_prediction = (coord_prediction_x + radius_annotation_detected, coord_prediction_y + radius_annotation_detected)  # end point (bottom right corner of rectangle)
+                        cv2.rectangle(image, pt1=start_point_prediction, pt2=end_point_prediction, color=BLUE, thickness=1)
+                    else:
+                        str_err = msg_error(file=__file__,
+                                            variable=eval,
+                                            type_variable="evaluation",
+                                            choices="[distance, radius]")
+                        sys.exit(str_err)
 
                     # draw annotations detected (bounding box)
-                    start_point_annotation = (coord_annotation_detected_x - radius_annotation_detected, coord_annotation_detected_y - radius_annotation_detected)  # start point (top left corner of rectangle)
-                    end_point_annotation = (coord_annotation_detected_x + radius_annotation_detected, coord_annotation_detected_y + radius_annotation_detected)  # end point (bottom right corner of rectangle)
-                    cv2.rectangle(image, pt1=start_point_annotation, pt2=end_point_annotation, color=GREEN1, thickness=1)
-                    cv2.putText(image, text=str(score), org=(start_point_annotation[0], start_point_annotation[1] - 10),
-                                fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=GREEN1, thickness=1, lineType=cv2.LINE_AA, bottomLeftOrigin=False)
-
-                else:
-                    msg_error(file=__file__,
-                              variable=type_draw,
-                              type_variable='type draw',
-                              choices='[circle, box]')
+                    if 'distance' in eval:
+                        start_point_annotation = (coord_annotation_detected_x - box_draw_radius, coord_annotation_detected_y - box_draw_radius)  # start point (top left corner of rectangle)
+                        end_point_annotation = (coord_annotation_detected_x + box_draw_radius, coord_annotation_detected_y + box_draw_radius)  # end point (bottom right corner of rectangle)
+                        cv2.rectangle(sample['image'], pt1=start_point_annotation, pt2=end_point_annotation, color=GREEN1, thickness=1)
+                        cv2.putText(sample['image'], text=str(score), org=(start_point_annotation[0], start_point_annotation[1] - 10),
+                                    fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=GREEN1, thickness=1, lineType=cv2.LINE_AA, bottomLeftOrigin=False)
+                    elif 'radius' in eval:
+                        start_point_annotation = (coord_annotation_detected_x - radius_annotation_detected, coord_annotation_detected_y - radius_annotation_detected)  # start point (top left corner of rectangle)
+                        end_point_annotation = (coord_annotation_detected_x + radius_annotation_detected, coord_annotation_detected_y + radius_annotation_detected)  # end point (bottom right corner of rectangle)
+                        cv2.rectangle(image, pt1=start_point_annotation, pt2=end_point_annotation, color=GREEN1, thickness=1)
+                        cv2.putText(image, text=str(score), org=(start_point_annotation[0], start_point_annotation[1] - 10),
+                                    fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=GREEN1, thickness=1, lineType=cv2.LINE_AA, bottomLeftOrigin=False)
+                    else:
+                        str_err = msg_error(file=__file__,
+                                            variable=eval,
+                                            type_variable="evaluation",
+                                            choices="[distance, radius]")
+                        sys.exit(str_err)
 
         # -------- #
         # FILENAME #
