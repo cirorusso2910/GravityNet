@@ -303,6 +303,11 @@ def parameters_parsing() -> argparse.Namespace:
                                default=parameters_default['type_draw'],
                                help=parameters_help['type_draw'])
 
+        subparser.add_argument('--box_draw_radius',
+                               type=int,
+                               default=parameters_default['box_draw_radius'],
+                               help=parameters_help['box_draw_radius'])
+
         subparser.add_argument('--do_output_gravity',
                                action='store_true',
                                default=parameters_default['do_output_gravity'],

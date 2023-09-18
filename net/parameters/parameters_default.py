@@ -110,6 +110,7 @@ parameters_default = {
     # OUTPUT #
     # ------ #
     'type_draw': 'box',
+    'box_draw_radius': 7,
     'do_output_gravity': False,
     'num_images': 1,
     'idx': 0,

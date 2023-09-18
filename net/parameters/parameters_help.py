@@ -122,6 +122,7 @@ parameters_help = {
     # OUTPUT #
     # ------ #
     'type_draw': f"type output draw (default: {parameters_default['type_draw']}",
+    'box_draw_radius': f"box radius to draw (default: {parameters_default['box_draw_radius']}",
     'do_output_gravity': f"do output gravity (default: {parameters_default['do_output_gravity']}",
     'num_images': f"num images to show in test (default: {parameters_default['num_images']}",
     'idx': f"index image in dataset (default: {parameters_default['idx']}",
