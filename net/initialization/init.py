@@ -1,6 +1,5 @@
 import argparse
 import os
-import sys
 
 from net.initialization.folders.dataset_folders import dataset_folders_dict
 from net.initialization.folders.default_folders import default_folders_dict
@@ -9,7 +8,6 @@ from net.initialization.path.experiment_result_path import experiment_result_pat
 from net.initialization.path.test_NMS_result_path import test_NMS_result_path_dict
 from net.initialization.utility.create_folder import create_folder
 from net.initialization.utility.create_folder_and_subfolder import create_folder_and_subfolder
-from net.utility.msg.msg_error import msg_error
 
 
 def initialization(network_name: str,
@@ -43,62 +41,53 @@ def initialization(network_name: str,
     # ------- #
     # DATASET #
     # ------- #
-    # $DATASET$
-    if parser.dataset == '$DATASET$':
-        # annotations
-        annotations_all_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['annotations'], dataset_folders['annotations_subfolder']['csv'])
+    # annotations
+    annotations_all_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['annotations'], dataset_folders['annotations_subfolder']['csv'])
 
-        # images
-        images_all_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['images'], dataset_folders['images_subfolder']['all'])
+    # images
+    images_all_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['images'], dataset_folders['images_subfolder']['all'])
 
-        # images masks
-        images_masks_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['images'], dataset_folders['images_subfolder']['masks'])
+    # images masks
+    images_masks_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['images'], dataset_folders['images_subfolder']['masks'])
 
-        # data split
-        data_split_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['split'], 'split-' + parser.split + '.csv')
+    # data split
+    data_split_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['split'], 'split-' + parser.split + '.csv')
 
-        # lists
-        lists_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['lists'])
-        list_normals_path = os.path.join(lists_path, 'normals.txt')
-        list_all_path = os.path.join(lists_path, 'all.txt')
+    # lists
+    lists_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['lists'])
+    list_normals_path = os.path.join(lists_path, 'normals.txt')
+    list_all_path = os.path.join(lists_path, 'all.txt')
 
-        # statistics
-        statistics_filename = "split-{}-statistics.csv".format(parser.split)
-        statistics_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['statistics'], "rescale={}".format(parser.rescale), statistics_filename)
+    # statistics
+    statistics_filename = "split-{}-statistics.csv".format(parser.split)
+    statistics_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['statistics'], "rescale={}".format(parser.rescale), statistics_filename)
 
-        # info
-        info_path = os.path.join(default_folders['datasets'], parser.dataset, INbreast_dataset_folders['info'])
+    # info
+    info_path = os.path.join(default_folders['datasets'], parser.dataset, dataset_folders['info'])
 
-        path_dataset_dict = {
-            'annotations': {
-                'all': annotations_all_path,
-            },
+    path_dataset_dict = {
+        'annotations': {
+            'all': annotations_all_path,
+        },
 
-            'images': {
-                'all': images_all_path,
+        'images': {
+            'all': images_all_path,
 
-                'masks': images_masks_path,
-            },
+            'masks': images_masks_path,
+        },
 
-            'lists': {
-                'all': list_all_path,
-                'normals': list_normals_path,
-            },
+        'lists': {
+            'all': list_all_path,
+            'normals': list_normals_path,
+        },
 
-            'split': data_split_path,
+        'split': data_split_path,
 
-            'statistics': statistics_path,
+        'statistics': statistics_path,
 
-            'info': info_path,
+        'info': info_path,
 
-        }
-
-    else:
-        str_err = msg_error(file=__file__,
-                            variable=parser.dataset,
-                            type_variable="dataset name",
-                            choices="[$DATASET$]")
-        sys.exit(str_err)
+    }
 
     # ---- #
     # PATH #

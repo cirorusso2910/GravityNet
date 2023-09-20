@@ -1,7 +1,7 @@
 import os
+
 # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
-import sys
 import time
 
 import numpy as np
@@ -68,7 +68,6 @@ from net.test import test
 from net.test_NMS import test_NMS
 from net.train import train
 from net.utility.execution_mode import execution_mode
-from net.utility.msg.msg_error import msg_error
 from net.utility.msg.msg_load_dataset_complete import msg_load_dataset_complete
 from net.utility.read_split import read_split
 from net.validation import validation
@@ -143,19 +142,11 @@ def main():
     print("\n-------------"
           "\nLOAD DATASET:"
           "\n-------------")
-    # $DATASET$
-    if parser.dataset == '$DATASET$':
-        dataset = DatasetName(images_dir=path['dataset']['images']['cropped'],
-                              images_masks_dir=path['dataset']['images']['masks_cropped'],
-                              annotations_dir=path['dataset']['annotations']['cropped'],
-                              filename_list=data_split['filename'],
-                              transforms=None)
-    else:
-        str_err = msg_error(file=__file__,
-                            variable=parser.dataset,
-                            type_variable="dataset",
-                            choices="[$DATASET$]")
-        sys.exit(str_err)
+    dataset = DatasetName(images_dir=path['dataset']['images']['cropped'],
+                          images_masks_dir=path['dataset']['images']['masks_cropped'],
+                          annotations_dir=path['dataset']['annotations']['cropped'],
+                          filename_list=data_split['filename'],
+                          transforms=None)
 
     msg_load_dataset_complete(dataset_name=parser.dataset)
 
@@ -169,8 +160,7 @@ def main():
     # ================== #
     # DATASET NUM IMAGES #
     # ================== #
-    num_images = dataset_num_images(dataset=parser.dataset,
-                                    split=parser.split,
+    num_images = dataset_num_images(split=parser.split,
                                     do_dataset_augmentation=parser.do_dataset_augmentation,
                                     dataset_train=dataset_train,
                                     dataset_val=dataset_val,
@@ -180,8 +170,7 @@ def main():
     # DATASET NUM NORMAL IMAGES #
     # ========================= #
     # num normal images for dataset-train, dataset-val, dataset-test
-    num_normal_images = dataset_num_normal_images(dataset=parser.dataset,
-                                                  split=parser.split,
+    num_normal_images = dataset_num_normal_images(split=parser.split,
                                                   do_dataset_augmentation=parser.do_dataset_augmentation,
                                                   dataset_train=dataset_train,
                                                   dataset_val=dataset_val,
@@ -190,8 +179,7 @@ def main():
     # ================== #
     # DATASET TRANSFORMS #
     # ================== #
-    train_transforms, val_transforms, test_transforms = dataset_transforms(dataset=parser.dataset,
-                                                                           normalization=parser.norm,
+    train_transforms, val_transforms, test_transforms = dataset_transforms(normalization=parser.norm,
                                                                            parser=parser,
                                                                            statistics_path=path['dataset']['statistics'],
                                                                            debug=parser.debug_transforms)
@@ -206,8 +194,7 @@ def main():
     # ==================== #
     if parser.do_dataset_augmentation:
         # dataset-train augmented
-        dataset_train = dataset_augmentation(dataset=parser.dataset,
-                                             normalization=parser.norm,
+        dataset_train = dataset_augmentation(normalization=parser.norm,
                                              parser=parser,
                                              dataset_train=dataset_train,
                                              statistics_path=path['dataset']['statistics'],
@@ -217,8 +204,7 @@ def main():
     # DATASET NUM ANNOTATIONS #
     # ======================= #
     # num annotations for dataset-train, dataset-val, dataset-test
-    num_annotations = dataset_num_annotations(dataset=parser.dataset,
-                                              split=parser.split,
+    num_annotations = dataset_num_annotations(split=parser.split,
                                               do_dataset_augmentation=parser.do_dataset_augmentation,
                                               dataset_train=dataset_train,
                                               dataset_val=dataset_val,
@@ -743,7 +729,9 @@ def main():
         print("\n-------"
               "\nOUTPUT:"
               "\n-------")
-        output(type_draw='box',
+        output(type_draw=parser.type_draw,
+               eval=parser.eval,
+               box_draw_radius=parser.box_draw_radius,
                dataset=dataset_test,
                num_images=parser.num_images,
                detections_path=path['detections']['test'],
@@ -910,7 +898,9 @@ def main():
         print("\n-------"
               "\nOUTPUT:"
               "\n-------")
-        output(type_draw='box',
+        output(type_draw=parser.type_draw,
+               eval=parser.eval,
+               box_draw_radius=parser.box_draw_radius,
                dataset=dataset_test,
                num_images=parser.num_images,
                detections_path=path['detections']['test_NMS'],

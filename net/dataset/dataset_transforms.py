@@ -15,15 +15,13 @@ from net.dataset.transforms.ToTensor import ToTensor
 from net.utility.msg.msg_error import msg_error
 
 
-def dataset_transforms(dataset: str,
-                       normalization: str,
+def dataset_transforms(normalization: str,
                        parser: argparse.Namespace,
                        statistics_path: str,
                        debug: bool) -> Tuple[Compose, Compose, Compose]:
     """
     Collect dataset transforms
 
-    :param dataset: dataset name
     :param normalization: normalization type
     :param parser: parser of parameters-parsing
     :param statistics_path: statistics path
@@ -33,147 +31,134 @@ def dataset_transforms(dataset: str,
              test transforms
     """
 
-    # --------- #
-    # $DATASET$ #
-    # --------- #
-    if dataset == '$DATASET$':
+    # ---- #
+    # NONE #
+    # ---- #
+    if normalization == 'none':
 
-        # ---- #
-        # NONE #
-        # ---- #
-        if normalization == 'none':
+        # train dataset transforms
+        train_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+        ])
 
-            # train dataset transforms
-            train_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-            ])
+        # validation dataset transforms
+        val_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+        ])
 
-            # validation dataset transforms
-            val_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-            ])
+        # test dataset transforms
+        test_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+        ])
 
-            # test dataset transforms
-            test_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-            ])
+    # ------- #
+    # MIN-MAX #
+    # ------- #
+    elif normalization == 'min-max':
 
-        # ------- #
-        # MIN-MAX #
-        # ------- #
-        elif normalization == 'min-max':
+        # read min-max statistics
+        min_max_statistics = read_min_max_statistics(statistics_path=statistics_path)
 
-            # read min-max statistics
-            min_max_statistics = read_min_max_statistics(statistics_path=statistics_path)
+        # train dataset transforms
+        train_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # MIN-MAX NORMALIZATION
+            MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
+        ])
 
-            # train dataset transforms
-            train_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # MIN-MAX NORMALIZATION
-                MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
-            ])
+        # validation dataset transforms
+        val_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # MIN-MAX NORMALIZATION
+            MinMaxNormalization(min=min_max_statistics['validation']['min'], max=min_max_statistics['validation']['max'])  # min-max normalization
+        ])
 
-            # validation dataset transforms
-            val_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # MIN-MAX NORMALIZATION
-                MinMaxNormalization(min=min_max_statistics['validation']['min'], max=min_max_statistics['validation']['max'])  # min-max normalization
-            ])
+        # test dataset transforms
+        test_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # MIN-MAX NORMALIZATION
+            MinMaxNormalization(min=min_max_statistics['test']['min'], max=min_max_statistics['test']['max'])  # min-max normalization
+        ])
 
-            # test dataset transforms
-            test_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # MIN-MAX NORMALIZATION
-                MinMaxNormalization(min=min_max_statistics['test']['min'], max=min_max_statistics['test']['max'])  # min-max normalization
-            ])
+    # --- #
+    # STD #
+    # --- #
+    elif normalization == 'std':
 
-        # --- #
-        # STD #
-        # --- #
-        elif normalization == 'std':
+        # read std statistics
+        std_statistics = read_std_statistics(statistics_path=statistics_path)
 
-            # read std statistics
-            std_statistics = read_std_statistics(statistics_path=statistics_path)
+        # train dataset transforms
+        train_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # STANDARD NORMALIZATION
+            StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
+        ])
 
-            # train dataset transforms
-            train_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # STANDARD NORMALIZATION
-                StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
-            ])
+        # validation dataset transforms
+        val_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # STANDARD NORMALIZATION
+            StandardNormalization(mean=std_statistics['validation']['mean'], std=std_statistics['validation']['std'])  # standard normalization
+        ])
 
-            # validation dataset transforms
-            val_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # STANDARD NORMALIZATION
-                StandardNormalization(mean=std_statistics['validation']['mean'], std=std_statistics['validation']['std'])  # standard normalization
-            ])
-
-            # test dataset transforms
-            test_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                Rescale(rescale=parser.rescale),
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # STANDARD NORMALIZATION
-                StandardNormalization(mean=std_statistics['test']['mean'], std=std_statistics['test']['std'])  # standard normalization
-            ])
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=normalization,
-                                type_variable="normalization type",
-                                choices="[none, min-max, std]")
-            sys.exit(str_err)
+        # test dataset transforms
+        test_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            Rescale(rescale=parser.rescale),
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # STANDARD NORMALIZATION
+            StandardNormalization(mean=std_statistics['test']['mean'], std=std_statistics['test']['std'])  # standard normalization
+        ])
 
     else:
         str_err = msg_error(file=__file__,
-                            variable=parser.dataset,
-                            type_variable="dataset",
-                            choices="[$DATASET$]")
-
+                            variable=normalization,
+                            type_variable="normalization type",
+                            choices="[none, min-max, std]")
         sys.exit(str_err)
 
     return train_transforms, val_transforms, test_transforms

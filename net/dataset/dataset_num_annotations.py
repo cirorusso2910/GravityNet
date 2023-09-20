@@ -7,8 +7,7 @@ from net.dataset.statistics.num_annotations import get_num_annotations
 from net.utility.msg.msg_error import msg_error
 
 
-def dataset_num_annotations(dataset: str,
-                            split: str,
+def dataset_num_annotations(split: str,
                             do_dataset_augmentation: bool,
                             dataset_train: Dataset,
                             dataset_val: Dataset,
@@ -16,7 +15,6 @@ def dataset_num_annotations(dataset: str,
     """
     Compute dataset num annotations (calcifications)
 
-    :param dataset: dataset name
     :param split: split name
     :param do_dataset_augmentation: do dataset augmentation
     :param dataset_train: dataset train
@@ -28,26 +26,16 @@ def dataset_num_annotations(dataset: str,
     # ------- #
     # DEFINED #
     # ------- #
-    # $DATASET$
-    if dataset == '$DATASET$':
+    # split $N$-fold
+    if split == '$N$-fold':
+        num_annotations_train = '$NUM_ANNOTATIONS_TRAIN$'
+        num_annotations_val = '$NUM_ANNOTATIONS_VALIDATION$'
+        num_annotations_test = '$NUM_ANNOTATIONS_TEST$'
 
-        # split $N$-fold
-        if split == '$N$-fold':
-            num_annotations_train = '$NUM_ANNOTATIONS_TRAIN$'
+        if do_dataset_augmentation:
+            num_annotations_train = '$NUM_ANNOTATIONS_TRAIN$' '*' '$NUM_AUGMENTATION_TRANSFORMS$'
             num_annotations_val = '$NUM_ANNOTATIONS_VALIDATION$'
             num_annotations_test = '$NUM_ANNOTATIONS_TEST$'
-
-            if do_dataset_augmentation:
-                num_annotations_train = '$NUM_ANNOTATIONS_TRAIN$' '*' '$NUM_AUGMENTATION_TRANSFORMS$'
-                num_annotations_val = '$NUM_ANNOTATIONS_VALIDATION$'
-                num_annotations_test = '$NUM_ANNOTATIONS_TEST$'
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=split,
-                                type_variable="$DATASET$ split",
-                                choices="[$N$-fold]")
-            sys.exit(str_err)
 
     # ---------- #
     # TO COMPUTE #
@@ -55,27 +43,17 @@ def dataset_num_annotations(dataset: str,
     else:
         time_annotations_start = time.time()
 
-        # $DATASET$
-        if dataset == '$DATASET$':
+        # num annotations dataset-train
+        num_annotations_train = get_num_annotations(dataset=dataset_train,
+                                                    annotation_type_dict='annotation')
 
-            # num annotations dataset-train
-            num_annotations_train = get_num_annotations(dataset=dataset_train,
-                                                        annotation_type_dict='annotation')
+        # num annotations dataset-val
+        num_annotations_val = get_num_annotations(dataset=dataset_val,
+                                                  annotation_type_dict='annotation')
 
-            # num annotations dataset-val
-            num_annotations_val = get_num_annotations(dataset=dataset_val,
-                                                      annotation_type_dict='annotation')
-
-            # num annotations dataset-test
-            num_annotations_test = get_num_annotations(dataset=dataset_test,
-                                                       annotation_type_dict='annotation')
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=dataset,
-                                type_variable="dataset",
-                                choices="[$DATASET$]")
-            sys.exit(str_err)
+        # num annotations dataset-test
+        num_annotations_test = get_num_annotations(dataset=dataset_test,
+                                                   annotation_type_dict='annotation')
 
         time_annotations = time.time() - time_annotations_start
 

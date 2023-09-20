@@ -6,8 +6,7 @@ from torch.utils.data import Dataset, ConcatDataset
 from net.dataset.dataset_transforms_augmentation import dataset_transforms_augmentation
 
 
-def dataset_augmentation(dataset: str,
-                         normalization: str,
+def dataset_augmentation(normalization: str,
                          parser: argparse.Namespace,
                          statistics_path: str,
                          dataset_train: Dataset,
@@ -15,7 +14,6 @@ def dataset_augmentation(dataset: str,
     """
     Apply dataset augmentation (only for dataset-train)
 
-    :param dataset: dataset name
     :param normalization: normalization type
     :param parser: parser of parameters-parsing
     :param statistics_path: statistics path
@@ -25,8 +23,7 @@ def dataset_augmentation(dataset: str,
     """
 
     # dataset augmentation transforms
-    transforms_augmentation = dataset_transforms_augmentation(dataset=dataset,
-                                                              normalization=normalization,
+    transforms_augmentation = dataset_transforms_augmentation(normalization=normalization,
                                                               parser=parser,
                                                               statistics_path=statistics_path,
                                                               debug=debug)

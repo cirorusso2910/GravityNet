@@ -16,15 +16,13 @@ from net.utility.msg.msg_error import msg_error
 
 
 
-def dataset_transforms_augmentation(dataset: str,
-                                    normalization: str,
+def dataset_transforms_augmentation(normalization: str,
                                     parser: argparse.Namespace,
                                     statistics_path: str,
                                     debug: bool) -> dict:
     """
     Collect dataset transforms augmentation (only for dataset-train)
 
-    :param dataset: dataset name
     :param normalization: normalization type
     :param parser: parser of parameters-parsing
     :param statistics_path: statistics path
@@ -32,155 +30,143 @@ def dataset_transforms_augmentation(dataset: str,
     :return: train transforms augmentation dictionary
     """
 
-    # --------- #
-    # $DATASET$ #
-    # --------- #
-    if dataset == '$DATASET$':
+    # ---- #
+    # NONE #
+    # ---- #
+    if normalization == 'none':
 
-        # ---- #
-        # NONE #
-        # ---- #
-        if normalization == 'none':
+        # HorizontalFlip augmentation transforms
+        train_augmentation_HorizontalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyHorizontalFlip(),  # My Horizontal Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+        ])
 
-            # HorizontalFlip augmentation transforms
-            train_augmentation_HorizontalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyHorizontalFlip(),  # My Horizontal Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-            ])
+        # VerticalFlip augmentation transforms
+        train_augmentation_VerticalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyVerticalFlip(),  # My Vertical Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+        ])
 
-            # VerticalFlip augmentation transforms
-            train_augmentation_VerticalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyVerticalFlip(),  # My Vertical Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-            ])
+        # HorizontalFlip and VerticalFlip augmentation transforms
+        train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+        ])
 
-            # HorizontalFlip and VerticalFlip augmentation transforms
-            train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-            ])
+    # ------- #
+    # MIN-MAX #
+    # ------- #
+    elif normalization == 'min-max':
 
-        # ------- #
-        # MIN-MAX #
-        # ------- #
-        elif normalization == 'min-max':
+        # read min-max statistics
+        min_max_statistics = read_min_max_statistics(statistics_path=statistics_path)
 
-            # read min-max statistics
-            min_max_statistics = read_min_max_statistics(statistics_path=statistics_path)
+        # HorizontalFlip augmentation transforms
+        train_augmentation_HorizontalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyHorizontalFlip(),  # My Horizontal Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # MIN-MAX NORMALIZATION
+            MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
+        ])
 
-            # HorizontalFlip augmentation transforms
-            train_augmentation_HorizontalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyHorizontalFlip(),  # My Horizontal Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # MIN-MAX NORMALIZATION
-                MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
-            ])
+        # VerticalFlip augmentation transforms
+        train_augmentation_VerticalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyVerticalFlip(),  # My Vertical Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # MIN-MAX NORMALIZATION
+            MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
+        ])
 
-            # VerticalFlip augmentation transforms
-            train_augmentation_VerticalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyVerticalFlip(),  # My Vertical Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # MIN-MAX NORMALIZATION
-                MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
-            ])
+        # HorizontalFlip and VerticalFlip augmentation transforms
+        train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # MIN-MAX NORMALIZATION
+            MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
+        ])
 
-            # HorizontalFlip and VerticalFlip augmentation transforms
-            train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # MIN-MAX NORMALIZATION
-                MinMaxNormalization(min=min_max_statistics['train']['min'], max=min_max_statistics['train']['max'])  # min-max normalization
-            ])
+    # --- #
+    # STD #
+    # --- #
+    elif normalization == 'std':
 
-        # --- #
-        # STD #
-        # --- #
-        elif normalization == 'std':
+        # read std statistics
+        std_statistics = read_std_statistics(statistics_path=statistics_path)
 
-            # read std statistics
-            std_statistics = read_std_statistics(statistics_path=statistics_path)
+        # HorizontalFlip augmentation transforms
+        train_augmentation_HorizontalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyHorizontalFlip(),  # My Horizontal Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # STANDARD NORMALIZATION
+            StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
+        ])
 
-            # HorizontalFlip augmentation transforms
-            train_augmentation_HorizontalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyHorizontalFlip(),  # My Horizontal Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # STANDARD NORMALIZATION
-                StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
-            ])
+        # VerticalFlip augmentation transforms
+        train_augmentation_VerticalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyVerticalFlip(),  # My Vertical Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # STANDARD NORMALIZATION
+            StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
+        ])
 
-            # VerticalFlip augmentation transforms
-            train_augmentation_VerticalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyVerticalFlip(),  # My Vertical Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # STANDARD NORMALIZATION
-                StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
-            ])
-
-            # HorizontalFlip and VerticalFlip augmentation transforms
-            train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
-                # PRE-PROCESSING or DATA
-                # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
-                # DATA AUGMENTATION
-                MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
-                # DATA PREPARATION
-                AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
-                ToTensor(),  # To Tensor
-                # STANDARD NORMALIZATION
-                StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
-            ])
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=normalization,
-                                type_variable="normalization type",
-                                choices="[none, min-max, std]")
-            sys.exit(str_err)
+        # HorizontalFlip and VerticalFlip augmentation transforms
+        train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
+            # PRE-PROCESSING or DATA
+            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA AUGMENTATION
+            MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
+            # DATA PREPARATION
+            AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
+            ToTensor(),  # To Tensor
+            # STANDARD NORMALIZATION
+            StandardNormalization(mean=std_statistics['train']['mean'], std=std_statistics['train']['std'])  # standard normalization
+        ])
 
     else:
         str_err = msg_error(file=__file__,
-                            variable=parser.dataset,
-                            type_variable="dataset",
-                            choices="[$DATASET$]")
+                            variable=normalization,
+                            type_variable="normalization type",
+                            choices="[none, min-max, std]")
         sys.exit(str_err)
 
     transforms_augmentation = {
