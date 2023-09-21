@@ -4,7 +4,6 @@ import torch
 
 from net.colors.colors import *
 from net.detections.utility.get_single_detection import get_single_detection
-from net.output.utility.image_tensor_to_numpy import image_tensor_to_numpy
 
 
 def debug_detections(image: torch.Tensor,
@@ -22,9 +21,6 @@ def debug_detections(image: torch.Tensor,
     :param detections: detections
     :param path: path to save
     """
-
-    # image tensor conversion
-    image = image_tensor_to_numpy(image=image)
 
     # num annotations
     num_annotations = annotation.shape[0]

@@ -2,7 +2,6 @@ import cv2
 import torch
 
 from net.colors.colors import *
-from net.output.utility.image_tensor_to_numpy import image_tensor_to_numpy
 
 
 def draw_gravity_points(image: torch.Tensor,
@@ -17,9 +16,6 @@ def draw_gravity_points(image: torch.Tensor,
     :param gravity_points: gravity points
     :param output_path: path to save
     """
-
-    # image tensor conversion
-    image = image_tensor_to_numpy(image=image)
 
     # delete ground truth padding
     annotation = annotation[annotation[:, 0] != -1]  # delete padding

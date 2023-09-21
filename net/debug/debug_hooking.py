@@ -4,7 +4,6 @@ import torch
 
 from net.colors.colors import *
 from net.colors.colors_list import color_positive_gravity_points, color_annotation
-from net.output.utility.image_tensor_to_numpy import image_tensor_to_numpy
 
 
 def debug_hooking(gravity_points: np.ndarray,
@@ -33,9 +32,6 @@ def debug_hooking(gravity_points: np.ndarray,
     :param save: save option
     :param path: path to save
     """
-
-    # image conversion
-    image = image_tensor_to_numpy(image=image)
 
     # gravity points with positive indices
     gravity_points_positive = gravity_points[positive_indices]
