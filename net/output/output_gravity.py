@@ -3,8 +3,6 @@ import torch
 
 from net.colors.colors import *
 from net.detections.utility.get_single_detection import get_single_detection
-from net.output.utility.image_tensor_to_numpy import image_tensor_to_numpy
-from net.output.utility.select_image_channel import select_image_channel
 
 
 def output_gravity(image: torch.Tensor,
@@ -25,13 +23,6 @@ def output_gravity(image: torch.Tensor,
 
     # num predictions
     num_predictions = detections.shape[0]
-
-    # image conversion
-    image = image_tensor_to_numpy(image=image)
-
-    # select image channel [default: 'G' (green)]
-    image = select_image_channel(image=image,
-                                 channel='G')
 
     # ---------------- #
     # DRAW ANNOTATIONS #

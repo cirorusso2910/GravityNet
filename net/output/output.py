@@ -11,8 +11,6 @@ from net.dataset.utility.read_dataset_sample import read_dataset_sample
 from net.colors.colors import *
 from net.initialization.header.detections import detections_distance_header, detections_radius_header
 from net.metrics.utility.my_round_value import my_round_value
-from net.output.utility.image_tensor_to_numpy import image_tensor_to_numpy
-from net.output.utility.select_image_channel import select_image_channel
 from net.utility.msg.msg_error import msg_error
 
 
@@ -75,14 +73,7 @@ def output(type_draw: str,
             num_prediction = predictions.shape[0]
 
             # image
-            if len(sample['image']) == 3:
-                image = image_tensor_to_numpy(image=sample['image'])
-
-                # select image channel
-                image = select_image_channel(image=image,
-                                             channel='RGB')
-            else:
-                image = sample['image']
+            image = sample['image']
 
             # ---------------- #
             # DRAW ANNOTATIONS #
@@ -205,14 +196,7 @@ def output(type_draw: str,
             num_prediction = predictions.shape[0]
 
             # image
-            if len(sample['image']) == 3:
-                image = image_tensor_to_numpy(image=sample['image'])
-
-                # select image channel
-                image = select_image_channel(image=image,
-                                             channel='RGB')
-            else:
-                image = sample['image']
+            image = sample['image']
 
             # ---------------- #
             # DRAW ANNOTATIONS #
