@@ -1,6 +1,6 @@
 # GRAVITY NET
 
-**GravityNet** repository
+**GravityNet** official repository
 
 **Paper arXiv**: [link]() (Scheduled to be announced at Mon 25 Sep 2023)
 
