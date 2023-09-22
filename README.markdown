@@ -18,14 +18,6 @@ The following instructions must be followed to properly run the GravityNet:
 9. Execution mode
 10. Example of execution
 
-
-### DA SPOSTARE
-Currently, the parameters used by the transforms on the data of 
-[INbreast](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449) 
-and 
-[E-ophtha-MA](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4)
-are defined
-
 ### 1. PARAMETERS-PARSING
 This application uses parameters-parsing, so each **new** parameter **must** be added paying attention to the reference section <br>
 (for details see [parameters](doc/code/parameters.markdown)).
@@ -97,8 +89,11 @@ It is important (unless many changes are made later) to maintain the following f
     - FILENAME: filename of the sample
     - SPLIT: split type (choices of: train, validation and test)
 
-The splits used in the experiments on the [INbreast](datasets/INbreast/split)
-and [E-ophtha-MA](datasets/E-ophtha-MA/split) are reported <br>
+The splits used in the experiments on the 
+[INbreast](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449)
+and
+[E-ophtha-MA](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4)
+are [reported](datasets) <br>
 **NOTE**: 2-fold image-based cross-validation was performed for each dataset
 
 ----------------------------------------------------------------------
