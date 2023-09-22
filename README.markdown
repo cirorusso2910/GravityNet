@@ -2,7 +2,7 @@
 
 **GravityNet** repository
 
-**Paper**: [link]()
+**Paper arXiv**: [link]() (Scheduled to be announced at Mon 25 Sep 2023)
 
 ## EXECUTION INSTRUCTIONS
 The following instructions must be followed to properly run the GravityNet:
