@@ -52,6 +52,7 @@ After defining the working paths, the _dict_ must be concatenated to obtain the 
 
 For details about the [dataset-structure](./datasets/dataset-structure.markdown) <br>
 For details about the [experiments-structure](./doc/experiments/experiments-structure.markdown) <br>
+
 ----------------------------------------------------------------------
 
 ### 3. CLASS DATASET
