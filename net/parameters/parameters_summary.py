@@ -38,14 +38,12 @@ def parameters_summary(parser: argparse.Namespace,
     # ------- #
     # DATASET #
     # ------- #
-    # $DATASET$
-    if dataset_name == '$DATASET$':
-        print("\n$DATASET$:"
-              "\nDataset name: {}".format(dataset_name),
-              "\nData Split: {}".format(parser.split),
-              "\nTraining data: {} with {} $TYPE_OF_LESION$".format(num_images['train'], num_annotations['train']),
-              "\nValidation data: {} with {} $TYPE_OF_LESION$".format(num_images['validation'], num_annotations['validation']),
-              "\nTest data: {} with {} $TYPE_OF_LESION$".format(num_images['test'], num_annotations['test']))
+    print("\nDATASET:"
+          "\nDataset name: {}".format(dataset_name),
+          "\nData Split: {}".format(parser.split),
+          "\nTraining data: {} with {} $TYPE_OF_LESION$".format(num_images['train'], num_annotations['train']),
+          "\nValidation data: {} with {} $TYPE_OF_LESION$".format(num_images['validation'], num_annotations['validation']),
+          "\nTest data: {} with {} $TYPE_OF_LESION$".format(num_images['test'], num_annotations['test']))
 
     print("\nIMAGE NORMALS:"
           "\nTraining image normals: {}".format(num_images_normals['train']),
@@ -55,13 +53,11 @@ def parameters_summary(parser: argparse.Namespace,
     # ------------------ #
     # DATASET TRANSFORMS #
     # ------------------ #
-    # $DATASET$
-    if dataset_name == '$DATASET$':
-        print("\nDATASET TRANSFORMS:"
-              "\n",
-              "\n",
-              "\n",
-              "\nMax padding: {}".format(parser.max_padding))
+    print("\nDATASET TRANSFORMS:"
+          "\n",
+          "\n",
+          "\n",
+          "\nMax padding: {}".format(parser.max_padding))
 
     # -------------------- #
     # DATASET AUGMENTATION #

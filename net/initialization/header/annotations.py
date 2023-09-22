@@ -3,8 +3,7 @@ import sys
 from net.utility.msg.msg_error import msg_error
 
 
-def annotation_header(dataset: str,
-                      annotation_type: str) -> list:
+def annotation_header(annotation_type: str) -> list:
     """
     Annotation header
 
@@ -13,25 +12,16 @@ def annotation_header(dataset: str,
     :return: header
     """
 
-    # $DATASET$
-    if dataset == '$DATASET$':
 
-        # default
-        if annotation_type == 'default':
-            header = ["X", "Y", "RADIUS"]
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=annotation_type,
-                                type_variable='$DATASET$ annotation-type',
-                                choices='[default')
-            sys.exit(str_err)
+    # default
+    if annotation_type == 'default':
+        header = ["X", "Y", "RADIUS"]
 
     else:
         str_err = msg_error(file=__file__,
-                            variable=dataset,
-                            type_variable="dataset",
-                            choices="[$DATASET$]")
+                        variable=annotation_type,
+                        type_variable='$DATASET$ annotation-type',
+                        choices='[default')
         sys.exit(str_err)
 
     return header

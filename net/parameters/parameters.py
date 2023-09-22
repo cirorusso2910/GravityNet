@@ -26,8 +26,6 @@ def parameters_parsing() -> argparse.Namespace:
     parser_test_NMS = parser_mode.add_parser('test_NMS', help=parameters_help['test_NMS'])
     parser_train_test = parser_mode.add_parser('train_test', help=parameters_help['train_test'])
 
-    # execution mode script
-
     # who is my creator
     parser_who_is_my_creator = parser_mode.add_parser('who_is_my_creator', help=parameters_help['who_is_my_creator'])
 

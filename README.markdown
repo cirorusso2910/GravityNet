@@ -18,51 +18,55 @@ The following instructions must be followed to properly run the GravityNet:
 9. Execution mode
 10. Example of execution
 
-### 1. PARAMETERS-PARSING
-The first step is to define parameters by parsing, paying attention to the reference sections <br>
-(for details see [parameters](doc/code/parameters.markdown)).
 
-When a new application is to be implemented, parameters must be defined in the **DATASET TRANSFORMS** section: <br>
-where the parameters for the transforms applied to the data to be used **must** be defined.
-
-    Parameters must be defined in:
-        net/parameters
-
+### DA SPOSTARE
 Currently, the parameters used by the transforms on the data of 
 [INbreast](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449) 
 and 
 [E-ophtha-MA](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4)
 are defined
 
-The definition of these parameters is essential for the construction of an _experiment_ID_ to save results and avoid overwriting.
+### 1. PARAMETERS-PARSING
+This application uses parameters-parsing, so each **new** parameter **must** be added paying attention to the reference section <br>
+(for details see [parameters](doc/code/parameters.markdown)).
+
+    Parameters is defined in:
+        net/parameters
+
+The definition of these parameters is essential for the building of an _experiment_ID_ to save results and avoid overwriting.
     
     Experiment ID is defined in:
-        net/initialisation/ID/experiment_ID.py
+        net/initialization/ID/experiment_ID.py
 
 ----------------------------------------------------------------------
 
 ### 2. INITIALIZATION
-A _$WHERE$_, _$PATH$_ and _$DATASET$_ must be defined for the correct definition of work paths.
+Before any modification to the source implementation, it is necessary to define work paths.
+    
+    the $WHERE$ parameter is defined to determine which $PATH$ definition
 
     $PATH$ is defined in:
         net/initialization/folders/default_folders.py
-    
-    the $WHERE$ parameter is defined to determine the working path definition
+    according to $WHERE$ parameter to manage multiple work paths
 
-    $DATASET is defined in:
+    $DATASET-STRUCTURE$ is defined in:
         net/initialization/folders/dataset_folders.py
+    The dataset-structure is defined in the form of a dictionary (an example is given in the code)
 
-    the structure of the dataset is defined in the form of a dictionary
-    (an example is given in the code)
+After defining the working paths, the _dict_ must be concatenated to obtain the correct paths
+    
+    all path is defined in
+        net/initialization/init.py
 
-Next, it is necessary to define the _path_dataset_dict_ with the paths to the _$DATASET$_ files to be used.
-
+For details about the [dataset-structure](./datasets/dataset-structure.markdown) <br>
+For details about the [experiments-structure](./doc/experiments/experiments-structure.markdown) <br>
 ----------------------------------------------------------------------
 
 ### 3. CLASS DATASET
-The dataset class is to be defined (suggestion to rename the file with the name of the dataset - _$DATASET$_) 
-according to the structure in which the data is organised (a default structure is given in the code, 
-which can be changed if necessary) and the _$FILE_EXTENSION$_ for each data type.
+The **Class Dataset** must be defined according to the dataset-structure 
+and the _$FILE_EXTENSION$_ for each data type..
+
+**Hint:** rename the dataset.py with the name of the dataset $DATASET$
 
     The Class Dataset is defined in:
         net/dataset/dataset.py
@@ -83,16 +87,15 @@ For ease of use, there is the option of managing the annotation header with a fu
 ----------------------------------------------------------------------
 
 ### 4. SPLIT DATA
-To split the data into _train_, _validation_ and _test_ subsets;
-it is mandatory to define a **split-$N$-fold.csv** defined in the _split_ dataset subfolder.
+To split the data into _train_, _validation_ and _test_ subsets a **split** file is used. <br>
+It is mandatory to define a **split-$N$-fold.csv** defined in the _split_ dataset subfolder.
 
 It is important (unless many changes are made later) to maintain the following format for the split file. <br>
         
     Header: INDEX, FILENAME, SPLIT
     - INDEX: sequential element index (0 to N-1), where N is the total number of samples
     - FILENAME: filename of the sample
-    - SPLIT: split type (choice of: train, validation and test)
-
+    - SPLIT: split type (choices of: train, validation and test)
 
 The splits used in the experiments on the [INbreast](datasets/INbreast/split)
 and [E-ophtha-MA](datasets/E-ophtha-MA/split) are reported <br>
@@ -113,17 +116,13 @@ All information about the $DATASET$ must be added
     $DATASET$ num annotations
         net/dataset/num_annotations.py
 
-Optionally, functions are available to compute the **number of normal images**
-(images without lesion or ground-truth) and the **number of annotations**,
-for each subset of the dataset (_train_, _validation_, _test_)
-
-    num normal images
+Optionally, functions are available:
+    
+    num normal images: compute the number of normal images (images without lesion) for each subset
         net/dataset/statistics/num_normal_images.py
 
-    num annotations images
+    num annotations images: compute the number of lesions for each subset
         net/dataset/statistics/num_annotations_images.py
-
-the dataset-augmentation option is also handled (next section) 
 
 ----------------------------------------------------------------------
 
@@ -148,7 +147,7 @@ All data transformations are defined in a specific path and defined with a Class
     $DATASET$ data augmentation transforms
         net/dataset/transforms_augmentation
 
-Some example transforms are given in the net-package:
+Some example transforms are given in code:
 
 - **Basic data transforms**: <br>
     AnnotationPadding.py <br>
@@ -167,9 +166,9 @@ Some example transforms are given in the net-package:
     MyHorizontalFlip.py <br>
     MyVerticalFlip.py <br>
   
-**NOTE**: for MinMaxNormalization.py and StandardNormalization.py,
-reading the statistics per subset from a file is required
-(or alternatively they can be entered manually in the code in the corresponding dictionary fields).
+**NOTE**: MinMaxNormalization.py and StandardNormalization.py read the statistics 
+from _statistics_ folder of dataset
+(in alternatively they can be entered manually in the code in the corresponding dictionary fields).
 
 ----------------------------------------------------------------------
 
@@ -177,7 +176,7 @@ reading the statistics per subset from a file is required
 For the correct generation of the gravity point configuration,
 the dimensions of the image **must** be specified: height (H) and width (W).
 
-**NOTE**: it **must** be taken into account if you perform operations 
+**! IMPORTANT !**: it **must** be taken into account if you perform operations 
 such as _cropping_ or _resize/rescale_ with the image size set.
 
 ----------------------------------------------------------------------

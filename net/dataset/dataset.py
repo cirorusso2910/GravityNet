@@ -72,7 +72,7 @@ class DatasetName(Dataset):
         # ---------- #
         annotation_filename = self.filename_list[idx] + ".$FILE_EXTENSION$"  # [csv]
         annotation_path = os.path.join(self.annotations_dir, annotation_filename)
-        header = annotation_header(dataset='$DATASET$', annotation_type='default')
+        header = annotation_header(annotation_type='default')
         annotation = read_csv(filepath_or_buffer=annotation_path, usecols=header).values
 
         sample = {'filename': self.filename_list[idx],
