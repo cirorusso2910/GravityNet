@@ -10,7 +10,7 @@ def save_coords(x: np.ndarray,
                 coords_type: str,
                 path: str):
     """
-    Save coords
+    Save coords according to type
 
     :param x: coords x
     :param y: coords y

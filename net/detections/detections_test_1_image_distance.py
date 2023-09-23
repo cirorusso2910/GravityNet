@@ -3,36 +3,36 @@ import os
 import numpy as np
 import pandas as pd
 import torch
+from torchvision.ops import nms
 
-from net.debug.debug_detections import debug_detections
 from net.detections.utility.check_index import check_index
 from net.detections.utility.conversion_item_list import conversion_item_list_distance
 from net.detections.utility.init_detections import init_detections_distance
 from net.initialization.header.detections import detections_header
 from net.output.output_gravity import output_gravity
+from net.output.output_score_gravity import output_score_gravity
 from net.utility.read_file import read_file
 
 
-def detections_test_distance(experiment_ID: str,
-                             filenames: torch.Tensor,
-                             predictions: torch.Tensor,
-                             classifications: torch.Tensor,
-                             images: torch.Tensor,
-                             masks: torch.Tensor,
-                             annotations: torch.Tensor,
-                             distance: float,
-                             detections_path: str,
-                             FP_list_path: str,
-                             output_gravity_path: str,
-                             device: torch.device,
-                             do_output_gravity: bool,
-                             debug: bool):
+def detections_test_1_image_distance(experiment_ID: str,
+                                     filenames: torch.Tensor,
+                                     predictions: torch.Tensor,
+                                     classifications: torch.Tensor,
+                                     images: torch.Tensor,
+                                     masks: torch.Tensor,
+                                     annotations: torch.Tensor,
+                                     distance: float,
+                                     detections_path: str,
+                                     FP_list_path: str,
+                                     output_gravity_path: str,
+                                     do_NMS: bool,
+                                     NMS_box_radius: int,
+                                     device: torch.device):
     """
-    Compute detections in test with DISTANCE metrics and save in detections.csv
+    Compute detections in test 1-image with DISTANCE metrics and save in detections.csv
 
     DETECTIONS CRITERION:
         - TP: predictions whose distance to the annotation is less than 'distance'
-              (default: 7 pixel)
 
         - possibleTP: predictions that fit the described criterion
                       (among them the one with the highest score is chosen as TP)
@@ -41,8 +41,11 @@ def detections_test_distance(experiment_ID: str,
 
         - FN: annotation missed
 
+    NON-MAXIMA-SUPPRESION:
+        apply Non-Maxima-Suppression (NMS) with a specific NMS_box_radius (before evaluation detection)
+
     FALSE POSITIVE REDUCTION:
-        gravity points outside the mammograms mask are not considered
+        gravity points outside the image mask are not considered
 
     OUTPUT GRAVITY:
         saves the output-gravity of each image
@@ -58,9 +61,9 @@ def detections_test_distance(experiment_ID: str,
     :param detections_path: detections path to save
     :param FP_list_path: FP list images path
     :param output_gravity_path: output gravity path
+    :param do_NMS: apply Non-Maxima-Suppression
+    :param NMS_box_radius: NMS box radius
     :param device: device
-    :param do_output_gravity: output gravity option
-    :param debug: debug option
     """
 
     # batch size
@@ -118,6 +121,31 @@ def detections_test_distance(experiment_ID: str,
         prediction = prediction[prediction[:, 0] != -2]
         score = score[score[:, 0] != -2]
 
+        # ---------------------- #
+        # NON-MAXIMA-SUPPRESSION #
+        # ---------------------- #
+        if do_NMS:
+            # get prediction
+            prediction_x = prediction[:, 0]
+            prediction_y = prediction[:, 1]
+
+            # predictions to bounding boxes
+            prediction_boxes = torch.stack((prediction_x - NMS_box_radius, prediction_y - NMS_box_radius, prediction_x + NMS_box_radius, prediction_y + NMS_box_radius), dim=1)
+
+            # score (positive)
+            score_positive = score[:, 1]
+
+            # non-maxima-suppression
+            nms_index = nms(boxes=prediction_boxes,
+                            scores=score_positive,
+                            iou_threshold=0.5)
+
+            # prediction NMS index
+            prediction = prediction[nms_index]
+
+            # score NMS index
+            score = score[nms_index]
+
         # get num predictions
         num_predictions = prediction.shape[0]
 
@@ -155,8 +183,7 @@ def detections_test_distance(experiment_ID: str,
             index_positive_predictions = torch.squeeze(dist_positive[:, t].nonzero()).tolist()
 
             # check index positive predictions and index TP
-            index_positive_predictions = check_index(index_TP=index_TP_hist,
-                                                     index_positive=index_positive_predictions)
+            index_positive_predictions = check_index(index_TP=index_TP_hist, index_positive=index_positive_predictions)
 
             # set label '-1'
             detections[index_positive_predictions, 1] = -1  # label
@@ -200,9 +227,9 @@ def detections_test_distance(experiment_ID: str,
                 # filename | num predictions | label | score | prediction x | prediction y | annotation x | annotation y
                 annotation_not_detected_hist.append([filename, np.nan, np.nan, '-inf', np.nan, np.nan, coord_x_annotation_not_detected, coord_y_annotation_not_detected])
 
-        # --------- #
-        # FP IMAGES #
-        # --------- #
+        # ------------------- #
+        # FP IMAGES NO NORMAL #
+        # ------------------- #
         if filename not in images_normal_list:
             # index hist
             index_FP_hist = torch.eq(detections[:, 1], 0)
@@ -242,21 +269,19 @@ def detections_test_distance(experiment_ID: str,
         # -------------- #
         # OUTPUT GRAVITY #
         # -------------- #
-        if do_output_gravity:
-            # draw output gravity
-            output_gravity(image=image,
-                           annotation=annotation,
-                           detections=detections,
-                           output_gravity_path=os.path.join(output_gravity_path, "{}-output-gravity|{}.png".format(filename, experiment_ID)))
+        # draw output gravity
+        output_gravity(image=image,
+                       annotation=annotation,
+                       detections=detections,
+                       output_gravity_path=os.path.join(output_gravity_path, "{}-output-gravity|{}.png".format(filename, experiment_ID)))
+        print("output-gravity: saved")
 
-        # ----- #
-        # DEBUG #
-        # ----- #
-        if debug:
-            debug_detections(image=image,
+        # draw output score gravity
+        output_score_gravity(image=image,
                              annotation=annotation,
                              detections=detections,
-                             path="./debug/detections-debug|filename={}.png".format(filename))
+                             output_gravity_path=os.path.join(output_gravity_path, "{}-output-score-gravity|{}.png".format(filename, experiment_ID)))
+        print("output-score-gravity: saved")
 
         # delete predictions with label '-1' (possibleTP) '-3' (FP no normals) '-4' (out mask)
         detections = detections[detections[:, 1] != -1]
@@ -284,3 +309,4 @@ def detections_test_distance(experiment_ID: str,
                 detections_csv.to_csv(detections_path, mode='a', index=False, header=detections_header(eval='distance'), float_format='%g')  # write header
             else:
                 detections_csv.to_csv(detections_path, mode='a', index=False, header=False, float_format='%g')  # write without header
+            print("detections: saved")

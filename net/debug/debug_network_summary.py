@@ -5,13 +5,17 @@ from net.model.utility.my_torchsummary import summary_string
 
 
 def debug_network_summary(net, backbone, input_size, batch_size, device):
-    """ | --------------------- |
-        | DEBUG NETWORK SUMMARY |
-        | --------------------- |
+    """
+    DEBUG NETWORK SUMMARY
 
-        show and save
+    show and save
         - summary network
 
+    :param net: net
+    :param backbone: backbone
+    :param input_size: input size
+    :param batch_size: batch size
+    :param device: device
     """
 
     print("\nNETWORK SUMMARY"

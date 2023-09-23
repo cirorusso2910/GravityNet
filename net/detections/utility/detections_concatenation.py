@@ -6,19 +6,21 @@ from pandas import read_csv
 from net.initialization.header.detections import detections_header
 
 
-def detections_concatenation(detections_path_1_fold,
-                             detections_path_2_fold,
-                             detections_concatenated_path):
+def detections_concatenation(eval: str,
+                             detections_path_1_fold: str,
+                             detections_path_2_fold: str,
+                             detections_concatenated_path: str):
     """
     Save detections 1-fold and 2-fold concatenation
 
+    :param eval: evaluation type
     :param detections_path_1_fold: detections 1-fold path
     :param detections_path_2_fold:  detections 2-fold path
     :param detections_concatenated_path: detections concatenation path
     """
 
     # detections header
-    header = detections_header()
+    header = detections_header(eval=eval)
 
     # read detections 1-fold
     detections_1_fold = read_csv(filepath_or_buffer=detections_path_1_fold, usecols=header).values

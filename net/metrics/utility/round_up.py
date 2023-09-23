@@ -2,7 +2,13 @@ import math
 
 
 def round_up(value, decimals=0):
-    """ round up value """
+    """
+    Round up value
+
+    :param value: value
+    :param decimals: decimals
+    :return: value rounded up
+    """
 
     multiplier = 10 ** decimals
 

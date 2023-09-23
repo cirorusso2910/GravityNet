@@ -1,6 +1,6 @@
 def dataset_folders_dict() -> dict:
     """
-    example of dataset folders dictionary
+    Example of dataset folders dictionary
     :return: folders dictionary
     """
 

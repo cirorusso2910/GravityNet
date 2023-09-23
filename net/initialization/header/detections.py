@@ -1,40 +1,46 @@
+import sys
 from typing import List
 
+from net.utility.msg.msg_error import msg_error
 
-def detections_distance_header() -> List[str]:
+
+def detections_header(eval: str) -> List[str]:
     """
-    Get detections distance header
+    Get detections header
 
+    :param eval: evaluation type
     :return: header
     """
 
-    header = ["FILENAME",
-              "NUM PREDICTIONS",
-              "LABEL",
-              "SCORE",
-              "PREDICTION X",
-              "PREDICTION Y",
-              "TARGET X",
-              "TARGET Y"]
+    # detections distance header
+    if 'distance' in eval:
+        header = ["FILENAME",
+                  "NUM PREDICTIONS",
+                  "LABEL",
+                  "SCORE",
+                  "PREDICTION X",
+                  "PREDICTION Y",
+                  "TARGET X",
+                  "TARGET Y"]
 
-    return header
+    # detections radius header
+    elif 'radius' in eval:
+        header = ["FILENAME",
+                  "NUM PREDICTIONS",
+                  "LABEL",
+                  "SCORE",
+                  "PREDICTION X",
+                  "PREDICTION Y",
+                  "TARGET X",
+                  "TARGET Y",
+                  "RADIUS"]
 
+    else:
+        str_err = msg_error(file=__file__,
+                            variable=eval,
+                            type_variable="evaluation",
+                            choices="[distance, radius]")
+        sys.exit(str_err)
 
-def detections_radius_header() -> List[str]:
-    """
-    Get detections radius header
-
-    :return: header
-    """
-
-    header = ["FILENAME",
-              "NUM PREDICTIONS",
-              "LABEL",
-              "SCORE",
-              "PREDICTION X",
-              "PREDICTION Y",
-              "TARGET X",
-              "TARGET Y",
-              "RADIUS"]
 
     return header

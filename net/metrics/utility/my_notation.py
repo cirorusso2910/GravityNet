@@ -18,7 +18,7 @@ def scientific_notation(number):
     example: 0.0001 -> 1e-04
 
     :param number: real number
-    :return: number in scientific notation
+    :return:  in scientific notation
     """
 
     format_number = '%e' % number

@@ -4,7 +4,7 @@ import numpy as np
 def check_image_shape(image_shape: np.array):
     """
     Check if image shape dimension is multiple of 32.
-    Otherwise, the gravity points are not placed within the image.
+    Otherwise, the gravity points are not placed within the image
 
     :param image_shape: image shape
     """

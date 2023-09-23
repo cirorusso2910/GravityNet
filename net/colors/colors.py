@@ -3,7 +3,7 @@
 # ------------------------------------ #
 # https://www.webucator.com/article/python-color-constants-module/
 
-# definition of Colors with (Blue Green Red) components
+# Definition of colors with (Blue, Green, Red) components
 ALICEBLUE = (255, 248, 240)
 ANTIQUEWHITE = (215, 235, 250)
 ANTIQUEWHITE1 = (219, 239, 255)

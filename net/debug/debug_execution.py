@@ -5,6 +5,8 @@ def debug_execution(do_debug_execution: bool):
     """
     DEBUG EXECUTION
 
+    stop execution
+
     :param do_debug_execution: do debug execution bool
     """
 

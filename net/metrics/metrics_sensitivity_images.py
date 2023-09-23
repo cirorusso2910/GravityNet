@@ -8,7 +8,12 @@ from net.initialization.header.metrics import metrics_header
 
 def metrics_sensitivity_images(metrics_path: str,
                                row: List):
-    """ save metrics-sensitivity-images.csv """
+    """
+    Save metrics-sensitivity-images.csv
+
+    :param metrics_path: metrics path
+    :param row: row to write
+    """
 
     # check if file exists
     file_exists = os.path.isfile(metrics_path)

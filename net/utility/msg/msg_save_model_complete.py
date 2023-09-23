@@ -10,7 +10,7 @@ def msg_save_best_model_complete(metrics_type: str):
 
 def msg_save_resume_model_complete(epoch: int):
     """
-    message save resume model
+    Message save resume model
 
     :param epoch: num epoch
     """

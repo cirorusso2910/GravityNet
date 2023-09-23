@@ -5,7 +5,7 @@ def gravity_points_prediction(gravity_points: torch.Tensor,
                               hook: int,
                               regression: torch.Tensor) -> torch.Tensor:
     """
-    Compute gravity points prediction:
+    Compute gravity points prediction
 
     :param gravity_points: gravity points configuration
     :param hook: hook distance

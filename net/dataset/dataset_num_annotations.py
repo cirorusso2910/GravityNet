@@ -13,7 +13,7 @@ def dataset_num_annotations(split: str,
                             dataset_val: Dataset,
                             dataset_test: Dataset) -> dict:
     """
-    Compute dataset num annotations (calcifications)
+    Compute dataset num annotations
 
     :param split: split name
     :param do_dataset_augmentation: do dataset augmentation

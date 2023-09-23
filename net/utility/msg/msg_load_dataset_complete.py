@@ -1,6 +1,6 @@
 def msg_load_dataset_complete(dataset_name: str):
     """
-    Message load dataset
+    Message load dataset complete
 
     :param dataset_name: dataset name
     """

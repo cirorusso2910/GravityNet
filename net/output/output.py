@@ -9,7 +9,7 @@ from torch.utils.data import Dataset
 
 from net.dataset.utility.read_dataset_sample import read_dataset_sample
 from net.colors.colors import *
-from net.initialization.header.detections import detections_distance_header, detections_radius_header
+from net.initialization.header.detections import detections_header
 from net.metrics.utility.my_round_value import my_round_value
 from net.utility.msg.msg_error import msg_error
 
@@ -41,7 +41,7 @@ def output(type_draw: str,
     if 'distance' in eval:
 
         # read detections test for showing output (numpy array)
-        detections = read_csv(filepath_or_buffer=detections_path, usecols=detections_distance_header()).dropna(subset=['LABEL']).values
+        detections = read_csv(filepath_or_buffer=detections_path, usecols=detections_header(eval='distance')).dropna(subset=['LABEL']).values
 
         # for each sample in dataset
         for i in range(dataset.__len__()):
@@ -164,7 +164,7 @@ def output(type_draw: str,
     elif 'radius' in eval:
 
         # read detections test for showing output (numpy array)
-        detections = read_csv(filepath_or_buffer=detections_path, usecols=detections_radius_header()).dropna(subset=['LABEL']).values
+        detections = read_csv(filepath_or_buffer=detections_path, usecols=detections_header(eval='radius')).dropna(subset=['LABEL']).values
 
         # for each sample in dataset
         for i in range(dataset.__len__()):

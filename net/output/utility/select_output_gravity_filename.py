@@ -1,10 +1,4 @@
-import sys
-
-from net.utility.msg.msg_error import msg_error
-
-
-def select_output_gravity_filename(dataset: str,
-                                   split: str) -> str:
+def select_output_gravity_filename(split: str) -> str:
     """
     Select filename to save output gravity
 
@@ -15,9 +9,9 @@ def select_output_gravity_filename(dataset: str,
 
     # image filename for output gravity
     if split == '1-fold':
-        filename_output_gravity = ''
+        filename_output_gravity = '$FILENAME$'
     elif split == '2-fold':
-        filename_output_gravity = ''
+        filename_output_gravity = '$FILENAME$'
     else:
         filename_output_gravity = ""
         print("\nNO FILENAME OUTPUT GRAVITY!")

@@ -7,7 +7,6 @@ from typing import Tuple
 from net.anchors.initial_config.initial_dice_config import initial_dice_config
 from net.anchors.initial_config.initial_grid_config import initial_grid_config
 from net.anchors.utility.shift import shift
-from net.debug.debug_anchors import debug_anchors
 from net.utility.msg.msg_config_complete import msg_config_complete
 from net.utility.msg.msg_error import msg_error
 
@@ -18,7 +17,7 @@ def gravity_points_config(config: str,
     """
     Generate gravity points configuration:
     initial configuration is generated which is then shift on the feature map
-    so that each pixel of the feature map has the initial configuration.
+    so that each pixel of the feature map has the initial configuration
 
     :param config: configuration type
     :param image_shape: image shape

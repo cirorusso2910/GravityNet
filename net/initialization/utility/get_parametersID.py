@@ -1,10 +1,9 @@
-def get_parametersID(experimentID):
-    """ | ----------------- |
-        | GET PARAMETERS ID |
-        | ----------------- |
+def get_parametersID(experimentID: str) -> dict:
+    """
+    Get parameters-ID from experiment-ID
 
-        get parameters ID from experiment ID
-
+    :param experimentID: experiment ID
+    :return: experiments ID parameters dictionary
     """
 
     split_parameters = experimentID.split("|")
