@@ -11,7 +11,6 @@ def annotation_header(annotation_type: str) -> list:
     :return: header
     """
 
-
     # default
     if annotation_type == 'default':
         header = ["X", "Y", "RADIUS"]
