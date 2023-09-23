@@ -2,6 +2,8 @@ import cv2
 import torch
 
 from net.colors.colors import *
+from net.dataset.draw.add_3_channels_image import add_3_channels_image
+from net.dataset.utility.viewable_image import viewable_image
 from net.detections.utility.get_single_detection import get_single_detection
 
 
@@ -23,6 +25,14 @@ def output_gravity(image: torch.Tensor,
 
     # num predictions
     num_predictions = detections.shape[0]
+
+    # image conversion
+    image = image.permute((1, 2, 0))  # permute 3xHxW -> HxWx3
+    image = image.cpu().detach().numpy()  # to numpy
+    image = viewable_image(image=image)  # viewable
+    image_channel = image[:, :, 0]  # image 1-channel
+
+    image = add_3_channels_image(image=image_channel)  # copy 3 channels
 
     # ---------------- #
     # DRAW ANNOTATIONS #
