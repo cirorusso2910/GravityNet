@@ -2,7 +2,7 @@
 
 **GravityNet** official repository
 
-**Paper arXiv**: [link]() (Scheduled to be announced at Mon 25 Sep 2023)
+**Paper arXiv**: [link](https://arxiv.org/abs/2309.12876)
 
 ## EXECUTION INSTRUCTIONS
 The following instructions must be followed to properly run the GravityNet:
@@ -35,8 +35,6 @@ The definition of these parameters is essential for the building of an _experime
 ### 2. INITIALIZATION
 Before any modification to the source implementation, it is necessary to define work paths.
     
-    the $WHERE$ parameter is defined to determine which $PATH$ definition
-
     $PATH$ is defined in:
         net/initialization/folders/default_folders.py
     according to $WHERE$ parameter to manage multiple work paths
