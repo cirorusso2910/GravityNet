@@ -14,18 +14,18 @@ from net.output.utility.select_image_channel import select_image_channel
 from net.utility.msg.msg_error import msg_error
 
 
-def output_FPS(score_FPS: float,
-               type_draw: str,
-               eval: str,
-               box_draw_radius: int,
-               channel: str,
-               dataset: Dataset,
-               num_images: int,
-               detections_path: str,
-               output_path: str,
-               suffix: str):
+def output_3C_FPS(score_FPS: float,
+                  type_draw: str,
+                  eval: str,
+                  box_draw_radius: int,
+                  channel: str,
+                  dataset: Dataset,
+                  num_images: int,
+                  detections_path: str,
+                  output_path: str,
+                  suffix: str):
     """
-    Save detections output results at specific false positive per scan (FPS)
+    Save detections output results (for 3-channels-image) at specific false positive per scan (FPS)
 
     :param score_FPS:
     :param type_draw: type draw
@@ -80,7 +80,8 @@ def output_FPS(score_FPS: float,
             num_prediction = len(labels)
 
             # image
-            image = sample['image']
+            image = select_image_channel(image=sample['image'],
+                                         channel=channel)
 
             # ---------------- #
             # DRAW ANNOTATIONS #
@@ -251,7 +252,8 @@ def output_FPS(score_FPS: float,
             num_prediction = len(labels)
 
             # image
-            image = sample['image']
+            image = select_image_channel(image=sample['image'],
+                                         channel=channel)
 
             # ---------------- #
             # DRAW ANNOTATIONS #
