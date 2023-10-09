@@ -64,11 +64,11 @@ and the _$FILE_EXTENSION$_ for each data type..
 
 Below a table with tha data types used:
 
-| **DATA TYPE** | **$FILE_EXTENSION$** |
-|---------------|----------------------|
-| IMAGE         | tif, jpg             |
-| IMAGE MASK    | png                  |
-| ANNOTATION    | csv                  |
+| **DATA TYPE** | **FILE_EXTENSION** |
+|---------------|--------------------|
+| IMAGE         | tif, jpg           |
+| IMAGE MASK    | png                |
+| ANNOTATION    | csv                |
 
 For ease of use, there is the option of managing the annotation header with a function:
 
