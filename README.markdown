@@ -35,11 +35,11 @@ The definition of these parameters is essential for the building of an _experime
 ### 2. INITIALIZATION
 Before any modification to the source implementation, it is necessary to define work paths.
     
-    $PATH$ is defined in:
+    path is defined in:
         net/initialization/folders/default_folders.py
-    according to $WHERE$ parameter to manage multiple work paths
+    according to --where parameter to manage multiple work paths
 
-    $DATASET-STRUCTURE$ is defined in:
+    dataset-structure is defined in:
         net/initialization/folders/dataset_folders.py
     The dataset-structure is defined in the form of a dictionary (an example is given in the code)
 
@@ -79,7 +79,7 @@ For ease of use, there is the option of managing the annotation header with a fu
 
 ### 4. SPLIT DATA
 To split the data into _train_, _validation_ and _test_ subsets a **split** file is used. <br>
-It is mandatory to define a **split-$N$-fold.csv** defined in the _split_ dataset subfolder.
+It is mandatory to define a **split-N-fold.csv** defined in the _split_ dataset subfolder.
 
 It is important (unless many changes are made later) to maintain the following format for the split file. <br>
         
@@ -101,13 +101,13 @@ are [reported](datasets) <br>
 All information about the dataset must be added
 (to avoid extra computational costs at each execution) for each split used.
 
-    $DATASET$ num images
+    dataset num images
         net/dataset/dataset_num_images.py
 
-    $DATASET$ num normal images
+    dataset num normal images
         net/dataset/dataset_num_normal_images.py
 
-    $DATASET$ num annotations
+    dataset num annotations
         net/dataset/num_annotations.py
 
 Optionally, functions are available:
@@ -124,21 +124,21 @@ Optionally, functions are available:
 The transformations on each sample in the dataset is handled by a specific function 
 (such as pre-processing or normalization).
 
-    $DATASET$ transforms
+    dataset transforms
         net/dataset/dataset_transforms
 
 Likewise for transformations of data augmentation
 
-    $DATASET$ augmentation transforms
+    dataset augmentation transforms
         net/dataset/dataset_augmentation
 
 By default, there are three types of normalization: **none**, **min-max** and **std**. <br>
 All data transformations are defined in a specific path and defined with a Class.
 
-    $DATASET$ data transforms
+    dataset data transforms
         net/dataset/transforms
 
-    $DATASET$ data augmentation transforms
+    dataset data augmentation transforms
         net/dataset/transforms_augmentation
 
 Some example transforms are given in code:
@@ -199,4 +199,4 @@ Below the available **execution mode**:
 
 ### 10. EXAMPLE OF EXECUTION
 
-    CUDA_VISIBLE_DEVICES=3 python3 -u GravityNet.py $EXECUTION_MODE$ --$PARAMETERS$
+    CUDA_VISIBLE_DEVICES=3 python3 -u GravityNet.py EXECUTION_MODE --PARAMETERS
