@@ -55,9 +55,9 @@ For details about the [experiments-structure](./doc/experiments/experiments-stru
 
 ### 3. CLASS DATASET
 The **Class Dataset** must be defined according to the dataset-structure 
-and the _$FILE_EXTENSION$_ for each data type..
+and the file extension for each data type..
 
-**Hint:** rename the dataset.py with the name of the dataset $DATASET$
+**Hint:** rename the dataset.py with the name of the dataset
 
     The Class Dataset is defined in:
         net/dataset/dataset.py
@@ -98,7 +98,7 @@ are [reported](datasets) <br>
 ----------------------------------------------------------------------
 
 ### 5. DATASET INFORMATION
-All information about the $DATASET$ must be added
+All information about the dataset must be added
 (to avoid extra computational costs at each execution) for each split used.
 
     $DATASET$ num images
@@ -177,7 +177,7 @@ such as _cropping_ or _resize/rescale_ with the image size set.
 
 ### 8. PARAMETERS SUMMARY
 It should be modified as required, showing an overview of all parameters 
-and information on the $DATASET$ used.
+and information on the dataset used.
 
     parameters summary
         net/parameters/parameters_summary.py
