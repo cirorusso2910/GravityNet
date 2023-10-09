@@ -69,7 +69,7 @@ class GravityNet(nn.Module):
         """
 
         # Backbone
-        backbone_output = self.backboneModel(image)  # backbone output shape: B x F x [H x W] (feature map depends on rescale image)
+        backbone_output = self.backboneModel(image)  # backbone output shape: B x F x H_FM x W_FM
 
         # Regression SubNet
         regression_output = self.regressionModel(backbone_output)  # regression shape: B x A x 2
