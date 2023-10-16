@@ -3,9 +3,13 @@ import torch.nn as nn
 
 from typing import Tuple
 
+from net.model.backbone.MyDenseNet_models import MyDenseNet_models
+from net.model.backbone.MyEfficientNetV2_models import MyEfficientNetV2_models
+from net.model.backbone.MyEfficientNet_models import MyEfficientNet_models
+from net.model.backbone.MyResNeXt_models import MyResNeXt_models
 from net.model.gravitynet.ClassificationSubNet import ClassificationModel
 from net.model.gravitynet.RegressionSubNet import RegressionModel
-from net.model.MyResNet_models import MyResNet_models
+from net.model.backbone.MyResNet_models import MyResNet_models
 
 
 class GravityNet(nn.Module):
@@ -45,6 +49,47 @@ class GravityNet(nn.Module):
             # ResNet Model
             self.backboneModel, self.num_features = MyResNet_models(resnet=resnet,
                                                                     pretrained=self.pretrained)
+
+        # - ResNeXt
+        elif backbone.split('-')[0] == 'ResNeXt':
+
+            # ResNeXt [50_32x4d, 101_32x8d, 101_64x4d]
+            resnext = str(backbone.split('-')[1])
+
+            # ResNeXt Model
+            self.backboneModel, self.num_features = MyResNeXt_models(resnext=resnext,
+                                                                     pretrained=self.pretrained)
+
+        # - DenseNet
+        elif backbone.split('-')[0] == 'DenseNet':
+
+            # DenseNet [121, 161, 169, 201]
+            densenet = int(backbone.split('-')[1])
+
+            # DenseNet Model
+            self.backboneModel, self.num_features = MyDenseNet_models(densenet=densenet,
+                                                                      pretrained=self.pretrained)
+
+        # - EfficientNet
+        elif backbone.split('-')[0] == 'EfficientNet':
+
+            # EfficientNet [B0, B1, B2, B3, B4, B5, B6, B7]
+            efficientnet = str(backbone.split('-')[1])
+
+            # EfficientNet Model
+            self.backboneModel, self.num_features = MyEfficientNet_models(efficientnet=efficientnet,
+                                                                          pretrained=self.pretrained)
+
+        # - EfficientNetV2
+        elif backbone.split('-')[0] == 'EfficientNetV2':
+
+            # EfficientNet [S, M, L]
+            efficientnetv2 = str(backbone.split('-')[1])
+
+            # EfficientNetV2 Model
+            self.backboneModel, self.num_features = MyEfficientNetV2_models(efficientnetv2=efficientnetv2,
+                                                                            pretrained=self.pretrained)
+
         # ----------------- #
         # Regression SubNet #
         # ----------------- #
