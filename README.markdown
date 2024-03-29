@@ -2,7 +2,19 @@
 
 **GravityNet** official repository
 
-**Paper arXiv**: [link](https://arxiv.org/abs/2309.12876)
+## REFERENCE
+@article{Russo_Bria_Marrocco_2024, <br>
+         title =   {GravityNet for end-to-end small lesion detection}, <br>
+         ISSN={0933-3657}, <br>
+         DOI={10.1016/j.artmed.2024.102842}, <br>
+         journal={Artificial Intelligence in Medicine}, <br>
+         author={Russo, Ciro and Bria, Alessandro and Marrocco, Claudio}, <br>
+         year={2024}, <br>
+         month=mar, <br>
+         pages={102842} <br>
+}
+
+**Paper**: [link](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets)
 
 ## EXECUTION INSTRUCTIONS
 The following instructions must be followed to properly run the GravityNet:
