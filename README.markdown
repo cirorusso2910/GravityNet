@@ -1,6 +1,11 @@
-# GRAVITY NET
+![alt text](doc/logo/GravityNet-logo.png)
 
-**GravityNet** official repository
+**GravityNet** official repository <br>
+by **PhD Student Ing. Ciro Russo**
+
+**LinkedIn**: [link](https://www.linkedin.com/in/ciro-russo-b14056100/) <br>
+**Research Gate**: [link](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
+**Kaggle**: [link](https://www.kaggle.com/cirorusso2910)
 
 ## REFERENCE
 @article{Russo_Bria_Marrocco_2024, <br>
@@ -14,7 +19,7 @@
          pages={102842} <br>
 }
 
-**Paper**: [link](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets)
+**Paper**: [link](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
 
 ## EXECUTION INSTRUCTIONS
 The following instructions must be followed to properly run the GravityNet:
