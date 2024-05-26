@@ -7,10 +7,8 @@ by **PhD Student Ing. Ciro Russo**
 **Research Gate**: [link](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
 **Kaggle**: [link](https://www.kaggle.com/cirorusso2910)
 
-
-
-## CITATION
-:page_facing_up: [link](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
+## REFERENCE
+:page_facing_up: [GravityNet for end-to-end small lesion detection](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
 
     @article{Russo_Bria_Marrocco_2024, <br>
              title =   {GravityNet for end-to-end small lesion detection}, <br>
