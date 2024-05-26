@@ -26,6 +26,11 @@ by **PhD Student Ing. Ciro Russo** <br>
              pages={102842} <br>
     }
 
+## :luggage: CREDITS
+:office: University of Cassino and Lazio Meridionale <br>
+:man_teacher: Prof. Claudio Marrocco and Prof. Alessandro Bria <br>
+:man_technologist: Giulio Russo <br>
+
 <!---
 ## EXECUTION INSTRUCTIONS
 The following instructions must be followed to properly run the GravityNet:
