@@ -9,7 +9,7 @@ by **PhD Student Ing. Ciro Russo** <br>
 [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
 
 ## :page_facing_up: REFERENCE
-:page_facing_up: [GravityNet for end-to-end small lesion detection](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
+**Paper**: [GravityNet for end-to-end small lesion detection](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
 
     @article{Russo_Bria_Marrocco_2024, <br>
              title =   {GravityNet for end-to-end small lesion detection}, <br>
@@ -22,6 +22,7 @@ by **PhD Student Ing. Ciro Russo** <br>
              pages={102842} <br>
     }
 
+<!---
 ## EXECUTION INSTRUCTIONS
 The following instructions must be followed to properly run the GravityNet:
 
@@ -218,3 +219,4 @@ Below the available **execution mode**:
 ### 10. EXAMPLE OF EXECUTION
 
     CUDA_VISIBLE_DEVICES=3 python3 -u GravityNet.py EXECUTION_MODE --PARAMETERS
+--->
