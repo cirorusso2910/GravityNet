@@ -4,9 +4,13 @@
 
 **GravityNet** official repository <br>
 by **PhD Student Ing. Ciro Russo** <br>
-[LinkedIn](https://www.linkedin.com/in/ciro-russo-b14056100/) <br>
-[Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
-[Kaggle](https://www.kaggle.com/cirorusso2910) <br>
+:man_technologist:[LinkedIn](https://www.linkedin.com/in/ciro-russo-b14056100/) <br>
+:books: [Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
+:computer: [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
+
+## :rocket: HOW TO GRAVITY
+
+:construction: UNDERGOING MAINTENANCE :construction:
 
 ## :page_facing_up: REFERENCE
 **Paper**: [GravityNet for end-to-end small lesion detection](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
