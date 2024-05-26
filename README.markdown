@@ -27,9 +27,10 @@ by **PhD Student Ing. Ciro Russo** <br>
     }
 
 ## :luggage: CREDITS
-:office: University of Cassino and Lazio Meridionale <br>
-:man_teacher: Prof. Claudio Marrocco and Prof. Alessandro Bria <br>
-:man_technologist: Giulio Russo <br>
+:office: **University of Cassino and Lazio Meridionale** <br>
+:man_teacher: Prof. **Claudio Marrocco** and Prof. **Alessandro Bria** <br>
+:man_technologist: **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
+
 
 <!---
 ## EXECUTION INSTRUCTIONS
