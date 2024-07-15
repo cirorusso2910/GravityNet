@@ -97,6 +97,8 @@ The **backbone** is a convolutional network and plays the role of feature extrac
 The **first subnet** performs convolutional object classification on the backbone's output. <br>
 The **second subnet** performs convolutional gravity-points regression.
 
+The available **backbone**:
+
 | ResNet     | ResNeXt           | DenseNet     | EfficientNet    | EfficientNetV2   |
 |------------|-------------------|--------------|-----------------|------------------|
 | ResNet-18  | ResNeXt-50_32x4d  | DenseNet-121 | EfficientNet-B0 | EfficientNetV2-S |
