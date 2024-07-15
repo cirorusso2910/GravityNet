@@ -12,7 +12,7 @@ def sensitivity_plot(figsize: Tuple[int, int],
                      experiment_ID: str,
                      ticks: List[int],
                      epochs_ticks: np.ndarray,
-                     sensitivity_work_point: List[float],
+                     sensitivity_10_FPS: List[float],
                      sensitivity_max: List[float],
                      sensitivity_path: str):
     """
@@ -23,22 +23,22 @@ def sensitivity_plot(figsize: Tuple[int, int],
     :param experiment_ID: experiment ID
     :param ticks: ticks
     :param epochs_ticks: epochs ticks
-    :param sensitivity_work_point: sensitivity at FPS work point
+    :param sensitivity_10_FPS: sensitivity at 10 FPS
     :param sensitivity_max: sensitivity max
     :param sensitivity_path: sensitivity path
     """
 
     # best metrics
-    max_sensitivity, index_max_sensitivity = best_metrics(metric=sensitivity_work_point)
+    max_sensitivity_10_FPS, index_max_sensitivity_10_FPS = best_metrics(metric=sensitivity_10_FPS)
 
     # Figure: Sensitivity
     fig = plt.figure(figsize=figsize)
     plt.suptitle(title, fontweight="bold", fontsize=18, y=1.0)
     plt.title("{}".format(experiment_ID), style='italic', fontsize=10, pad=10)
     plt.grid()
-    plt.plot(ticks, sensitivity_work_point, marker=".", color='blue', label='Sensitivity Work Point')
+    plt.plot(ticks, sensitivity_10_FPS, marker=".", color='blue', label='Sensitivity 10 FPS')
     plt.plot(ticks, sensitivity_max, marker=".", color='red', label='Sensitivity Max')
-    plt.scatter(x=index_max_sensitivity, y=max_sensitivity, marker="x", color='blue', label='Best Sensitivity Work Point')
+    plt.scatter(x=index_max_sensitivity_10_FPS, y=max_sensitivity_10_FPS, marker="x", color='blue', label='Best Sensitivity 10 FPS')
     plt.legend(bbox_to_anchor=(0.5, -0.1), loc="upper center", ncol=2)
     plt.xlabel("Epochs")
     plt.xticks(epochs_ticks)

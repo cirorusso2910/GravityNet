@@ -5,8 +5,10 @@ from torchvision import transforms
 
 from net.dataset.statistics.min_max_statistics import read_min_max_statistics
 from net.dataset.statistics.standard_statistics import read_std_statistics
+from net.dataset.transforms.Add3ChannelsImage import Add3ChannelsImage
 from net.dataset.transforms.AnnotationPadding import AnnotationPadding
 from net.dataset.transforms.MinMaxNormalization import MinMaxNormalization
+from net.dataset.transforms.Rescale import Rescale
 from net.dataset.transforms.StandardNormalization import StandardNormalization
 from net.dataset.transforms.ToTensor import ToTensor
 from net.dataset.transforms_augmentation.MyHorizontalAndVerticalFlip import MyHorizontalAndVerticalFlip
@@ -15,18 +17,15 @@ from net.dataset.transforms_augmentation.MyVerticalFlip import MyVerticalFlip
 from net.utility.msg.msg_error import msg_error
 
 
-
 def dataset_transforms_augmentation(normalization: str,
                                     parser: argparse.Namespace,
-                                    statistics_path: str,
-                                    debug: bool) -> dict:
+                                    statistics_path: str) -> dict:
     """
     Collect dataset transforms augmentation (only for dataset-train)
 
     :param normalization: normalization type
     :param parser: parser of parameters-parsing
     :param statistics_path: statistics path
-    :param debug: debug option
     :return: train transforms augmentation dictionary
     """
 
@@ -37,33 +36,39 @@ def dataset_transforms_augmentation(normalization: str,
 
         # HorizontalFlip augmentation transforms
         train_augmentation_HorizontalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalFlip(),  # My Horizontal Flip
+            MyHorizontalFlip(num_channels=parser.num_channels),  # My Horizontal Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
         ])
 
         # VerticalFlip augmentation transforms
         train_augmentation_VerticalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyVerticalFlip(),  # My Vertical Flip
+            MyVerticalFlip(num_channels=parser.num_channels),  # My Vertical Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
         ])
 
         # HorizontalFlip and VerticalFlip augmentation transforms
         train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
+            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels),  # My Horizontal and Vertical Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
         ])
@@ -78,11 +83,13 @@ def dataset_transforms_augmentation(normalization: str,
 
         # HorizontalFlip augmentation transforms
         train_augmentation_HorizontalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalFlip(),  # My Horizontal Flip
+            MyHorizontalFlip(num_channels=parser.num_channels),  # My Horizontal Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
             # MIN-MAX NORMALIZATION
@@ -91,11 +98,13 @@ def dataset_transforms_augmentation(normalization: str,
 
         # VerticalFlip augmentation transforms
         train_augmentation_VerticalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyVerticalFlip(),  # My Vertical Flip
+            MyVerticalFlip(num_channels=parser.num_channels),  # My Vertical Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
             # MIN-MAX NORMALIZATION
@@ -104,11 +113,13 @@ def dataset_transforms_augmentation(normalization: str,
 
         # HorizontalFlip and VerticalFlip augmentation transforms
         train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
+            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels),  # My Horizontal and Vertical Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
             # MIN-MAX NORMALIZATION
@@ -125,11 +136,13 @@ def dataset_transforms_augmentation(normalization: str,
 
         # HorizontalFlip augmentation transforms
         train_augmentation_HorizontalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalFlip(),  # My Horizontal Flip
+            MyHorizontalFlip(num_channels=parser.num_channels),  # My Horizontal Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
             # STANDARD NORMALIZATION
@@ -138,11 +151,13 @@ def dataset_transforms_augmentation(normalization: str,
 
         # VerticalFlip augmentation transforms
         train_augmentation_VerticalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyVerticalFlip(),  # My Vertical Flip
+            MyVerticalFlip(num_channels=parser.num_channels),  # My Vertical Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
             # STANDARD NORMALIZATION
@@ -151,11 +166,13 @@ def dataset_transforms_augmentation(normalization: str,
 
         # HorizontalFlip and VerticalFlip augmentation transforms
         train_augmentation_HorizontalFlip_and_VerticalFlip_transforms = transforms.Compose([
-            # PRE-PROCESSING or DATA
-            # $TRANSFORMS_PRE_PROCESSING$ or $TRANSFORMS_DATA$
+            # DATA
+            Rescale(rescale=parser.rescale,
+                    num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalAndVerticalFlip(),  # My Horizontal and Vertical Flip
+            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels),  # My Horizontal and Vertical Flip
             # DATA PREPARATION
+            Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
             ToTensor(),  # To Tensor
             # STANDARD NORMALIZATION

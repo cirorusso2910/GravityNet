@@ -47,7 +47,8 @@ def read_std_statistics(statistics_path: str) -> dict:
     :return: (mean, std) statistics dictionary
     """
 
-    header = statistics_header(statistics_type='std')
+    header = statistics_header(statistics_type='std',
+                               small_lesion_type='')
     statistics = read_csv(filepath_or_buffer=statistics_path, usecols=header)
 
     mean_train = statistics['MEAN'][0]

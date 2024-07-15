@@ -2,9 +2,9 @@ import cv2
 import numpy as np
 
 
-def select_1_channel_image(image: np.ndarray) -> np.ndarray:
+def transpose_3_channel_image(image: np.ndarray) -> np.ndarray:
     """
-    Add 3 channels to image: copy image 3 times
+    Transpose 3 channel image for drawing: CxHxW -> HxWxC
 
     :param image: image
     :return: image with 3 channels

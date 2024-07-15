@@ -7,7 +7,6 @@
     |
     | - coords
     |   | read_coords.py
-    |   | read_plot_test_coords.py
     |   | save_coords.py
     |
     | - utility
@@ -15,10 +14,12 @@
     |
     | AUC_plot.py
     | AUFROC_plot.py
+    | AUPR_plot.py
     | FROC_linear_plot.py
     | FROC_plot.py
     | learning_rate_plot.py
     | loss_plot.py
+    | PR_plot.py
     | ROC_plot.py
     | score_distribution_plot.py
     | sensitivity_plot.py
@@ -28,7 +29,6 @@
 | FOLDER      | FUNCTION                   | DESCRIPTION                                             |
 |-------------|----------------------------|---------------------------------------------------------|
 | **coords**  | read_coords.py             | Read coords from path according to type                 |
-| **coords**  | read_plot_test_coords.py   | Read plots test coords                                  |
 | **coords**  | save_coords.py             | Save coords according to type                           |
 | **utility** | figure_size.py             | Define figure size for plots according to num of epochs |
 | -           | AUC_plot.py                | AUC plot                                                |

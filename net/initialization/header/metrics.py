@@ -25,6 +25,7 @@ def metrics_header(metrics_type: str) -> List[str]:
                   "AUFROC [0, 10]",
                   "AUFROC [0, 50]",
                   "AUFROC [0, 100]",
+                  "AUPR",
                   "TIME TRAIN",
                   "TIME VALIDATION",
                   "TIME METRICS"]
@@ -37,33 +38,15 @@ def metrics_header(metrics_type: str) -> List[str]:
                   "AUFROC [0, 10]",
                   "AUFROC [0, 50]",
                   "AUFROC [0, 100]",
+                  "AUPR",
                   "TIME TEST",
                   "TIME METRICS"]
-
-    elif metrics_type == 'test_NMS':
-        header = ["AUC",
-                  "SENSITIVITY WORK POINT",
-                  "SENSITIVITY MAX",
-                  "AUFROC [0, 1]",
-                  "AUFROC [0, 10]",
-                  "AUFROC [0, 50]",
-                  "AUFROC [0, 100]",
-                  "TIME NMS",
-                  "TIME METRICS"]
-
-    elif metrics_type == 'sensitivity':
-        header = ["IMAGE",
-                  "ANNOTATIONS",
-                  "TP",
-                  "FN",
-                  "FP",
-                  "SENSITIVITY"]
 
     else:
         str_err = msg_error(file=__file__,
                             variable=metrics_type,
                             type_variable='header metrics type',
-                            choices='[train, test, test NMS, test complete, sensitivity]')
+                            choices='[train, test]')
         sys.exit(str_err)
 
     return header

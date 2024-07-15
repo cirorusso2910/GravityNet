@@ -16,12 +16,13 @@ def metrics_test_csv(metrics_path: str,
 
     # metrics round
     AUC = my_round_value(value=metrics['AUC'][-1], digits=3)
-    sensitivity_work_point = my_round_value(value=metrics['sensitivity']['work_point'][-1], digits=3)
+    sensitivity_10_FPS = my_round_value(value=metrics['sensitivity']['10 FPS'][-1], digits=3)
     sensitivity_max = my_round_value(value=metrics['sensitivity']['max'][-1], digits=3)
     AUFROC_0_1 = my_round_value(value=metrics['AUFROC']['[0, 1]'][-1], digits=3)
     AUFROC_0_10 = my_round_value(value=metrics['AUFROC']['[0, 10]'][-1], digits=3)
     AUFROC_0_50 = my_round_value(value=metrics['AUFROC']['[0, 50]'][-1], digits=3)
     AUFROC_0_100 = my_round_value(value=metrics['AUFROC']['[0, 100]'][-1], digits=3)
+    AUPR = my_round_value(value=metrics['AUPR'][-1], digits=3)
 
     # metrics timer conversion
     metrics_time_test = timer(time_elapsed=metrics['time']['test'][-1])
@@ -38,11 +39,12 @@ def metrics_test_csv(metrics_path: str,
 
         # write row
         writer.writerow([AUC,
-                         sensitivity_work_point,
+                         sensitivity_10_FPS,
                          sensitivity_max,
                          AUFROC_0_1,
                          AUFROC_0_10,
                          AUFROC_0_50,
                          AUFROC_0_100,
+                         AUPR,
                          "{} h {} m {} s".format(metrics_time_test['hours'], metrics_time_test['minutes'], metrics_time_test['seconds']),
                          "{} h {} m {} s".format(metrics_time_metrics['hours'], metrics_time_metrics['minutes'], metrics_time_metrics['seconds'])])

@@ -3,15 +3,24 @@ parameters_default = {
     # -------------- #
     # INITIALIZATION #
     # -------------- #
-    'where': 'home',
+    'dataset_path': 'datasets',
+    'experiments_path': 'experiments',
 
     # ------------ #
     # LOAD DATASET #
     # ------------ #
     'dataset': 'INbreast',
+    'small_lesion': 'calcifications',
     'image_height': 3328,
     'image_width': 2560,
     'split': '1-fold',
+
+    # --------------- #
+    # UTILITY DATASET #
+    # --------------- #
+    'images_extension': 'tiff',
+    'images_masks_extension': 'png',
+    'annotations_extension': 'csv',
 
     # ------------- #
     # EXPERIMENT ID #
@@ -38,6 +47,7 @@ parameters_default = {
     # DATASET TRANSFORMS #
     # ------------------ #
     'rescale': 1.0,
+    'num_channels': 1,
     'max_padding': 200,
 
     # -------------------- #
@@ -98,64 +108,28 @@ parameters_default = {
     # ---------- #
     'eval': 'distance7',
     'FP_images': 'normals',
-    'work_point': 10,
+    'score_threshold': 0.0,
 
     # ---------- #
     # LOAD MODEL #
     # ---------- #
-    'load_best_sensitivity_model': True,
-    'load_best_AUFROC_model': False,
+    'load_best_sensitivity_10_FPS_model': True,
+    'load_best_AUFROC_0_10_model': False,
+    'load_best_AUPR_model': False,
 
     # ------ #
     # OUTPUT #
     # ------ #
     'type_draw': 'box',
-    'box_draw_radius': 7,
+    'box_draw_radius': 10,
     'do_output_gravity': False,
     'num_images': 1,
     'idx': 0,
-
-    # ---------- #
-    # OUTPUT FPS #
-    # ---------- #
-    'FPS': 10,
 
     # --------------- #
     # POST PROCESSING #
     # --------------- #
     'do_NMS': False,
     'NMS_box_radius': 1,
-
-    # ------ #
-    # ROCalc #
-    # ------ #
-    'type_detections': 'test',
-
-    # ---------- #
-    # PLOT CHECK #
-    # ---------- #
-    'plot_check_list': "",
-    'type_plot_check': "",
-    'do_plots_train': False,
-    'do_plots_validation': False,
-    'do_plots_test': False,
-    'do_plots_test_NMS': False,
-    'do_plots_test_all': False,
-    'do_metrics': False,
-    'do_plots': False,
-
-    # ----- #
-    # DEBUG #
-    # ----- #
-    'debug_execution': False,
-    'debug_initialization': False,
-    'debug_transforms': False,
-    'debug_transforms_augmentation': False,
-    'debug_anchors': False,
-    'debug_hooking': False,
-    'debug_network': False,
-    'debug_test': False,
-    'debug_validation': False,
-    'debug_FROC': False,
 
 }

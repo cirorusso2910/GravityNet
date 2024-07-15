@@ -1,10 +1,7 @@
-import sys
 import torch
 import torch.nn as nn
 
 from typing import Tuple
-
-from net.debug.debug_hooking import debug_hooking
 
 
 class GravityLoss(nn.Module):
@@ -19,8 +16,8 @@ class GravityLoss(nn.Module):
                  hook: int,
                  hook_gap: int,
                  num_gravity_points_feature_map: int,
-                 device: torch.device,
-                 debug: bool):
+                 device: torch.device
+                 ):
         """
         __init__ method: run one when instantiating the object
 
@@ -31,7 +28,6 @@ class GravityLoss(nn.Module):
         :param hook_gap: hook distance gap
         :param num_gravity_points_feature_map: num gravity points for feature map
         :param device: device
-        :param debug: debug option
         """
 
         super(GravityLoss, self).__init__()
@@ -56,9 +52,6 @@ class GravityLoss(nn.Module):
 
         # device (CPU or GPU)
         self.device = device
-
-        # debug
-        self.debug = debug
 
     def forward(self,
                 images: torch.Tensor,
@@ -181,38 +174,6 @@ class GravityLoss(nn.Module):
 
             # marks the rejected indices with '-1'
             labels[rejected_indices, :] = -1
-
-            # ----- #
-            # DEBUG #
-            # ----- #
-            if self.debug:
-                print("\nDEBUG HOOKING"
-                      "\nConfig: {}".format(self.config),
-                      "\nGravity Points: {}".format(num_gravity_points),
-                      "\nHook: {}".format(self.hook),
-                      "\n",
-                      "\nPositive Gravity Points: {} / {}".format(num_positive_gravity_points, num_gravity_points),
-                      "\nNegative Gravity Points: {} / {}".format(num_negative_gravity_points, num_gravity_points),
-                      "\nRejected Gravity Points: {} / {}".format(num_rejected_gravity_points, num_gravity_points),
-                      "\n",
-                      "\nAnnotations: {}".format(num_annotations),
-                      "\nHooked Annotations: {} / {}".format(len(torch.unique(assigned_annotations[positive_indices, 0])), num_annotations))
-
-                # debug hooking
-                debug_hooking(gravity_points=gravity_points,
-                              annotation=annotation,
-                              assigned_annotations=assigned_annotations,
-                              positive_indices=positive_indices,
-                              negative_indices=negative_indices,
-                              rejected_indices=rejected_indices,
-                              image=image,
-                              save=True,
-                              path="./debug/GravityPoints-Hooking|config={}|gravity-points={}|hook={}|gap={}.png".format(self.config,
-                                                                                                                         num_gravity_points,
-                                                                                                                         self.hook,
-                                                                                                                         self.gap))
-
-                sys.exit('\nDEBUG HOOKING: COMPLETE')
 
             # ------------------- #
             # CLASSIFICATION LOSS #

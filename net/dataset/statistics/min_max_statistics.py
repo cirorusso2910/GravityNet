@@ -45,7 +45,8 @@ def read_min_max_statistics(statistics_path: str) -> dict:
     :return: (min, max) statistics dictionary
     """
 
-    header = statistics_header(statistics_type='min-max')
+    header = statistics_header(statistics_type='min-max',
+                               small_lesion_type='')
     statistics = read_csv(filepath_or_buffer=statistics_path, usecols=header)
 
     min_train = statistics['MIN'][0]

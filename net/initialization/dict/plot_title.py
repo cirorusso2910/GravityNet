@@ -24,13 +24,6 @@ def plot_title_dict(parser):
 
             'score_distribution': "SCORE DISTRIBUTION (TEST)",
 
-        },
-
-        'plots_test_NMS': {
-            'FROC': 'FROC (TEST NMS {}x{})'.format(parser.NMS_box_radius, parser.NMS_box_radius),
-            'ROC': 'ROC (TEST NMS {}x{})'.format(parser.NMS_box_radius, parser.NMS_box_radius),
-
-            'score_distribution': 'SCORE DISTRIBUTION (TEST NMS {}x{})'.format(parser.NMS_box_radius, parser.NMS_box_radius),
         }
     }
 

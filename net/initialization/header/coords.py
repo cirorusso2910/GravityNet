@@ -19,6 +19,10 @@ def coords_header(coords_type: str) -> List:
         header = ["FPR",
                   "TPR"]
 
+    elif coords_type == 'PR':
+        header = ["PRECISION",
+                  'RECALL']
+
     else:
         str_err = "\nERROR in header.py" \
                   "\n{} wrong header coords type" \

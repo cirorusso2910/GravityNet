@@ -37,14 +37,14 @@ def dataset_statistics(dataset_train: Dataset,
           "\nDATASET STATISTICS:"
           "\n-------------------"
           "\nDATASET TRAIN:"
-          "\nmin: {}  |  max: {}".format(min_train, max_train),
-          "\nmean: {} |  std: {}".format(mean_train, std_train),
+          "\nmin: {:.0f}  |  max: {:.0f}".format(min_train, max_train),
+          "\nmean: {:.3f} |  std: {:.3f}".format(mean_train, std_train),
           "\nDATASET VALIDATION:"
-          "\nmin: {}  |  max: {}".format(min_val, max_val),
-          "\nmean: {} |  std: {}".format(mean_val, std_val),
+          "\nmin: {:.0f}  |  max: {:.0f}".format(min_val, max_val),
+          "\nmean: {:.3f} |  std: {:.3f}".format(mean_val, std_val),
           "\nDATASET TEST:"
-          "\nmin: {}  |  max: {}".format(min_test, max_test),
-          "\nmean: {} |  std: {}".format(mean_test, std_test))
+          "\nmin: {:.0f}  |  max: {:.0f}".format(min_test, max_test),
+          "\nmean: {:.3f} |  std: {:.3f}".format(mean_test, std_test))
 
     dataset_statistics_results = {
         'train': {

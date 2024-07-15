@@ -1,13 +1,11 @@
 from torch.utils.data import Dataset
 
 
-def get_num_normal_images(dataset: Dataset,
-                          annotation_type_dict: str) -> int:
+def get_num_normal_images(dataset: Dataset) -> int:
     """
     Get num normal images
 
     :param dataset: dataset
-    :param annotation_type_dict: annotation type
     :return: num normal images
     """
 
@@ -18,7 +16,7 @@ def get_num_normal_images(dataset: Dataset,
     dataset_size = dataset.__len__()
 
     for i in range(dataset_size):
-        annotation = dataset[i][annotation_type_dict]
+        annotation = dataset[i]['annotation']
         num_annotation = len(annotation)
 
         if num_annotation == 0:

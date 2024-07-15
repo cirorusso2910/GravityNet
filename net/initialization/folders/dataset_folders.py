@@ -8,6 +8,10 @@ def dataset_folders_dict() -> dict:
         'annotations': 'annotations',
         'annotations_subfolder': {
             'csv': 'csv',
+            'csv_subfolder': {
+                'all': 'all',
+            },
+
             'draw': 'draw',
             'masks': 'masks'
         },

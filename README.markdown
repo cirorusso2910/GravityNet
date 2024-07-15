@@ -86,10 +86,10 @@ For details about the [experiments-structure](./doc/experiments/experiments-stru
 The **Class Dataset** must be defined according to the dataset-structure 
 and the file extension for each data type..
 
-**Hint:** rename the dataset.py with the name of the dataset
+**Hint:** rename the dataset_class.py with the name of the dataset
 
     The Class Dataset is defined in:
-        net/dataset/dataset.py
+        net/dataset/dataset_class.py
 
 Below a table with tha data types used:
 

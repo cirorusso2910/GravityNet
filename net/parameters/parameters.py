@@ -29,11 +29,17 @@ def parameters_parsing() -> argparse.Namespace:
     # who is my creator
     parser_who_is_my_creator = parser_mode.add_parser('who_is_my_creator', help=parameters_help['who_is_my_creator'])
 
+    # execution mode script
+    parser_script_anchors = parser_mode.add_parser('script_anchors', help=parameters_help['script_anchors'])
+    parser_script_dataset = parser_mode.add_parser('script_dataset', help=parameters_help['script_dataset'])
+
     # execution mode list
     execution_mode = [parser_train,
                       parser_test,
                       parser_test_NMS,
                       parser_train_test,
+                      parser_script_anchors,
+                      parser_script_dataset,
                       parser_who_is_my_creator]
 
     # for each subparser 'mode'
@@ -42,10 +48,15 @@ def parameters_parsing() -> argparse.Namespace:
         # -------------- #
         # INITIALIZATION #
         # -------------- #
-        subparser.add_argument('--where',
+        subparser.add_argument('--dataset_path',
                                type=str,
-                               default=parameters_default['where'],
-                               help=parameters_help['where'])
+                               default=parameters_default['dataset_path'],
+                               help=parameters_help['dataset_path'])
+
+        subparser.add_argument('--experiments_path',
+                               type=str,
+                               default=parameters_default['experiments_path'],
+                               help=parameters_help['experiments_path'])
 
         # ------------ #
         # LOAD DATASET #
@@ -54,6 +65,11 @@ def parameters_parsing() -> argparse.Namespace:
                                type=str,
                                default=parameters_default['dataset'],
                                help=parameters_help['dataset'])
+
+        subparser.add_argument('--small_lesion',
+                               type=str,
+                               default=parameters_default['small_lesion'],
+                               help=parameters_help['small_lesion'])
 
         subparser.add_argument('--image_height',
                                type=int,
@@ -69,6 +85,24 @@ def parameters_parsing() -> argparse.Namespace:
                                type=str,
                                default=parameters_default['split'],
                                help=parameters_help['split'])
+
+        # --------------- #
+        # UTILITY DATASET #
+        # --------------- #
+        subparser.add_argument('--images_extension',
+                               type=str,
+                               default=parameters_default['images_extension'],
+                               help=parameters_help['images_extension'])
+
+        subparser.add_argument('--images_masks_extension',
+                               type=str,
+                               default=parameters_default['images_masks_extension'],
+                               help=parameters_help['images_masks_extension'])
+
+        subparser.add_argument('--annotations_extension',
+                               type=str,
+                               default=parameters_default['annotations_extension'],
+                               help=parameters_help['annotations_extension'])
 
         # ------------- #
         # EXPERIMENT ID #
@@ -114,6 +148,12 @@ def parameters_parsing() -> argparse.Namespace:
                                type=float,
                                default=parameters_default['rescale'],
                                help=parameters_help['rescale'])
+
+        subparser.add_argument('--num_channels',
+                               type=int,
+                               default=parameters_default['num_channels'],
+                               choices=parameters_choices['num_channels'],
+                               help=parameters_help['num_channels'])
 
         subparser.add_argument('--max_padding',
                                type=int,
@@ -180,11 +220,6 @@ def parameters_parsing() -> argparse.Namespace:
                                type=int,
                                default=parameters_default['epochs'],
                                help=parameters_help['epochs'])
-
-        subparser.add_argument('--epoch_to_resume', '--ep_to_resume',
-                               type=int,
-                               default=parameters_default['epoch_to_resume'],
-                               help=parameters_help['epoch_to_resume'])
 
         subparser.add_argument('--optimizer',
                                type=str,
@@ -274,23 +309,28 @@ def parameters_parsing() -> argparse.Namespace:
                                default=parameters_default['FP_images'],
                                help=parameters_help['FP_images'])
 
-        subparser.add_argument('--work_point', '--wp',
-                               type=int,
-                               default=parameters_default['work_point'],
-                               help=parameters_help['work_point'])
+        subparser.add_argument('--score_threshold',
+                               type=float,
+                               default=parameters_default['score_threshold'],
+                               help=parameters_help['score_threshold'])
 
         # ---------- #
         # LOAD MODEL #
         # ---------- #
-        subparser.add_argument('--load_best_sensitivity_model',
+        subparser.add_argument('--load_best_sensitivity_10_FPS_model',
                                action='store_true',
-                               default=parameters_default['load_best_sensitivity_model'],
-                               help=parameters_help['load_best_sensitivity_model'])
+                               default=parameters_default['load_best_sensitivity_10_FPS_model'],
+                               help=parameters_help['load_best_sensitivity_10_FPS_model'])
 
-        subparser.add_argument('--load_best_AUFROC_model',
+        subparser.add_argument('--load_best_AUFROC_0_10_model',
                                action='store_true',
-                               default=parameters_default['load_best_AUFROC_model'],
-                               help=parameters_help['load_best_AUFROC_model'])
+                               default=parameters_default['load_best_AUFROC_0_10_model'],
+                               help=parameters_help['load_best_AUFROC_0_10_model'])
+
+        subparser.add_argument('--load_best_AUPR_model',
+                               action='store_true',
+                               default=parameters_default['load_best_AUPR_model'],
+                               help=parameters_help['load_best_AUPR_model'])
 
         # ------ #
         # OUTPUT #
@@ -321,14 +361,6 @@ def parameters_parsing() -> argparse.Namespace:
                                default=parameters_default['idx'],
                                help=parameters_help['idx'])
 
-        # ---------- #
-        # OUTPUT FPS #
-        # ---------- #
-        subparser.add_argument('--FPS',
-                               type=int,
-                               default=parameters_default['FPS'],
-                               help=parameters_help['FPS'])
-
         # --------------- #
         # POST PROCESSING #
         # --------------- #
@@ -341,115 +373,6 @@ def parameters_parsing() -> argparse.Namespace:
                                type=int,
                                default=parameters_default['NMS_box_radius'],
                                help=parameters_help['NMS_box_radius'])
-
-        # ------ #
-        # ROCalc #
-        # ------ #
-        subparser.add_argument('--type_detections',
-                               type=str,
-                               default=parameters_default['type_detections'],
-                               help=parameters_help['type_detections'])
-
-        # ---------- #
-        # PLOT CHECK #
-        # ---------- #
-        subparser.add_argument('--plot_check_list',
-                               type=str,
-                               default=parameters_default['plot_check_list'],
-                               help=parameters_help['plot_check_list'])
-
-        subparser.add_argument('--type_plot_check',
-                               type=str,
-                               default=parameters_default['type_plot_check'],
-                               help=parameters_help['type_plot_check'])
-
-        subparser.add_argument('--do_plots_train',
-                               action='store_true',
-                               default=parameters_default['do_plots_train'],
-                               help=parameters_help['do_plots_train'])
-
-        subparser.add_argument('--do_plots_validation',
-                               action='store_true',
-                               default=parameters_default['do_plots_validation'],
-                               help=parameters_help['do_plots_validation'])
-
-        subparser.add_argument('--do_plots_test',
-                               action='store_true',
-                               default=parameters_default['do_plots_test'],
-                               help=parameters_help['do_plots_test'])
-
-        subparser.add_argument('--do_plots_test_NMS',
-                               action='store_true',
-                               default=parameters_default['do_plots_test_NMS'],
-                               help=parameters_help['do_plots_test_NMS'])
-
-        subparser.add_argument('--do_plots_test_all',
-                               action='store_true',
-                               default=parameters_default['do_plots_test_all'],
-                               help=parameters_help['do_plots_test_all'])
-
-        subparser.add_argument('--do_metrics',
-                               action='store_true',
-                               default=parameters_default['do_metrics'],
-                               help=parameters_help['do_metrics'])
-
-        subparser.add_argument('--do_plots',
-                               action='store_true',
-                               default=parameters_default['do_plots'],
-                               help=parameters_help['do_plots'])
-
-        # ----- #
-        # DEBUG #
-        # ----- #
-        subparser.add_argument('--debug_execution',
-                               action='store_true',
-                               default=parameters_default['debug_execution'],
-                               help=parameters_help['debug_execution'])
-
-        subparser.add_argument('--debug_initialization',
-                               action='store_true',
-                               default=parameters_default['debug_initialization'],
-                               help=parameters_help['debug_initialization'])
-
-        subparser.add_argument('--debug_transforms',
-                               action='store_true',
-                               default=parameters_default['debug_transforms'],
-                               help=parameters_help['debug_transforms'])
-
-        subparser.add_argument('--debug_transforms_augmentation',
-                               action='store_true',
-                               default=parameters_default['debug_transforms_augmentation'],
-                               help=parameters_help['debug_transforms_augmentation'])
-
-        subparser.add_argument('--debug_anchors',
-                               action='store_true',
-                               default=parameters_default['debug_anchors'],
-                               help=parameters_help['debug_anchors'])
-
-        subparser.add_argument('--debug_hooking',
-                               action='store_true',
-                               default=parameters_default['debug_hooking'],
-                               help=parameters_help['debug_hooking'])
-
-        subparser.add_argument('--debug_network',
-                               action='store_true',
-                               default=parameters_default['debug_network'],
-                               help=parameters_help['debug_network'])
-
-        subparser.add_argument('--debug_test',
-                               action='store_true',
-                               default=parameters_default['debug_test'],
-                               help=parameters_help['debug_test'])
-
-        subparser.add_argument('--debug_validation',
-                               action='store_true',
-                               default=parameters_default['debug_validation'],
-                               help=parameters_help['debug_validation'])
-
-        subparser.add_argument('--debug_FROC',
-                               action='store_true',
-                               default=parameters_default['debug_FROC'],
-                               help=parameters_help['debug_FROC'])
 
     # parser arguments
     parser = parser.parse_args()

@@ -13,7 +13,7 @@ def annotation_header(annotation_type: str) -> list:
 
     # default
     if annotation_type == 'default':
-        header = ["X", "Y", "RADIUS"]
+        header = ["X", "Y"]
 
     else:
         str_err = msg_error(file=__file__,

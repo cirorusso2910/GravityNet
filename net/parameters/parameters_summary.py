@@ -13,6 +13,7 @@ def parameters_summary(parser: argparse.Namespace,
                        num_images: dict,
                        num_images_normals: dict,
                        num_annotations: dict,
+                       small_lesion: str,
                        image_shape: np.array,
                        feature_map_shape: Tuple[int, int],
                        num_gravity_points_feature_map: int,
@@ -25,6 +26,7 @@ def parameters_summary(parser: argparse.Namespace,
     :param num_images: num images dictionary
     :param num_images_normals: num images normals dictionary
     :param num_annotations: num annotations dictionary
+    :param small_lesion: small lesion type
     :param image_shape: image shape
     :param feature_map_shape: feature map shape
     :param num_gravity_points_feature_map: num gravity points per feature map
@@ -41,9 +43,9 @@ def parameters_summary(parser: argparse.Namespace,
     print("\nDATASET:"
           "\nDataset name: {}".format(dataset_name),
           "\nData Split: {}".format(parser.split),
-          "\nTraining data: {} with {} $TYPE_OF_LESION$".format(num_images['train'], num_annotations['train']),
-          "\nValidation data: {} with {} $TYPE_OF_LESION$".format(num_images['validation'], num_annotations['validation']),
-          "\nTest data: {} with {} $TYPE_OF_LESION$".format(num_images['test'], num_annotations['test']))
+          "\nTraining data: {} with {} {}".format(num_images['train'], num_annotations['train'], small_lesion),
+          "\nValidation data: {} with {} {}".format(num_images['validation'], num_annotations['validation'], small_lesion),
+          "\nTest data: {} with {} {}".format(num_images['test'], num_annotations['test'], small_lesion))
 
     print("\nIMAGE NORMALS:"
           "\nTraining image normals: {}".format(num_images_normals['train']),
@@ -54,16 +56,17 @@ def parameters_summary(parser: argparse.Namespace,
     # DATASET TRANSFORMS #
     # ------------------ #
     print("\nDATASET TRANSFORMS:"
-          "\n",
-          "\n",
-          "\n",
+          "\nRescale factor: {} ({} %)".format(parser.rescale, int(parser.rescale * 100)),
           "\nMax padding: {}".format(parser.max_padding))
 
     # -------------------- #
     # DATASET AUGMENTATION #
     # -------------------- #
     if parser.do_dataset_augmentation:
-        print("\nDATASET AUGMENTATION:"
+        print("\nDATASET AUGMENTED:"
+              "\nTraining data augmented: {} with {} {}".format(num_images['train'] * 4, num_annotations['train'] * 4, small_lesion))
+
+        print("\nDATASET TRANSFORMS AUGMENTATION:"
               "\nHorizontal Flip"
               "\nVertical Flip"
               "\nHorizontal and Vertical Flip")
@@ -105,9 +108,6 @@ def parameters_summary(parser: argparse.Namespace,
     print("\nHYPER PARAMETERS:"
           "\nEpochs: {}".format(parser.epochs))
 
-    if parser.mode in ['resume']:
-        print("Epochs To Resume: {}".format(parser.epoch_to_resume))
-
     print("Optimizer: {}".format(parser.optimizer),
           "\nScheduler: {}".format(parser.scheduler),
           "\nClip Gradient: {}".format(parser.clip_gradient),
@@ -140,29 +140,22 @@ def parameters_summary(parser: argparse.Namespace,
     # EVALUATION #
     # ---------- #
     # distance
-    if 'distance' in parser.eval:
-        print("\nEVALUATION:"
-              "\nEval: {}".format(parser.eval),
-              "\nEval with rescale of {} ({} %): distance{}".format(parser.rescale, int(parser.rescale * 100), distance_eval_rescale(eval=parser.eval, rescale=parser.rescale)),
-              "\nWork Point: {} avg FP for scan".format(parser.work_point))
-
-    # radius
-    elif 'radius' in parser.eval:
-        print("\nEVALUATION:"
-              "\nEval: {}".format(parser.eval),
-              "\nMultiplication Factor: {}".format(parser.eval.split('s')[1]),
-              "\nFP Images: {}".format(parser.FP_images),
-              "\nWork Point: {} avg FP for scan".format(parser.work_point))
+    print("\nEVALUATION:"
+          "\nEval: {}".format(parser.eval),
+          "\nEval with rescale of {} ({} %): distance{}".format(parser.rescale, int(parser.rescale * 100), distance_eval_rescale(eval=parser.eval, rescale=parser.rescale)),
+          "\nFP Images: {}".format(parser.FP_images))
 
     # ---------- #
     # LOAD MODEL #
     # ---------- #
-    if parser.mode in ['test']:
+    if parser.mode in ['test', 'test_NMS']:
         print("\nLOAD MODEL:")
-        if parser.load_best_sensitivity_model:
-            print("Load best sensitivity work point model")
-        if parser.load_best_AUFROC_model:
-            print("Load best AUFROC model")
+        if parser.load_best_sensitivity_10_FPS_model:
+            print("Load best sensitivity 10 FPS model")
+        if parser.load_best_AUFROC_0_10_model:
+            print("Load best AUFROC [0, 10] model")
+        if parser.load_best_AUPR_model:
+            print("Load best AUPR model")
 
     # ------ #
     # OUTPUT #
@@ -170,7 +163,7 @@ def parameters_summary(parser: argparse.Namespace,
     print("\nOUTPUT:"
           "\nType draw: {}".format(parser.type_draw),
           "\nOutput gravity: {}".format(parser.do_output_gravity))
-    if parser.mode in ['train', 'resume']:
+    if parser.mode in ['train']:
         print("Num images (in validation): 1")
     if parser.mode in ['test']:
         print("Num images (in test): {}".format(parser.num_images))
@@ -178,6 +171,6 @@ def parameters_summary(parser: argparse.Namespace,
     # ---------------------------- #
     # NON-MAXIMA-SUPPRESSION (NMS) #
     # ---------------------------- #
-    if parser.mode in ['test_NMS']:
+    if parser.do_NMS:
         print("\nNON-MAXIMA-SUPPRESSION (NMS):"
               "\nNMS box radius: {}".format(parser.NMS_box_radius))

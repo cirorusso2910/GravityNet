@@ -5,7 +5,8 @@ from typing import List
 from net.utility.msg.msg_error import msg_error
 
 
-def statistics_header(statistics_type: str) -> List:
+def statistics_header(statistics_type: str,
+                      small_lesion_type: str) -> List:
     """
     Get statistics header
 
@@ -17,11 +18,12 @@ def statistics_header(statistics_type: str) -> List:
         header = ["DATASET",
                   "IMAGES",
                   "NORMALS",
-                  "MICROANEURYSMS",
+                  "{}".format(small_lesion_type.upper()),
                   "MIN",
                   "MAX",
                   "MEAN",
-                  "STD"]
+                  "STD"
+                  ]
 
     elif statistics_type == 'min-max':
         header = ["DATASET",

@@ -8,23 +8,34 @@ parameters_help = {
     'mode': "EXECUTION MODE",
     'train': 'train model',
     'test': 'test model',
-    'test_NMS': 'test model with Non-Maxima-Suppression (NMS) post-processing',
     'train_test': 'train and test model',
 
     'who_is_my_creator': 'who is my creator?',
 
+    'script_anchors': 'script-anchors execution mode',
+    'script_dataset': 'script-dataset execution mode',
+
     # -------------- #
     # INITIALIZATION #
     # -------------- #
-    'where': f"initialization path for results (default: '{parameters_default['where']}')",
+    'dataset_path': f"dataset path (default: {parameters_default['dataset_path']})",
+    'experiments_path': f"experiment path (default: {parameters_default['experiments_path']})",
 
     # ------------ #
     # LOAD DATASET #
     # ------------ #
     'dataset': f"dataset name (default: '{parameters_default['dataset']}')",
+    'small_lesion': f"small lesion (default: {parameters_default['small_lesion']})",
     'image_height': f"image height size (default: {parameters_default['image_height']}",
     'image_width': f"image width size (default: {parameters_default['image_width']}",
     'split': f"dataset split (default: '{parameters_default['split']}')",
+
+    # --------------- #
+    # UTILITY DATASET #
+    # --------------- #
+    'images_extension': f"image extension (default: {parameters_default['images_extension']})",
+    'images_masks_extension': f"image mask extension (default: {parameters_default['images_masks_extension']})",
+    'annotations_extension': f"annotations extension (default: {parameters_default['annotations_extension']})",
 
     # ------------- #
     # EXPERIMENT ID #
@@ -51,6 +62,7 @@ parameters_help = {
     # DATASET TRANSFORMS #
     # ------------------ #
     'rescale': f"image rescale factor (default: {parameters_default['rescale']})",
+    'num_channels': f"number of image channels (default: {parameters_default['num_channels']})",
     'max_padding': f"padding size for annotation (default: {parameters_default['max_padding']})",
 
     # -------------------- #
@@ -82,7 +94,6 @@ parameters_help = {
     # HYPER-PARAMETERS #
     # ---------------- #
     'epochs': f"number of epochs (default: {parameters_default['epochs']})",
-    'epoch_to_resume': f"number of epoch to resume (default: {parameters_default['epoch_to_resume']})",
 
     'optimizer': f"Optimizer (default: '{parameters_default['optimizer']}'",
     'scheduler': f"Scheduler (default: '{parameters_default['scheduler']}'",
@@ -110,13 +121,14 @@ parameters_help = {
     # ---------- #
     'eval': f"evaluation criterion (default: '{parameters_default['eval']}'",
     'FP_images': f"type of images on which calculate FP (default: '{parameters_default['FP_images']}'",
-    'work_point': f"average FP for scan to get sensitivity in FROC Curve (default: {parameters_default['work_point']}",
+    'score_threshold': f"score threshold (default: {parameters_default['score_threshold']})",
 
     # ---------- #
     # LOAD MODEL #
     # ---------- #
-    'load_best_sensitivity_model': f"load best model with sensitivity work point (default: '{parameters_default['load_best_sensitivity_model']}'",
-    'load_best_AUFROC_model': f"load best model with AUFROC [0, 10] (default: '{parameters_default['load_best_AUFROC_model']}'",
+    'load_best_sensitivity_10_FPS_model': f"load best model with sensitivity 10 FPS (default: '{parameters_default['load_best_sensitivity_10_FPS_model']}'",
+    'load_best_AUFROC_0_10_model': f"load best model with AUFROC [0, 10] (default: '{parameters_default['load_best_AUFROC_0_10_model']}'",
+    'load_best_AUPR_model': f"load best model with AUPR (default: '{parameters_default['load_best_AUPR_model']}'",
 
     # ------ #
     # OUTPUT #
@@ -125,12 +137,7 @@ parameters_help = {
     'box_draw_radius': f"box radius to draw (default: {parameters_default['box_draw_radius']}",
     'do_output_gravity': f"do output gravity (default: {parameters_default['do_output_gravity']}",
     'num_images': f"num images to show in test (default: {parameters_default['num_images']}",
-    'idx': f"index image in dataset (default: {parameters_default['idx']}",
-
-    # ---------- #
-    # OUTPUT FPS #
-    # ---------- #
-    'FPS': f"FPS (default: {parameters_default['FPS']}",
+    'idx': f"index image (default: {parameters_default['idx']}",
 
     # --------------- #
     # POST PROCESSING #
@@ -138,35 +145,4 @@ parameters_help = {
     'do_NMS': f"apply Non-Maxima-Suppression (NMS) (default: {parameters_default['do_NMS']}",
     'NMS_box_radius': f"Non-Maxima-Suppression (NMS) box radius for gravity points->boxes transformation (default: {parameters_default['NMS_box_radius']}",
 
-    # ------ #
-    # ROCalc #
-    # ------ #
-    'type_detections': f"type of detections file (.csv) (default: {parameters_default['type_detections']}",
-
-    # ---------- #
-    # PLOT CHECK #
-    # ---------- #
-    'plot_check_list': f"list parameters for plot check (default: {parameters_default['plot_check_list']}",
-    'type_plot_check': f"type plot check (default: {parameters_default['type_plot_check']}",
-    'do_plots_train': f"do plots train (default: {parameters_default['do_plots_train']}",
-    'do_plots_validation': f"do plots validation (default: {parameters_default['do_plots_validation']}",
-    'do_plots_test': f"do plots test (default: {parameters_default['do_plots_test']}",
-    'do_plots_test_NMS': f"do plots test NMS (default: {parameters_default['do_plots_test_NMS']}",
-    'do_plots_test_all': f"do plots test all (default: {parameters_default['do_plots_test_all']}",
-    'do_metrics': f"do metrics (default: {parameters_default['do_metrics']}",
-    'do_plots': f"do plots (default: {parameters_default['do_plots']}",
-
-    # ----- #
-    # DEBUG #
-    # ----- #
-    'debug_execution': f"stop execution before starting execution mode (default: {parameters_default['debug_execution']}",
-    'debug_initialization': f"no experiment results creation (default: {parameters_default['debug_initialization']}",
-    'debug_transforms': f"stop execution in dataset transforms (default: {parameters_default['debug_transforms']}",
-    'debug_transforms_augmentation': f"stop execution in dataset augmentation transforms (default: {parameters_default['debug_transforms_augmentation']}",
-    'debug_anchors': f"save gravity points configuration (default: {parameters_default['debug_anchors']}",
-    'debug_hooking': f"save gravity points hooking (default: {parameters_default['debug_hooking']}",
-    'debug_network': f"save network summary model (default: {parameters_default['debug_network']}",
-    'debug_test': f"show first detections during test (default: {parameters_default['debug_test']}",
-    'debug_validation': f"show first detections during validation (default: {parameters_default['debug_validation']}",
-    'debug_FROC': f"show FROC computation debug (default: {parameters_default['debug_FROC']}",
 }

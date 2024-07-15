@@ -25,7 +25,11 @@ def sensitivity(FPS: np.ndarray,
             y1 = sens[n - 1]
             y2 = sens[n]
             break
-    sens_work_point = y1 + (work_point - x1) * (y2 - y1) / (x2 - x1)
+
+    try:
+        sens_work_point = y1 + (work_point - x1) * (y2 - y1) / (x2 - x1)
+    except ZeroDivisionError:
+        sens_work_point = 0
 
     # sens max (TPR max)
     sens_max = sens[-1]

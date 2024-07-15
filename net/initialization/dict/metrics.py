@@ -26,7 +26,7 @@ def metrics_dict(metrics_type: str) -> dict:
             'AUC': [],
 
             'sensitivity': {
-                'work_point': [],
+                '10 FPS': [],
                 'max': []
             },
 
@@ -36,6 +36,8 @@ def metrics_dict(metrics_type: str) -> dict:
                 '[0, 50]': [],
                 '[0, 100]': []
             },
+
+            'AUPR': [],
 
             'time': {
                 'train': [],
@@ -49,7 +51,7 @@ def metrics_dict(metrics_type: str) -> dict:
             'AUC': [],
 
             'sensitivity': {
-                'work_point': [],
+                '10 FPS': [],
                 'max': []
             },
 
@@ -59,31 +61,11 @@ def metrics_dict(metrics_type: str) -> dict:
                 '[0, 50]': [],
                 '[0, 100]': []
             },
+
+            'AUPR': [],
 
             'time': {
                 'test': [],
-                'metrics': []
-            }
-        }
-
-    elif metrics_type == 'test_NMS':
-        metrics = {
-            'AUC': [],
-
-            'sensitivity': {
-                'work_point': [],
-                'max': []
-            },
-
-            'AUFROC': {
-                '[0, 1]': [],
-                '[0, 10]': [],
-                '[0, 50]': [],
-                '[0, 100]': []
-            },
-
-            'time': {
-                'NMS': [],
                 'metrics': []
             }
         }
@@ -92,7 +74,7 @@ def metrics_dict(metrics_type: str) -> dict:
         str_err = msg_error(file=__file__,
                             variable=metrics_type,
                             type_variable='metrics type',
-                            choices='[train, test, test_NMS]')
+                            choices='[train, test]')
         sys.exit(str_err)
 
     return metrics

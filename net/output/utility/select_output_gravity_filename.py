@@ -1,4 +1,8 @@
-def select_output_gravity_filename(split: str) -> str:
+from torch.utils.data import Dataset
+
+
+def select_output_gravity_filename(dataset: Dataset,
+                                   idx: int) -> str:
     """
     Select filename to save output gravity
 
@@ -7,13 +11,6 @@ def select_output_gravity_filename(split: str) -> str:
     :return: filename for output gravity in validation
     """
 
-    # image filename for output gravity
-    if split == '1-fold':
-        filename_output_gravity = '$FILENAME$'
-    elif split == '2-fold':
-        filename_output_gravity = '$FILENAME$'
-    else:
-        filename_output_gravity = ""
-        print("\nNO FILENAME OUTPUT GRAVITY!")
+    filename_output_gravity = dataset[idx]['filename']
 
     return filename_output_gravity

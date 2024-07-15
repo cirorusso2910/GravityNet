@@ -26,7 +26,6 @@
     | - utility
     |
     | test.py
-    | test_NMS.py
     | train.py
     | validation.py
 

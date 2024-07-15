@@ -55,6 +55,9 @@ def experiment_result_path_dict(experiment_path: str,
     ROC_validation_path = os.path.join(plots_validation_path, experiment_folders['plots_ROC_validation'])
     coords_ROC_validation_path = os.path.join(coords_validation_path, experiment_folders['coords_ROC_validation'])
 
+    PR_validation_path = os.path.join(plots_validation_path, experiment_folders['plots_PR_validation'])
+    coords_PR_validation_path = os.path.join(coords_validation_path, experiment_folders['coords_PR_validation'])
+
     experiment_result_path = {
         'detections': detections_path,
 
@@ -82,7 +85,10 @@ def experiment_result_path_dict(experiment_path: str,
         'coords_FROC_validation': coords_FROC_validation_path,
 
         'ROC_validation': ROC_validation_path,
-        'coords_ROC_validation': coords_ROC_validation_path
+        'coords_ROC_validation': coords_ROC_validation_path,
+
+        'PR_validation': PR_validation_path,
+        'coords_PR_validation': coords_PR_validation_path,
     }
 
     return experiment_result_path

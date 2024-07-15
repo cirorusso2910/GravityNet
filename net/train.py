@@ -1,5 +1,4 @@
 import argparse
-import sys
 import time
 
 from typing import Union, Tuple
@@ -11,13 +10,13 @@ from torch.nn.utils import clip_grad_norm_
 from torch.optim import Adam, SGD
 from torch.optim.lr_scheduler import ReduceLROnPlateau, StepLR, CosineAnnealingWarmRestarts
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from net.loss.GravityLoss import GravityLoss
 from net.metrics.utility.timer import timer
 
 
-def train(dataset: str,
-          num_epoch: int,
+def train(num_epoch: int,
           epochs: int,
           net: torch.nn.Module,
           dataloader: DataLoader,
@@ -57,13 +56,14 @@ def train(dataset: str,
     regression_loss_hist = []
 
     # for each batch in dataloader
-    for num_batch, batch in enumerate(dataloader):
+    for num_batch, batch in enumerate(tqdm(dataloader, desc='Training')):
 
         # init batch time
         time_batch_start = time.time()
 
         # get data from dataloader
-        image, annotation = batch['image'].float().to(device), batch['annotation'].to(device)
+        image = batch['image'].to(device)
+        annotation = batch['annotation'].to(device)
 
         # zero (init) the parameter gradients
         optimizer.zero_grad()
@@ -105,12 +105,12 @@ def train(dataset: str,
         # batch time conversion
         batch_time = timer(time_elapsed=time_batch)
 
-        print("Epoch: {}/{} |".format(num_epoch, epochs),
-              "Batch: {}/{} |".format(num_batch + 1, len(dataloader)),
-              "Classification Loss: {:1.5f} |".format(float(classification_loss)),
-              "Regression Loss: {:1.5f} |".format(float(regression_loss)),
-              "Loss: {:1.5f} |".format(float(loss)),
-              "Time: {:.0f} s ".format(batch_time['seconds']))
+        # print("Epoch: {}/{} |".format(num_epoch, epochs),
+        #       "Batch: {}/{} |".format(num_batch + 1, len(dataloader)),
+        #       "Classification Loss: {:1.5f} |".format(float(classification_loss)),
+        #       "Regression Loss: {:1.5f} |".format(float(regression_loss)),
+        #       "Loss: {:1.5f} |".format(float(loss)),
+        #       "Time: {:.0f} s ".format(batch_time['seconds']))
 
         del classification_loss
         del regression_loss

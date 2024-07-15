@@ -2,23 +2,22 @@ from net.metrics.utility.my_round_value import my_round_value
 from net.metrics.utility.timer import timer
 
 
-def show_metrics_test(metrics: dict,
-                      work_point: int):
+def show_metrics_test(metrics: dict):
     """
     Show metrics-test
 
     :param metrics: metrics dictionary
-    :param work_point: work point
     """
 
     # metrics round
     AUC = my_round_value(value=metrics['AUC'][-1], digits=3)
-    sensitivity_work_point = my_round_value(value=metrics['sensitivity']['work_point'][-1], digits=3)
+    sensitivity_10_FPS = my_round_value(value=metrics['sensitivity']['10 FPS'][-1], digits=3)
     sensitivity_max = my_round_value(value=metrics['sensitivity']['max'][-1], digits=3)
     AUFROC_0_1 = my_round_value(value=metrics['AUFROC']['[0, 1]'][-1], digits=3)
     AUFROC_0_10 = my_round_value(value=metrics['AUFROC']['[0, 10]'][-1], digits=3)
     AUFROC_0_50 = my_round_value(value=metrics['AUFROC']['[0, 50]'][-1], digits=3)
     AUFROC_0_100 = my_round_value(value=metrics['AUFROC']['[0, 100]'][-1], digits=3)
+    AUPR = my_round_value(value=metrics['AUPR'][-1], digits=3)
 
     # metrics timer conversion
     metrics_time_test = timer(time_elapsed=metrics['time']['test'][-1])
@@ -28,12 +27,13 @@ def show_metrics_test(metrics: dict,
           "\nMETRICS TEST:"
           "\n-------------"
           "\nAUC: {}".format(AUC),
-          "\nSensitivity (Work Point {} avg FP for scan): {}".format(work_point, sensitivity_work_point),
-          "\nSensitivity (Max): {}".format(sensitivity_max),
+          "\nSensitivity 10 FPS: {}".format(sensitivity_10_FPS),
+          "\nSensitivity Max: {}".format(sensitivity_max),
           "\nAUFROC [0, 1]: {}".format(AUFROC_0_1),
           "\nAUFROC [0, 10]: {}".format(AUFROC_0_10),
           "\nAUFROC [0, 50]: {}".format(AUFROC_0_50),
-          "\nAUFROC [0, 100]: {}".format(AUFROC_0_100))
+          "\nAUFROC [0, 100]: {}".format(AUFROC_0_100),
+          "\nAUPR: {}".format(AUPR))
 
     print("\n-----"
           "\nTIME:"

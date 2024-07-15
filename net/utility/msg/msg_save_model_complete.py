@@ -7,12 +7,3 @@ def msg_save_best_model_complete(metrics_type: str):
 
     print("Save best-model with {}: COMPLETE".format(metrics_type))
 
-
-def msg_save_resume_model_complete(epoch: int):
-    """
-    Message save resume model
-
-    :param epoch: num epoch
-    """
-
-    print("Save resume-model at epoch {}: COMPLETE".format(epoch))

@@ -9,8 +9,7 @@ from net.dataset.dataset_transforms_augmentation import dataset_transforms_augme
 def dataset_augmentation(normalization: str,
                          parser: argparse.Namespace,
                          statistics_path: str,
-                         dataset_train: Dataset,
-                         debug: bool):
+                         dataset_train: Dataset):
     """
     Apply dataset augmentation (only for dataset-train)
 
@@ -18,15 +17,13 @@ def dataset_augmentation(normalization: str,
     :param parser: parser of parameters-parsing
     :param statistics_path: statistics path
     :param dataset_train: dataset-train
-    :param debug: debug option
     :return: dataset-train augmented
     """
 
     # dataset augmentation transforms
     transforms_augmentation = dataset_transforms_augmentation(normalization=normalization,
                                                               parser=parser,
-                                                              statistics_path=statistics_path,
-                                                              debug=debug)
+                                                              statistics_path=statistics_path)
 
     # dataset-train HorizontalFLip augmentation
     dataset_train_HorizontalFlip = copy.deepcopy(dataset_train)

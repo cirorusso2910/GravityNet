@@ -4,12 +4,13 @@
 ## STRUCTURE
 
     dataset
+    | - classes
+    |   | dataset_class.py
     |
     | - draw
     |   | add_3_channels_image.py
     |   | draw_annotation.py
-    |   | draw_cut.py
-    |   | select_1_channel_image.py
+    |   | transpose_3_channel_image.py
     |
     | - statistics
     |   | min_max_statistics.py
@@ -18,10 +19,17 @@
     |   | standard_statistics.py
     |
     | - transforms
-    |   -> transforms
+    |   | Add3ChannelsImage.py
+    |   | AnnotationPadding.py
+    |   | MinMaxNormalization.py
+    |   | Rescale.py
+    |   | StandardNormalization.py
+    |   | ToTensor.py
     |
     | - transforms_augmentation
-    |   -> transforms-augmentation
+    |   | MyHorizontalAndVerticalFlip.py
+    |   | MyHorizontalFlip.py
+    |   | MyVerticalFlip.py
     |
     | - utility
     |   | read_dataset_sample.py
@@ -42,17 +50,24 @@
 
 | FOLDER                      | FUNCTION                           | DESCRIPTION                                                            |
 |-----------------------------|------------------------------------|------------------------------------------------------------------------|
+| **classes**                 | dataset_class.py                   | Class Dataset                                                          |
 | **draw**                    | add_3_channels_image.py            | Add 3 channels to image: copy image 3 times                            |
 | **draw**                    | draw_annotation.py                 | Draw annotation on image and save                                      |
-| **draw**                    | draw_cut.py                        | Draw cut line on image and save                                        |
-| **draw**                    | select_1_channel_image.py          | Add 3 channels to image: copy image 3 times                            |
+| **draw**                    | transpose_3_channel_image.py       | Transpose 3 channel image for drawing: CxHxW -> HxWxC                  |
 | **statistics**              | min_max_statistics.py              | Compute (min, max) value of dataset                                    |
 | **statistics**              | num_annotations.py                 | Get num annotations                                                    |
 | **statistics**              | num_normal_images.py               | Get num normal images                                                  |
+| **statistics**              | read_statistics.py                 | Read statistics                                                        |
 | **statistics**              | standard_statistics.py             | Compute (mean, std) value of dataset                                   |
-| **statistics**              | standard_statistics.py             | Compute (mean, std) value of dataset                                   |
-| **transforms**              |                                    | transforms                                                             |
-| **transforms_augmentation** |                                    | transforms-augmentation                                                |
+| **transforms**              | Add3ChannelsImage.py               | Add 3 Channels to Image: add 3 channels to image (copying 3 times)     |
+| **transforms**              | AnnotationPadding.py               | Annotation padding                                                     |
+| **transforms**              | MinMaxNormalization.py             | Min-Max Normalization:                                                 |
+| **transforms**              | Rescale.py                         | Rescale data according to rescale factor [0, 1]                        |
+| **transforms**              | StandardNormalization.py           | Standard Normalization                                                 |
+| **transforms**              | ToTensor.py                        | Convert data sample to tensor                                          |
+| **transforms_augmentation** | MyHorizontalAndVerticalFlip.py     | My Horizontal and Vertical Flip                                        |
+| **transforms_augmentation** | MyHorizontalFlip.py                | My Horizontal Flip                                                     |
+| **transforms_augmentation** | MyVerticalFlip.py                  | My Vertical Flip                                                       |
 | **utility**                 | read_dataset_sample.py             | Read dataset sample at specific index (idx) position                   |
 | **utility**                 | split_index.py                     | Get split index                                                        |
 | **utility**                 | viewable_image.py                  | Transforms the input image in a 'viewable' image in the range [0, 255] |
