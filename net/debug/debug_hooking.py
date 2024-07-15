@@ -34,14 +34,6 @@ def debug_hooking(gravity_points: torch.Tensor,
     :param path: path to save
     """
 
-    # image conversion
-    image = image.permute((1, 2, 0))  # permute 3xHxW -> HxWx3
-    image = image.cpu().detach().numpy()  # to numpy
-    image = viewable_image(image=image)  # viewable
-    image_channel = image[:, :, 0]  # image 1-channel
-
-    image = add_3_channels_image(image=image_channel)  # copy 3 channels
-
     # gravity points with positive indices
     gravity_points_positive = gravity_points[positive_indices]
     gravity_points_positive_x = gravity_points_positive[:, 0]

@@ -20,11 +20,8 @@ def read_dataset_sample(dataset: Dataset,
     image = dataset[idx]['image']
     image = image.permute((1, 2, 0))  # permute
     image = image.cpu().detach().numpy()
+    image = image.copy()
     image = viewable_image(image=image)
-
-    # image mask
-    image_mask = dataset[idx]['image_mask']
-    image_mask = image_mask.cpu().detach().numpy()
 
     # read annotation
     annotation = dataset[idx]['annotation']
@@ -33,7 +30,6 @@ def read_dataset_sample(dataset: Dataset,
     sample = {
         'filename': image_filename,
         'image': image,
-        'image_mask': image_mask,
         'annotation': annotation
     }
 
