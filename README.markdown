@@ -52,6 +52,8 @@ This framework uses parameters-parsing, so each **new** parameter **must** be ad
 
 The definition of these parameters is essential for the _experiment_ID_ to save the results and avoid overwriting.    
 
+For details about the [requirements](doc/requirements/requirements.markdown)
+
 ----------------------------------------------------------------------
 ### :two: INITIALIZATION
 Before starting the experiment, it is necessary to define the working paths:
