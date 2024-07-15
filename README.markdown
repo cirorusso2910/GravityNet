@@ -9,6 +9,15 @@ by **PhD Student Ing. Ciro Russo** <br>
 :books: [Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
 :computer: [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
 
+----------------------------------------------------------------------
+
+**GravityNet** is novel **one-stage** **end-to-end** **detector** specifically designed to **detect** **small** **lesions** in **medical** **images**.
+Precise localization of small lesions presents challenges due to their appearance and the diverse contextual backgrounds in which they are found.
+To address this, our approach introduces a **new type of pixel-based anchor** that dynamically moves towards the targeted lesion for detection.
+We refer to this new architecture as **GravityNet**, and the novel anchors as **gravity points** since they appear to be “attracted” by the lesions.
+
+<img src="doc/architecture/GravityNet-architecture.png" width="80%" height="80%" alt="">
+
 ## :rocket: HOW TO GRAVITY
 
 <!-- :construction: UNDERGOING MAINTENANCE :construction: -->
@@ -86,7 +95,14 @@ The **backbone** is a convolutional network and plays the role of feature extrac
 The **first subnet** performs convolutional object classification on the backbone's output. <br>
 The **second subnet** performs convolutional gravity-points regression.
 
-<img src="doc/architecture/GravityNet-architecture.png" width="80%" height="80%" alt="">
+| ResNet     | | | | |
+|------------|-|-|-|-|
+| ResNet-18  | | | | |
+| ResNet-34  | | | | |
+| ResNet-50  | | | | |
+| ResNet-101 | | | | |
+| ResNet-152 | | | | |
+
 
 ----------------------------------------------------------------------
 ### :nine: EXECUTION MODE
