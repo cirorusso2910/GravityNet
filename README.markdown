@@ -9,11 +9,11 @@ by **PhD Student Ing. Ciro Russo** <br>
 :books: [Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
 :computer: [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
 
+### :luggage: CREDITS
 :office: **University of Cassino and Lazio Meridionale** <br>
 :man_teacher: Prof. **Claudio Marrocco** ([Google Scholar](https://scholar.google.it/citations?user=ed4B7I4AAAAJ&hl=it)) <br>
 :man_teacher: Prof. **Alessandro Bria** ([LinkedIn](https://www.linkedin.com/in/alessandro-bria-831ab149/?originalSubdomain=it))<br>
 :man_technologist: **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
-
 
 ----------------------------------------------------------------------
 ## :rocket: GRAVITY NET
