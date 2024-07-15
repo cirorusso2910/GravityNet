@@ -5,6 +5,7 @@
 **GravityNet** official repository <br>
 by **PhD Student Ing. Ciro Russo** <br>
 :man_technologist: [LinkedIn](https://www.linkedin.com/in/ciro-russo-b14056100/) <br>
+:bookmark_tabs: [Google Scholar](https://scholar.google.com/citations?user=XJV2vVsAAAAJ&hl=it&authuser=1) <br>
 :books: [Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
 :computer: [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
 
