@@ -23,7 +23,6 @@ def parameters_parsing() -> argparse.Namespace:
     # execution mode
     parser_train = parser_mode.add_parser('train', help=parameters_help['train'])
     parser_test = parser_mode.add_parser('test', help=parameters_help['test'])
-    parser_test_NMS = parser_mode.add_parser('test_NMS', help=parameters_help['test_NMS'])
     parser_train_test = parser_mode.add_parser('train_test', help=parameters_help['train_test'])
 
     # who is my creator
@@ -36,7 +35,6 @@ def parameters_parsing() -> argparse.Namespace:
     # execution mode list
     execution_mode = [parser_train,
                       parser_test,
-                      parser_test_NMS,
                       parser_train_test,
                       parser_script_anchors,
                       parser_script_dataset,

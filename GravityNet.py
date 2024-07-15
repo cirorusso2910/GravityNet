@@ -12,6 +12,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 
 from net.anchors.gravity_points_config import gravity_points_config
+from net.anchors.utility.check_image_shape import check_image_shape
 from net.dataset.classes.dataset_class import dataset_class
 from net.dataset.dataset_augmentation import dataset_augmentation
 from net.dataset.dataset_num_annotations import dataset_num_annotations
@@ -229,6 +230,9 @@ def main():
     # image shape (C x H x W)
     image_channels, image_height, image_width = dataset_train[0]['image'].shape  # get image shape
     image_shape = np.array((int(image_height), int(image_width)))  # converts to numpy.array
+
+    # check image shape dimension
+    check_image_shape(image_shape=image_shape)
 
     # generate gravity points
     gravity_points, gravity_points_feature_map, feature_map_shape = gravity_points_config(config=parser.config,
