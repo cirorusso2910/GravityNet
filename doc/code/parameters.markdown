@@ -1,25 +1,36 @@
 # PARAMETERS
 
-| **EXECUTION MODE**             | **DESCRIPTION**                                                 |
-|--------------------------------|-----------------------------------------------------------------|
-| **train**                      | train model                                                     |
-| **resume**                     | resume training from a specific epoch                           |
-| **test**                       | test model                                                      |
-| **test_NMS**                   | test model with Non-Maxima-Suppression (NMS) post-processing    |
-| **train_test**                 | train and test model                                            |
+| **EXECUTION MODE** | **DESCRIPTION**                       |
+|--------------------|---------------------------------------|
+| **train**          | train model                           |
+| **resume**         | resume training from a specific epoch |
+| **test**           | test model                            |
+| **train_test**     | train and test model                  |
+|                    |                                       |
+| **script_anchors** | script-anchors execution mode         |
+| **script_dataset** | script-dataset execution mode         |
 
 ### INITIALIZATION
-| **PARAMETER** | **DESCRIPTION**    |
-|---------------|--------------------|
-| **where**     | where to save/read |
+| **PARAMETER**        | **DESCRIPTION** |
+|----------------------|-----------------|
+| **dataset_path**     | dataset path    |
+| **experiments_path** | experiment path |
 
 ### LOAD DATASET
 | **PARAMETER**    | **DESCRIPTION**  |
 |------------------|------------------|
 | **dataset**      | dataset name     |
+| **small_lesion** | small lesion     |
 | **image_height** | image height (H) |
 | **image_width**  | image width (W)  |
 | **split**        | dataset split    |
+
+## UTILITY DATASET
+| **PARAMETER**              | **DESCRIPTION**       |
+|----------------------------|-----------------------|
+| **image_extension**        | image extension       |
+| **images_masks_extension** | image mask extension  |
+| **annotations_extension**  | annotations extension |
 
 ### EXPERIMENT ID
 | **PARAMETER** | **DESCRIPTION**    |
@@ -44,10 +55,11 @@
 
 ### DATASET TRANSFORMS
 
-| **PARAMETER**           | **DESCRIPTION**                               |
-|-------------------------|-----------------------------------------------|
-| **rescale**             | image rescale factor                          |
-| **max_padding**         | padding size for annotation                   |
+| **PARAMETER**           | **DESCRIPTION**             |
+|-------------------------|-----------------------------|
+| **rescale**             | image rescale factor        |
+| **num_channels**        | number of image channels    |
+| **max_padding**         | padding size for annotation |
 
 ### DATASET AUGMENTATION
 | **PARAMETER**               | **DESCRIPTION**         |
@@ -74,18 +86,20 @@
 | **config**     | gravity points configuration |
 
 ### HYPER-PARAMETERS
-| **PARAMETER**       | **DESCRIPTION**                                                                                               |
-|---------------------|---------------------------------------------------------------------------------------------------------------|
-| **epochs**          | number of epochs                                                                                              |
-| **epoch_to_resume** | number of epoch to resume                                                                                     |
-| **optimizer**       | Optimizer                                                                                                     |
-| **scheduler**       | Scheduler                                                                                                     |
-| **clip_gradient**   | Clip Gradient                                                                                                 |
-| **learning_rate**   | how fast approach the minimum                                                                                 |
-| **lr_patience**     | number of epochs with no improvement after which learning rate will be reduced [scheduler: ReduceLROnPlateau] |
-| **lr_step_size**    | how much the learning rate decreases [scheduler: StepLR]                                                      |
-| **lr_gamma**        | multiplicative factor of learning rate decay [scheduler: StepLR]                                              |
-| **max_norm**        | max norm of the gradients to be clipped [Clip Gradient]                                                       |
+| **PARAMETER**     | **DESCRIPTION**                                                                                               |
+|-------------------|---------------------------------------------------------------------------------------------------------------|
+| **epochs**        | number of epochs                                                                                              |
+|                   |                                                                                                               |
+| **optimizer**     | Optimizer                                                                                                     |
+| **scheduler**     | Scheduler                                                                                                     |
+| **clip_gradient** | Clip Gradient                                                                                                 |
+|                   |                                                                                                               |
+| **learning_rate** | how fast approach the minimum                                                                                 |
+| **lr_patience**   | number of epochs with no improvement after which learning rate will be reduced [scheduler: ReduceLROnPlateau] |
+| **lr_step_size**  | how much the learning rate decreases [scheduler: StepLR]                                                      |
+| **lr_gamma**      | multiplicative factor of learning rate decay [scheduler: StepLR]                                              |
+|                   |                                                                                                               |
+| **max_norm**      | max norm of the gradients to be clipped [Clip Gradient]                                                       |
 
 ### GRAVITY LOSS
 | **PARAMETER** | **DESCRIPTION**                                                       |
@@ -97,17 +111,18 @@
 | **gap**       | hook gap distance in classification loss for rejection gravity points |
 
 ### EVALUATION
-| **PARAMETER**   | **DESCRIPTION**                                      |
-|-----------------|------------------------------------------------------|
-| **eval**        | evaluation criterion                                 |
-| **FP_images**   | type of images on which calculate FP                 |
-| **work_point**  | average FP for scan to get sensitivity in FROC Curve |
+| **PARAMETER**       | **DESCRIPTION**                      |
+|---------------------|--------------------------------------|
+| **eval**            | evaluation criterion                 |
+| **FP_images**       | type of images on which calculate FP |
+| **score_threshold** | score threshold                      |
 
 ### LOAD MODEL
-| **PARAMETER**                   | **DESCRIPTION**                             |
-|---------------------------------|---------------------------------------------|
-| **load_best_sensitivity_model** | load best model with sensitivity work point |
-| **load_best_AUFROC_model**      | load best model with AUFROC [0, 10]         |
+| **PARAMETER**                          | **DESCRIPTION**                         |
+|----------------------------------------|-----------------------------------------|
+| **load_best_sensitivity_10_FPS_model** | load best model with sensitivity 10 FPS |
+| **load_best_AUFROC_0_10_model**        | load best model with AUFROC [0, 10]     |
+| **load_best_AUPR_model**               | load best model with AUPR               |
 
 ### OUTPUT
 | **PARAMETER**         | **DESCRIPTION**            |
@@ -118,45 +133,8 @@
 | **num_image**         | num images to show in test |
 | **idx**               | index image in dataset     |
 
-### OUTPUT FPS
-| **PARAMETER** | **DESCRIPTION** |
-|---------------|-----------------|
-| **FPS**       | FPS             |
-
 ### POST PROCESSING
 | **PARAMETER**      | **DESCRIPTION**                                                                  |
 |--------------------|----------------------------------------------------------------------------------|
 | **do_NMS**         | apply Non-Maxima-Suppression (NMS)                                               |
 | **NMS_box_radius** | Non-Maxima-Suppression (NMS) box radius for gravity points->boxes transformation |
-
-### ROCalc
-| **PARAMETER**       | **DESCRIPTION**                |
-|---------------------|--------------------------------|
-| **type_detections** | type of detections file (.csv) |
-
-### PLOT CHECK
-| **PARAMETER**           | **DESCRIPTION**                            |
-|-------------------------|--------------------------------------------|
-| **plot_check_list**     | list parameters for plot-check             |
-| **type_plot_check**     | type of plot-check                         |
-| **do_plots_train**      | do plots-train check and save results      |
-| **do_plots_validation** | do plots-validation check and save results |
-| **do_plots_test**       | do plots-test check and save results       |
-| **do_plots_test_NMS**   | do plots-test-NMS check and save results   |
-| **do_plots_test_all**   | do plots-test-all check and save results   |
-| **do_metrics**          | do metrics check and save results          |
-| **do_plots**            | do plots check and save results            |
-
-### DEBUG
-| **PARAMETER**                     | **DESCRIPTION**                                   |
-|-----------------------------------|---------------------------------------------------|
-| **debug_execution**               | stop execution before starting execution mode     |
-| **debug_initialization**          | no experiment results creation                    |
-| **debug_transforms**              | stop execution in dataset transforms              |
-| **debug_transforms_augmentation** | stop execution in dataset augmentation transforms |
-| **debug_anchors**                 | save gravity points configuration                 |
-| **debug_hooking**                 | save gravity points hooking                       |
-| **debug_network**                 | save network summary model                        |
-| **debug_test**                    | show first detections during test                 |
-| **debug_validation**              | show first detections during validation           |
-| **debug_FROC**                    | show FROC computation debug                       |
