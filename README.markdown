@@ -143,7 +143,10 @@ The available **execution mode**:
              pages={102842} <br>
     }
 
+**ArXiv**: https://arxiv.org/abs/2309.12876
+
 ## :luggage: CREDITS
 :office: **University of Cassino and Lazio Meridionale** <br>
-:man_teacher: Prof. **Claudio Marrocco** and Prof. **Alessandro Bria** <br>
+:man_teacher: Prof. **Claudio Marrocco** ([Google Scholar](https://scholar.google.it/citations?user=ed4B7I4AAAAJ&hl=it)) <br>
+:man_teacher: Prof. **Alessandro Bria** ([LinkedIn](https://www.linkedin.com/in/alessandro-bria-831ab149/?originalSubdomain=it))<br>
 :man_technologist: **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
