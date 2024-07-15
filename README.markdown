@@ -11,7 +11,7 @@ by **PhD Student Ing. Ciro Russo** <br>
 
 ## :rocket: HOW TO GRAVITY
 
-:construction: UNDERGOING MAINTENANCE :construction:
+<!-- :construction: UNDERGOING MAINTENANCE :construction: -->
 
 ### :one: PARAMETERS
 This framework uses parameters-parsing, so each **new** parameter **must** be added paying attention to the reference section 
