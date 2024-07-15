@@ -80,10 +80,10 @@ def output(type_draw: str,
                 cv2.circle(image, (coord_annotation_x, coord_annotation_y), radius=0, color=RED1, thickness=1)
 
             # draw annotations (bounding box)
-            if type_draw == 'box':
+            elif type_draw == 'box':
                 start_point_annotation = (coord_annotation_x - box_draw_radius, coord_annotation_y - box_draw_radius)  # start point (top left corner of rectangle)
                 end_point_annotation = (coord_annotation_x + box_draw_radius, coord_annotation_y + box_draw_radius)  # end point (bottom right corner of rectangle)
-                cv2.rectangle(sample['image'], pt1=start_point_annotation, pt2=end_point_annotation, color=RED1, thickness=1)
+                cv2.rectangle(image, pt1=start_point_annotation, pt2=end_point_annotation, color=RED1, thickness=1)
 
         # ---------------- #
         # DRAW PREDICTIONS #
@@ -114,7 +114,7 @@ def output(type_draw: str,
                     start_point_prediction_FP = (coord_prediction_x - box_draw_radius, coord_prediction_y - box_draw_radius)  # start point (top left corner of rectangle)
                     end_point_prediction_FP = (coord_prediction_x + box_draw_radius, coord_prediction_y + box_draw_radius)  # end point (bottom right corner of rectangle)
                     cv2.rectangle(image, pt1=start_point_prediction_FP, pt2=end_point_prediction_FP, color=VIOLET, thickness=1)
-                    cv2.putText(image, text=str(score), org=(start_point_prediction_FP[0], start_point_prediction_FP[1] - 10),
+                    cv2.putText(image, text=str(score), org=(start_point_prediction_FP[0], start_point_prediction_FP[1] - box_draw_radius),
                                 fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=VIOLET, thickness=1, lineType=cv2.LINE_AA, bottomLeftOrigin=False)
 
             # draw prediction (TP)
@@ -138,13 +138,13 @@ def output(type_draw: str,
                     start_point_prediction_TP = (coord_prediction_x - box_draw_radius, coord_prediction_y - box_draw_radius)  # start point (top left corner of rectangle)
                     end_point_prediction_TP = (coord_prediction_x + box_draw_radius, coord_prediction_y + box_draw_radius)  # end point (bottom right corner of rectangle)
                     cv2.rectangle(image, pt1=start_point_prediction_TP, pt2=end_point_prediction_TP, color=GREEN1, thickness=1)
-                    cv2.putText(image, text=str(score), org=(start_point_annotation[0], start_point_annotation[1] - box_draw_radius),
+                    cv2.putText(image, text=str(score), org=(start_point_prediction_TP[0], end_point_prediction_TP[1] - box_draw_radius*3),
                                 fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=GREEN1, thickness=1, lineType=cv2.LINE_AA, bottomLeftOrigin=False)
 
                     # draw annotations detected (bounding box)
-                    start_point_annotation = (coord_annotation_detected_x - box_draw_radius, coord_annotation_detected_y - box_draw_radius)  # start point (top left corner of rectangle)
-                    end_point_annotation = (coord_annotation_detected_x + box_draw_radius, coord_annotation_detected_y + box_draw_radius)  # end point (bottom right corner of rectangle)
-                    cv2.rectangle(image, pt1=start_point_annotation, pt2=end_point_annotation, color=YELLOW1, thickness=1)
+                    start_point_annotation_detected = (coord_annotation_detected_x - box_draw_radius, coord_annotation_detected_y - box_draw_radius)  # start point (top left corner of rectangle)
+                    end_point_annotation_detected = (coord_annotation_detected_x + box_draw_radius, coord_annotation_detected_y + box_draw_radius)  # end point (bottom right corner of rectangle)
+                    cv2.rectangle(image, pt1=start_point_annotation_detected, pt2=end_point_annotation_detected, color=YELLOW1, thickness=1)
 
         # -------- #
         # FILENAME #
