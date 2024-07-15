@@ -10,6 +10,7 @@ by **PhD Student Ing. Ciro Russo** <br>
 :computer: [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
 
 ----------------------------------------------------------------------
+## :rocket: GRAVITY NET
 
 **GravityNet** is novel **one-stage** **end-to-end** **detector** specifically designed to **detect** **small** **lesions** in **medical** **images**.
 Precise localization of small lesions presents challenges due to their appearance and the diverse contextual backgrounds in which they are found.
@@ -18,7 +19,8 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
 
 <img src="doc/architecture/GravityNet-architecture.png" width="80%" height="80%" alt="">
 
-## :rocket: HOW TO GRAVITY
+----------------------------------------------------------------------
+## :robot: HOW TO GRAVITY
 
 <!-- :construction: UNDERGOING MAINTENANCE :construction: -->
 
@@ -95,13 +97,16 @@ The **backbone** is a convolutional network and plays the role of feature extrac
 The **first subnet** performs convolutional object classification on the backbone's output. <br>
 The **second subnet** performs convolutional gravity-points regression.
 
-| ResNet     | | | | |
-|------------|-|-|-|-|
-| ResNet-18  | | | | |
-| ResNet-34  | | | | |
-| ResNet-50  | | | | |
-| ResNet-101 | | | | |
-| ResNet-152 | | | | |
+| ResNet     | ResNeXt           | DenseNet     | EfficientNet    | EfficientNetV2   |
+|------------|-------------------|--------------|-----------------|------------------|
+| ResNet-18  | ResNeXt-50_32x4d  | DenseNet-121 | EfficientNet-B0 | EfficientNetV2-S |
+| ResNet-34  | ResNeXt-101_32x8d | DenseNet-161 | EfficientNet-B1 | EfficientNetV2-M |
+| ResNet-50  | ResNeXt-101_64x4d | DenseNet-169 | EfficientNet-B2 | EfficientNetV2-L |
+| ResNet-101 |                   | DenseNet-201 | EfficientNet-B3 |                  |
+| ResNet-152 |                   |              | EfficientNet-B4 |                  |
+|            |                   |              | EfficientNet-B5 |                  |
+|            |                   |              | EfficientNet-B6 |                  |
+|            |                   |              | EfficientNet-B7 |                  |
 
 
 ----------------------------------------------------------------------
