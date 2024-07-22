@@ -55,6 +55,8 @@ def validation(num_epoch: int,
     # switch to test mode
     net.eval()
 
+    print("Epoch: {}/{}".format(num_epoch, epochs))
+
     # do not accumulate gradients (faster)
     with torch.no_grad():
 

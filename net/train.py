@@ -55,6 +55,8 @@ def train(num_epoch: int,
     classification_loss_hist = []
     regression_loss_hist = []
 
+    print("Epoch: {}/{}".format(num_epoch, epochs))
+
     # for each batch in dataloader
     for num_batch, batch in enumerate(tqdm(dataloader, desc='Training')):
 
