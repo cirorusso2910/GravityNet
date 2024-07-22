@@ -41,6 +41,7 @@ parameters_help = {
     # EXPERIMENT ID #
     # ------------- #
     'typeID': f"experiment ID type (default: {parameters_default['typeID']}",
+    'sep': f"separator in experiment ID (default: {parameters_default['sep']})",
 
     # ------ #
     # DEVICE #

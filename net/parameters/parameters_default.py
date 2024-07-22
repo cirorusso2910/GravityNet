@@ -26,6 +26,7 @@ parameters_default = {
     # EXPERIMENT ID #
     # ------------- #
     'typeID': 'default',
+    'sep': '|',
 
     # ------ #
     # DEVICE #

@@ -55,6 +55,7 @@ def main():
           "\n---------------")
     # experiment ID
     experiment_ID = experimentID(typeID=parser.typeID,
+                                 sep=parser.sep,
                                  parser=parser)
 
     # initialization

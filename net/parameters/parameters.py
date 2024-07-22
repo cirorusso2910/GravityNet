@@ -110,6 +110,11 @@ def parameters_parsing() -> argparse.Namespace:
                                default=parameters_default['typeID'],
                                help=parameters_help['typeID'])
 
+        subparser.add_argument('--sep',
+                               type=str,
+                               default=parameters_default['sep'],
+                               help=parameters_help['sep'])
+
         # ------ #
         # DEVICE #
         # ------ #

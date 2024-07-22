@@ -1,8 +1,4 @@
-import sys
-
 import torch
-
-from net.utility.msg.msg_error import msg_error
 
 
 def get_GPU_name() -> str:
@@ -22,11 +18,7 @@ def get_GPU_name() -> str:
             GPU_name = 'A100'
 
         else:
-            str_err = msg_error(file=__file__,
-                                variable=GPU_device_name,
-                                type_variable="GPU device name",
-                                choices="[V100, A100]")
-            sys.exit(str_err)
+            GPU_name = GPU_device_name
 
     else:
         GPU_name = 'cpu'

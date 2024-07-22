@@ -51,13 +51,13 @@ def main():
           "\n---------------")
     # experiment ID
     experiment_ID = experimentID(typeID=parser.typeID,
+                                 sep=parser.sep,
                                  parser=parser)
 
     # initialization
     path = initialization(network_name="GravityNet",
                           experiment_ID=experiment_ID,
-                          parser=parser,
-                          debug=parser.debug_initialization)
+                          parser=parser)
 
     # read data split
     data_split = read_split(path_split=path['dataset']['split'])
