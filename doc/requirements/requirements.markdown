@@ -1,6 +1,9 @@
 # REQUIREMENTS
 The following packages **must** be installed for correct execution <br>
 
+| PYTHON | 3.8.0   |
+|--------|---------|
+
 | PACKAGE       | VERSION      |
 |---------------|--------------|
 | imageio       | 1.5.33       |
@@ -16,3 +19,4 @@ The following packages **must** be installed for correct execution <br>
 | tifffile      | 2022.5.4     |
 | torch         | 1.12+cu116   |
 | torchvision   | 0.13.0+cu116 |
+| tqdm          | 4.64.1       |

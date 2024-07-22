@@ -51,6 +51,7 @@ This framework uses parameters-parsing, so each **new** parameter **must** be ad
 (for details see [parameters](doc/code/parameters.markdown)).
 
 The definition of these parameters is essential for the _experiment_ID_ to save the results and avoid overwriting.    
+**NOTE**: for Windows users use a _separator_ equal to ' _ ', while for Linux users the default separator is ' | '.
 
 For details about the [requirements](doc/requirements/requirements.markdown)
 

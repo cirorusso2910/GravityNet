@@ -33,9 +33,10 @@
 | **annotations_extension**  | annotations extension |
 
 ### EXPERIMENT ID
-| **PARAMETER** | **DESCRIPTION**    |
-|---------------|--------------------|
-| **typeID**    | experiment ID type |
+| **PARAMETER** | **DESCRIPTION**          |
+|---------------|--------------------------|
+| **typeID**    | experiment ID type       |
+| **sep**       | separator experiment ID  |
 
 ### DEVICE
 | **PARAMETER**   | **DESCRIPTION**   |
