@@ -55,6 +55,8 @@ The definition of these parameters is essential for the _experiment_ID_ to save 
 
 For details about the [requirements](doc/requirements/requirements.markdown)
 
+    !pip install -r requirements.txt
+
 ----------------------------------------------------------------------
 ### :two: INITIALIZATION
 Before starting the experiment, it is necessary to define the working paths:
