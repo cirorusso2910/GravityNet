@@ -126,16 +126,16 @@ The **second subnet** performs convolutional gravity-points regression.
 
 The available **backbone**:
 
-| ResNet     | ResNeXt           | DenseNet     | EfficientNet    | EfficientNetV2   |
-|------------|-------------------|--------------|-----------------|------------------|
-| ResNet-18  | ResNeXt-50_32x4d  | DenseNet-121 | EfficientNet-B0 | EfficientNetV2-S |
-| ResNet-34  | ResNeXt-101_32x8d | DenseNet-161 | EfficientNet-B1 | EfficientNetV2-M |
-| ResNet-50  | ResNeXt-101_64x4d | DenseNet-169 | EfficientNet-B2 | EfficientNetV2-L |
-| ResNet-101 |                   | DenseNet-201 | EfficientNet-B3 |                  |
-| ResNet-152 |                   |              | EfficientNet-B4 |                  |
-|            |                   |              | EfficientNet-B5 |                  |
-|            |                   |              | EfficientNet-B6 |                  |
-|            |                   |              | EfficientNet-B7 |                  |
+| ResNet     | ResNeXt           | DenseNet     | EfficientNet    | EfficientNetV2   | SwinTransformer | 
+|------------|-------------------|--------------|-----------------|------------------|-----------------|
+| ResNet-18  | ResNeXt-50_32x4d  | DenseNet-121 | EfficientNet-B0 | EfficientNetV2-S | Swin-T          |
+| ResNet-34  | ResNeXt-101_32x8d | DenseNet-161 | EfficientNet-B1 | EfficientNetV2-M | Swin-S          |
+| ResNet-50  | ResNeXt-101_64x4d | DenseNet-169 | EfficientNet-B2 | EfficientNetV2-L | Swin-B          |
+| ResNet-101 |                   | DenseNet-201 | EfficientNet-B3 |                  |                 |
+| ResNet-152 |                   |              | EfficientNet-B4 |                  |                 |
+|            |                   |              | EfficientNet-B5 |                  |                 |
+|            |                   |              | EfficientNet-B6 |                  |                 |
+|            |                   |              | EfficientNet-B7 |                  |                 |
 
 
 ----------------------------------------------------------------------
