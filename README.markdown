@@ -41,6 +41,9 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
 
 **ArXiv**: https://arxiv.org/abs/2309.12876
 
+This project is licensed. 
+Please review the [LICENSE](LICENSE) file for more information.
+
 ----------------------------------------------------------------------
 ## :robot: HOW TO GRAVITY
 
