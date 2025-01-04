@@ -73,12 +73,17 @@ class dataset_class(Dataset):
         # ---------- #
         # IMAGE MASK #
         # ---------- #
-        image_mask_filename = self.filename_list[idx] + ".mask.{}".format(self.images_masks_extension)
-        image_mask_path = os.path.join(self.images_masks_dir, image_mask_filename)
-        if os.path.isfile(image_mask_path):
-            image_mask = io.imread(image_mask_path)  # numpy.ndarray
+        if self.images_masks_extension != 'none':
+            image_mask_filename = self.filename_list[idx] + ".mask.{}".format(self.images_masks_extension)
+            image_mask_path = os.path.join(self.images_masks_dir, image_mask_filename)
+            if os.path.isfile(image_mask_path):
+                image_mask = io.imread(image_mask_path)  # numpy.ndarray
+            else:
+                # define full image mask
+                image_mask = np.full(shape=(image.shape[0], image.shape[1]), fill_value=255, dtype=np.uint8)
+                print("WARNING: full image mask")
         else:
-            # NOTE: if you do not consider image mask
+            # do not consider image mask
             image_mask = np.full(shape=(image.shape[0], image.shape[1]), fill_value=255, dtype=np.uint8)
 
         # ---------- #

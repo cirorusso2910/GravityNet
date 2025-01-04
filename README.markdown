@@ -76,7 +76,7 @@ For details about the [experiments-structure](./doc/experiments/experiments-stru
 ### :three: CLASS DATASET
 The **Class Dataset** is defined according to the structure of the dataset (see [dataset-structure](./datasets/dataset-structure.markdown)). 
 
-**NOTE**: run **Dataset-Statistics.py** (in _script-dataset_) to save the dataset statistics.
+**NOTE**: run **Dataset-Statistics.py** ([script-dataset](script-dataset/script-dataset.markdown)) to save the dataset statistics.
 
 | SCRIPT-DATASET        | DESCRIPTION             |
 |-----------------------|-------------------------|
@@ -87,17 +87,23 @@ The **Class Dataset** is defined according to the structure of the dataset (see 
 To split the data into the **train**, **validation**, and **test** subsets,
 the framework uses a **split** file defined in the dataset folder.
 
-The splits used in the experiments are [reported](datasets).
+The splits used in the experiments are reported in [datasets](datasets).
 
-| DATASET     | SMALL LESION        | REFERENCE                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|-------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| INbreast    | microcalcifications | [INbreast reference](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449)                                                                                                                                                      |
-| E-ophtha-MA | microaneurysms      | [E-ophtha-MA reference](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4) |
-| Cervix93    | nuclei              | [Cervix93 reference](https://github.com/parham-ap/cytology_dataset)                                                                                                                                                                                                                                                                                                                                                                                |
+| DATASET     | SMALL LESION        | SPLIT                                           | REFERENCE                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|---------------------|-------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| INbreast    | microcalcifications | [INbreast split](datasets/INbreast/split)       | [INbreast reference](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449)                                                                                                                                                      |
+| E-ophtha-MA | microaneurysms      | [E-ophtha-MA split](datasets/E-ophtha-MA/split) | [E-ophtha-MA reference](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4) |
+| Cervix93    | nuclei              | [Cervix93 split](datasets/Cervix93/split)       | [Cervix93 reference](https://github.com/parham-ap/cytology_dataset)                                                                                                                                                                                                                                                                                                                                                                                |
 
 ----------------------------------------------------------------------
 ### :five: DATASET INFORMATION
-All information about the dataset are reported in the **statistics** of the dataset
+All information about the dataset are reported in the **statistics** of the corresponding [datasets](datasets).
+
+| DATASET     | STATISTICS                                                   |
+|-------------|--------------------------------------------------------------|
+| INbreast    | [INbreast statistics](../datasets/INbreast/statistics)       |
+| E-ophtha-MA | [E-ophtha-MA statistics](../datasets/E-ophtha-MA/statistics) |
+| Cervix93    | [Cervix93 statistics](../datasets/Cervix93/statistics)       |
 
 ----------------------------------------------------------------------
 ### :six: DATASET TRANSFORMS
@@ -113,9 +119,9 @@ to this end, we provide basic transformations.
 
 ----------------------------------------------------------------------
 ### :seven: GRAVITY-POINTS CONFIGURATION
-To see the **gravity-points configuration** and the **hooking process** in _script-anchors_ are provided the codes
+To see the **gravity-points configuration** and the **hooking process** in [script-anchors](script-anchors/script-anchors.markdown) are provided the codes
 
-| SCRIPT-DATASET                  | DESCRIPTION                         |
+| SCRIPT-ANCHORS                  | DESCRIPTION                         |
 |---------------------------------|-------------------------------------|
 | Gravity-Points-Configuration.py | Save gravity-points configuration   |
 | Gravity-Points-Hooking.py       | Save gravity-points hooking process |
@@ -158,6 +164,7 @@ The available **execution mode**:
         --dataset_path              =       "path to dataset main folder"
         --experiments_path          =       "path to experiments result"
         --images_extension          =       [png, tif]
+        --images_masks_extension    =       [png, none]
         --annotations_extension     =       csv
         --dataset                   =       "Dataset Name"
         --do_dataset_augmentation
@@ -174,7 +181,7 @@ The available **execution mode**:
         --config                    =       grid-15
         --hook                      =       15
         --eval                      =       distance10
-        --FP_images                 =       normal
+        --FP_images                 =       [all, normals]
         --score_threshold           =       0.05
         --do_NMS                    
         --NMS_box_radius            =       "Lesion Radius"
