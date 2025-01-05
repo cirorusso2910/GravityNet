@@ -75,6 +75,7 @@ parameters_default = {
     # GRAVITY POINTS #
     # -------------- #
     'config': 'grid-10',
+    'save_config': False,
 
     # ---------------- #
     # HYPER-PARAMETERS #

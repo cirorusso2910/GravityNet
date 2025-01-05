@@ -216,6 +216,11 @@ def parameters_parsing() -> argparse.Namespace:
                                default=parameters_default['config'],
                                help=parameters_help['config'])
 
+        subparser.add_argument('--save_config',
+                               action='store_true',
+                               default=parameters_default['save_config'],
+                               help=parameters_help['save_config'])
+
         # ---------------- #
         # HYPER-PARAMETERS #
         # ---------------- #

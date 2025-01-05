@@ -29,7 +29,9 @@ def main():
         | GRAVITY POINTS - HOOKING |
         | ------------------------ |
 
-        Show gravity-points hooking process details and save it on image (debug option)
+        Show gravity-points hooking process details and save it on image (if 'save' True):
+
+        Path to save: doc/gravity-points-hooking
 
     """
 

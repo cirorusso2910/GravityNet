@@ -90,6 +90,7 @@ parameters_help = {
     # GRAVITY POINTS #
     # -------------- #
     'config': f"gravity points configuration (default: {parameters_default['config']})",
+    'save_config': f"save gravity points configuration (default: {parameters_default['save_config']})",
 
     # ---------------- #
     # HYPER-PARAMETERS #
