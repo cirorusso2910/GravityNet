@@ -158,7 +158,17 @@ The available **execution mode**:
 | train_test     | train and test model                                         |
 
 ----------------------------------------------------------------------
-### :keycap_ten: EXAMPLE OF EXECUTION
+### :keycap_ten: SCRIPT EXECUTION MODE
+The available **script execution mode**
+
+| SCRIPT EXECUTION MODE | DESCRIPTION                   | DOCUMENTATION                                                                               |
+|-----------------------|-------------------------------|---------------------------------------------------------------------------------------------|
+| script_anchors        | script-anchors execution mode | [script-anchors documentation](script-anchors/script-anchors.markdown)                      |
+| script_dataset        | script-dataset execution mode | [script-dataset documentation](script-dataset/script-dataset.markdown)                      |
+| explainability        | explainability mode           | [script-explainability documentation](script-explainability/script-explainability.markdown) |
+
+----------------------------------------------------------------------
+### :telescope: EXAMPLE OF EXECUTION
 
     CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -u GravityNet.py train_test 
         --dataset_path              =       "path to dataset main folder"
