@@ -14,7 +14,6 @@ Apply Explainable AI Grad-CAM method
         --dataset                   =       "Dataset Name"
         --do_dataset_augmentation
         --num_channels              =       [1, 3]
-        --small_lesion              =       [microcalcifications, microaneurysms, nuclei]
         --split                     =       [default, 1-fold, 2-fold]
         --rescale                   =       [0,5, 1.0]
         --norm                      =       [none, min-max, std] 
