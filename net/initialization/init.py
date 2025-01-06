@@ -4,6 +4,7 @@ import os
 from net.initialization.folders.dataset_folders import dataset_folders_dict
 from net.initialization.folders.experiment_folders import experiment_folders_dict
 from net.initialization.path.experiment_result_path import experiment_result_path_dict
+from net.initialization.utility.create_folder import create_folder
 from net.initialization.utility.create_folder_and_subfolder import create_folder_and_subfolder
 
 
@@ -91,6 +92,10 @@ def initialization(network_name: str,
     experiment_results_path = experiment_result_path_dict(experiment_path=experiment_path,
                                                           experiment_folders=experiment_folders)
 
+    # explainability path
+    explainability_folder = "explainability"
+    explainability_path = os.path.join(experiment_path, explainability_folder)
+
     # -------------------- #
     # CREATE RESULT FOLDER #
     # -------------------- #
@@ -102,6 +107,10 @@ def initialization(network_name: str,
 
     elif parser.mode in ['test']:
         print("Experiment result folder: ALREADY COMPLETE")
+
+    elif parser.mode in ['explainability']:
+        create_folder(path=explainability_path)
+        print("Explainability result folder: COMPLETE")
 
     else:
         print("Experiment result folder: ALREADY COMPLETE")
@@ -128,7 +137,7 @@ def initialization(network_name: str,
     model_best_sensitivity_10_FPS_filename = network_name + "-best-model-sensitivity-10-FPS|" + experiment_ID + ".tar"
     model_best_sensitivity_10_FPS_path = os.path.join(experiment_results_path['models'], model_best_sensitivity_10_FPS_filename)
 
-    model_best_AUFROC_0_10_filename = network_name + "-best-model-AUFROC|" + experiment_ID + ".tar"
+    model_best_AUFROC_0_10_filename = network_name + "-best-model-AUFROC=[0,10]|" + experiment_ID + ".tar"
     model_best_AUFROC_0_10_path = os.path.join(experiment_results_path['models'], model_best_AUFROC_0_10_filename)
 
     model_best_AUPR_filename = network_name + "-best-model-AUPR|" + experiment_ID + ".tar"
@@ -181,6 +190,8 @@ def initialization(network_name: str,
             'validation': detections_validation_path,
             'test': detections_test_path,
         },
+
+        'explainability': explainability_path,
 
         'metrics': {
             'train': metrics_train_path,

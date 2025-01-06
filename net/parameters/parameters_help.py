@@ -10,6 +10,8 @@ parameters_help = {
     'test': 'test model',
     'train_test': 'train and test model',
 
+    'explainability': 'explainability mode',
+
     'who_is_my_creator': 'who is my creator?',
 
     'script_anchors': 'script-anchors execution mode',
