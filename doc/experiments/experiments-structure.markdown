@@ -4,6 +4,8 @@ Each **experiment** has the following structure:
 
     detections
         -> detections folder
+    explainability [explainability mode]
+        -> explainability folder
     log
         -> log folder
     metrics-train

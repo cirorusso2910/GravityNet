@@ -10,6 +10,8 @@ parameters_help = {
     'test': 'test model',
     'train_test': 'train and test model',
 
+    'explainability': 'explainability mode',
+
     'who_is_my_creator': 'who is my creator?',
 
     'script_anchors': 'script-anchors execution mode',
@@ -90,6 +92,7 @@ parameters_help = {
     # GRAVITY POINTS #
     # -------------- #
     'config': f"gravity points configuration (default: {parameters_default['config']})",
+    'save_config': f"save gravity points configuration (default: {parameters_default['save_config']})",
 
     # ---------------- #
     # HYPER-PARAMETERS #

@@ -7,6 +7,7 @@ from net.model.backbone.MyDenseNet_models import MyDenseNet_models
 from net.model.backbone.MyEfficientNetV2_models import MyEfficientNetV2_models
 from net.model.backbone.MyEfficientNet_models import MyEfficientNet_models
 from net.model.backbone.MyResNeXt_models import MyResNeXt_models
+from net.model.backbone.MySwin_models import MySwin_models
 from net.model.gravitynet.ClassificationSubNet import ClassificationModel
 from net.model.gravitynet.RegressionSubNet import RegressionModel
 from net.model.backbone.MyResNet_models import MyResNet_models
@@ -89,6 +90,16 @@ class GravityNet(nn.Module):
             # EfficientNetV2 Model
             self.backboneModel, self.num_features = MyEfficientNetV2_models(efficientnetv2=efficientnetv2,
                                                                             pretrained=self.pretrained)
+
+        # - Swin
+        elif backbone.split('-')[0] == 'Swin':
+
+            # Swin [T, S, B]
+            swin = str(backbone.split('-')[1])
+
+            # SwinV2 Model
+            self.backboneModel, self.num_features = MySwin_models(swin=swin,
+                                                                  pretrained=self.pretrained)
 
         # ----------------- #
         # Regression SubNet #

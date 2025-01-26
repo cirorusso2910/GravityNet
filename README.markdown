@@ -41,6 +41,9 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
 
 **ArXiv**: https://arxiv.org/abs/2309.12876
 
+This project is licensed. 
+Please review the [LICENSE](LICENSE) file for more information.
+
 ----------------------------------------------------------------------
 ## :robot: HOW TO GRAVITY
 
@@ -54,6 +57,8 @@ The definition of these parameters is essential for the _experiment_ID_ to save 
 **NOTE**: for Windows users use a _separator_ equal to ' _ ', while for Linux users the default separator is ' | '.
 
 For details about the [requirements](doc/requirements/requirements.markdown)
+
+    !pip install -r requirements.txt
 
 ----------------------------------------------------------------------
 ### :two: INITIALIZATION
@@ -71,7 +76,7 @@ For details about the [experiments-structure](./doc/experiments/experiments-stru
 ### :three: CLASS DATASET
 The **Class Dataset** is defined according to the structure of the dataset (see [dataset-structure](./datasets/dataset-structure.markdown)). 
 
-**NOTE**: run **Dataset-Statistics.py** (in _script-dataset_) to save the dataset statistics.
+**NOTE**: run **Dataset-Statistics.py** ([script-dataset](script-dataset/script-dataset.markdown)) to save the dataset statistics.
 
 | SCRIPT-DATASET        | DESCRIPTION             |
 |-----------------------|-------------------------|
@@ -82,17 +87,23 @@ The **Class Dataset** is defined according to the structure of the dataset (see 
 To split the data into the **train**, **validation**, and **test** subsets,
 the framework uses a **split** file defined in the dataset folder.
 
-The splits used in the experiments are [reported](datasets).
+The splits used in the experiments are reported in [datasets](datasets).
 
-| DATASET     | SMALL LESION        | REFERENCE                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|-------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| INbreast    | microcalcifications | [INbreast reference](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449)                                                                                                                                                      |
-| E-ophtha-MA | microaneurysms      | [E-ophtha-MA reference](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4) |
-| Cervix93    | nuclei              | [Cervix93 reference](https://github.com/parham-ap/cytology_dataset)                                                                                                                                                                                                                                                                                                                                                                                |
+| DATASET     | SMALL LESION        | SPLIT                                           | REFERENCE                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|---------------------|-------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| INbreast    | microcalcifications | [INbreast split](datasets/INbreast/split)       | [INbreast reference](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449)                                                                                                                                                      |
+| E-ophtha-MA | microaneurysms      | [E-ophtha-MA split](datasets/E-ophtha-MA/split) | [E-ophtha-MA reference](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4) |
+| Cervix93    | nuclei              | [Cervix93 split](datasets/Cervix93/split)       | [Cervix93 reference](https://github.com/parham-ap/cytology_dataset)                                                                                                                                                                                                                                                                                                                                                                                |
 
 ----------------------------------------------------------------------
 ### :five: DATASET INFORMATION
-All information about the dataset are reported in the **statistics** of the dataset
+All information about the dataset are reported in the **statistics** of the corresponding [datasets](datasets).
+
+| DATASET     | STATISTICS                                                   |
+|-------------|--------------------------------------------------------------|
+| INbreast    | [INbreast statistics](../datasets/INbreast/statistics)       |
+| E-ophtha-MA | [E-ophtha-MA statistics](../datasets/E-ophtha-MA/statistics) |
+| Cervix93    | [Cervix93 statistics](../datasets/Cervix93/statistics)       |
 
 ----------------------------------------------------------------------
 ### :six: DATASET TRANSFORMS
@@ -108,9 +119,9 @@ to this end, we provide basic transformations.
 
 ----------------------------------------------------------------------
 ### :seven: GRAVITY-POINTS CONFIGURATION
-To see the **gravity-points configuration** and the **hooking process** in _script-anchors_ are provided the codes
+To see the **gravity-points configuration** and the **hooking process** in [script-anchors](script-anchors/script-anchors.markdown) are provided the codes
 
-| SCRIPT-DATASET                  | DESCRIPTION                         |
+| SCRIPT-ANCHORS                  | DESCRIPTION                         |
 |---------------------------------|-------------------------------------|
 | Gravity-Points-Configuration.py | Save gravity-points configuration   |
 | Gravity-Points-Hooking.py       | Save gravity-points hooking process |
@@ -124,16 +135,16 @@ The **second subnet** performs convolutional gravity-points regression.
 
 The available **backbone**:
 
-| ResNet     | ResNeXt           | DenseNet     | EfficientNet    | EfficientNetV2   |
-|------------|-------------------|--------------|-----------------|------------------|
-| ResNet-18  | ResNeXt-50_32x4d  | DenseNet-121 | EfficientNet-B0 | EfficientNetV2-S |
-| ResNet-34  | ResNeXt-101_32x8d | DenseNet-161 | EfficientNet-B1 | EfficientNetV2-M |
-| ResNet-50  | ResNeXt-101_64x4d | DenseNet-169 | EfficientNet-B2 | EfficientNetV2-L |
-| ResNet-101 |                   | DenseNet-201 | EfficientNet-B3 |                  |
-| ResNet-152 |                   |              | EfficientNet-B4 |                  |
-|            |                   |              | EfficientNet-B5 |                  |
-|            |                   |              | EfficientNet-B6 |                  |
-|            |                   |              | EfficientNet-B7 |                  |
+| ResNet     | ResNeXt           | DenseNet     | EfficientNet    | EfficientNetV2   | SwinTransformer | 
+|------------|-------------------|--------------|-----------------|------------------|-----------------|
+| ResNet-18  | ResNeXt-50_32x4d  | DenseNet-121 | EfficientNet-B0 | EfficientNetV2-S | Swin-T          |
+| ResNet-34  | ResNeXt-101_32x8d | DenseNet-161 | EfficientNet-B1 | EfficientNetV2-M | Swin-S          |
+| ResNet-50  | ResNeXt-101_64x4d | DenseNet-169 | EfficientNet-B2 | EfficientNetV2-L | Swin-B          |
+| ResNet-101 |                   | DenseNet-201 | EfficientNet-B3 |                  |                 |
+| ResNet-152 |                   |              | EfficientNet-B4 |                  |                 |
+|            |                   |              | EfficientNet-B5 |                  |                 |
+|            |                   |              | EfficientNet-B6 |                  |                 |
+|            |                   |              | EfficientNet-B7 |                  |                 |
 
 
 ----------------------------------------------------------------------
@@ -147,12 +158,23 @@ The available **execution mode**:
 | train_test     | train and test model                                         |
 
 ----------------------------------------------------------------------
-### :keycap_ten: EXAMPLE OF EXECUTION
+### :keycap_ten: SCRIPT EXECUTION MODE
+The available **script execution mode**
+
+| SCRIPT EXECUTION MODE | DESCRIPTION                   | DOCUMENTATION                                                                               |
+|-----------------------|-------------------------------|---------------------------------------------------------------------------------------------|
+| script_anchors        | script-anchors execution mode | [script-anchors documentation](script-anchors/script-anchors.markdown)                      |
+| script_dataset        | script-dataset execution mode | [script-dataset documentation](script-dataset/script-dataset.markdown)                      |
+| explainability        | explainability mode           | [script-explainability documentation](script-explainability/script-explainability.markdown) |
+
+----------------------------------------------------------------------
+### :telescope: EXAMPLE OF EXECUTION
 
     CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -u GravityNet.py train_test 
         --dataset_path              =       "path to dataset main folder"
         --experiments_path          =       "path to experiments result"
         --images_extension          =       [png, tif]
+        --images_masks_extension    =       [png, none]
         --annotations_extension     =       csv
         --dataset                   =       "Dataset Name"
         --do_dataset_augmentation
@@ -169,7 +191,7 @@ The available **execution mode**:
         --config                    =       grid-15
         --hook                      =       15
         --eval                      =       distance10
-        --FP_images                 =       normal
+        --FP_images                 =       [all, normals]
         --score_threshold           =       0.05
         --do_NMS                    
         --NMS_box_radius            =       "Lesion Radius"

@@ -7,6 +7,8 @@
 | **test**           | test model                            |
 | **train_test**     | train and test model                  |
 |                    |                                       |
+| **explainability** | explainability mode                   |
+|                    |                                       |
 | **script_anchors** | script-anchors execution mode         |
 | **script_dataset** | script-dataset execution mode         |
 

@@ -15,7 +15,12 @@ def main():
         | GRAVITY POINTS - CONFIGURATION |
         | ------------------------------ |
 
-        Show gravity-points details and save configuration
+        Show gravity-points details and save configuration:
+            - save gravity-points initial configuration
+            - save gravity-points complete configuration
+            - save Feature Grid
+
+        Path to save: doc/gravity-points-configuration
 
     """
 
@@ -68,13 +73,18 @@ def main():
           "\nGravity Points for image: {}".format(num_gravity_points),
           "\nGravity Points for feature map: {}".format(num_gravity_points_feature_map))
 
-    # save anchors
-    debug_anchors(config=parser.config,
-                  image_shape=image_shape,
-                  gravity_points_initial_config=gravity_points_feature_map,
-                  gravity_points=gravity_points)
+    # ----------- #
+    # SAVE CONFIG #
+    # ----------- #
+    if parser.save_config:
 
-    print("\nSAVE ANCHORS: COMPLETE")
+        # save anchors
+        debug_anchors(config=parser.config,
+                      image_shape=image_shape,
+                      gravity_points_initial_config=gravity_points_feature_map,
+                      gravity_points=gravity_points)
+
+        print("\nSave Gravity Points Configuration: Complete")
 
     # execution mode complete
     execution_mode(mode=parser.mode,

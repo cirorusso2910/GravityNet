@@ -25,6 +25,8 @@ def parameters_parsing() -> argparse.Namespace:
     parser_test = parser_mode.add_parser('test', help=parameters_help['test'])
     parser_train_test = parser_mode.add_parser('train_test', help=parameters_help['train_test'])
 
+    parser_explainability = parser_mode.add_parser('explainability', help=parameters_help['explainability'])
+
     # who is my creator
     parser_who_is_my_creator = parser_mode.add_parser('who_is_my_creator', help=parameters_help['who_is_my_creator'])
 
@@ -36,6 +38,7 @@ def parameters_parsing() -> argparse.Namespace:
     execution_mode = [parser_train,
                       parser_test,
                       parser_train_test,
+                      parser_explainability,
                       parser_script_anchors,
                       parser_script_dataset,
                       parser_who_is_my_creator]
@@ -215,6 +218,11 @@ def parameters_parsing() -> argparse.Namespace:
                                type=str,
                                default=parameters_default['config'],
                                help=parameters_help['config'])
+
+        subparser.add_argument('--save_config',
+                               action='store_true',
+                               default=parameters_default['save_config'],
+                               help=parameters_help['save_config'])
 
         # ---------------- #
         # HYPER-PARAMETERS #
