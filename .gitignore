@@ -2,3 +2,4 @@
 datasets
 experiments
 __pycache__
+.DS_Store
