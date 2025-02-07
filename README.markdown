@@ -3,7 +3,7 @@
 ## :information_source: INFO
 
 **GravityNet** official repository <br>
-by **PhD Student Ing. Ciro Russo** <br>
+by **Eng. Ciro Russo, PhD** <br>
 :man_technologist: [LinkedIn](https://www.linkedin.com/in/ciro-russo-b14056100/) <br>
 :bookmark_tabs: [Google Scholar](https://scholar.google.com/citations?user=XJV2vVsAAAAJ&hl=it&authuser=1) <br>
 :books: [Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
@@ -13,6 +13,7 @@ by **PhD Student Ing. Ciro Russo** <br>
 :man_teacher: Prof. **Claudio Marrocco** ([Google Scholar](https://scholar.google.it/citations?user=ed4B7I4AAAAJ&hl=it)) <br>
 :man_teacher: Prof. **Alessandro Bria** ([LinkedIn](https://www.linkedin.com/in/alessandro-bria-831ab149/?originalSubdomain=it))<br>
 :man_technologist: **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
+:man_technologist: **Yusuf B. Tanrıverdi** ([LinkedIn](https://www.linkedin.com/in/yusuftengriverdi/)) <br>
 
 ----------------------------------------------------------------------
 ## :rocket: GRAVITY NET
