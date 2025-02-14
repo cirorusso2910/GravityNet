@@ -81,7 +81,7 @@ class dataset_class(Dataset):
             else:
                 # define full image mask
                 image_mask = np.full(shape=(image.shape[0], image.shape[1]), fill_value=255, dtype=np.uint8)
-                print("WARNING: full image mask")
+                # print("WARNING: full image mask")
         else:
             # do not consider image mask
             image_mask = np.full(shape=(image.shape[0], image.shape[1]), fill_value=255, dtype=np.uint8)
