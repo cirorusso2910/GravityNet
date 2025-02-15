@@ -10,7 +10,7 @@ def msg_error(file: str,
 
     ERROR in 'file.py'
     'variable' wrong in 'type_variable'
-    '[choiches of variable]'
+    '[choices of variable]'
 
     :param file: file where error occur
     :param variable: variable

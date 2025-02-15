@@ -30,7 +30,6 @@ def train(num_epoch: int,
     """
     Training function
 
-    :param dataset: dataset name
     :param num_epoch: num epoch
     :param epochs: epochs
     :param net: net
@@ -74,8 +73,7 @@ def train(num_epoch: int,
         classifications, regressions = net(image)
 
         # calculate loss
-        classification_loss, regression_loss = criterion(images=image,
-                                                         classifications=classifications,
+        classification_loss, regression_loss = criterion(classifications=classifications,
                                                          regressions=regressions,
                                                          gravity_points=gravity_points,
                                                          annotations=annotation)

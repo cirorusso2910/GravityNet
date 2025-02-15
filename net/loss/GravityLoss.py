@@ -54,7 +54,6 @@ class GravityLoss(nn.Module):
         self.device = device
 
     def forward(self,
-                images: torch.Tensor,
                 classifications: torch.Tensor,
                 regressions: torch.Tensor,
                 gravity_points: torch.Tensor,
@@ -62,7 +61,6 @@ class GravityLoss(nn.Module):
         """
         forward method: directly call a method in the class when an instance name is called
 
-        :param images: images
         :param classifications: classifications score
         :param regressions: regressions
         :param gravity_points: gravity points
@@ -78,18 +76,12 @@ class GravityLoss(nn.Module):
         classification_losses = []
         regression_losses = []
 
-        # num gravity points
-        num_gravity_points = gravity_points.shape[0]
-
         # split the coord of each gravity point
         gravity_point_coord_x = gravity_points[:, 0]  # gravity points coord x (A)
         gravity_point_coord_y = gravity_points[:, 1]  # gravity points coord y (A)
 
         # for each batch
         for i in range(batch_size):
-
-            # image (for each image in batch)
-            image = images[i, :, :, :]
 
             # classification (for each image in batch)
             classification = classifications[i, :, :]  # A x 2
@@ -156,12 +148,6 @@ class GravityLoss(nn.Module):
 
             # num positive gravity points
             num_positive_gravity_points = positive_indices.sum()
-
-            # num negative gravity points
-            num_negative_gravity_points = negative_indices.sum()
-
-            # num rejected gravity points
-            num_rejected_gravity_points = rejected_indices.sum()
 
             # annotation closest to each gravity points (with index min)
             assigned_annotations = annotation[index_min, :2]
