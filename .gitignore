@@ -4,4 +4,3 @@ experiments
 __pycache__
 .DS_Store
 script-deploy
-GravityNet-deploy.py
