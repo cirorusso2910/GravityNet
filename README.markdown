@@ -42,8 +42,19 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
 
 **ArXiv**: https://arxiv.org/abs/2309.12876
 
-This project is licensed. 
+This project is licensed. <br>
 Please review the [LICENSE](LICENSE) file for more information.
+
+----------------------------------------------------------------------
+## :inbox_tray: INSTALLATION
+
+**GravityNet** is available on [PyPI](https://pypi.org/project/gravitynet/) 
+
+    pip install gravitynet
+
+Can be imported as:
+
+    import gravitynet
 
 ----------------------------------------------------------------------
 ## :robot: HOW TO GRAVITY

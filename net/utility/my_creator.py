@@ -13,7 +13,6 @@ def my_creator(mode: str):
               "\n"
               "\nHello"
               "\nMy creator is:"
-              "\nCiro Russo"
-              "\nPhD Student")
+              "\nEng Ciro Russo, PhD")
         sys.exit("")
 
