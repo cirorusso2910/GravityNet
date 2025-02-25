@@ -10,7 +10,7 @@ def add_3_channels_image(image: np.ndarray) -> np.ndarray:
     """
 
     # init
-    image_3c = np.zeros((image.shape[0], image.shape[1], 3))
+    image_3c = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
 
     # copy image 3 times
     image_3c[:, :, 0] = image
