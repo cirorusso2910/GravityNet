@@ -3,11 +3,11 @@ import numpy as np
 import torch
 
 
-def save_heatmap(heatmap: torch.Tensor,
+def save_heatmap(heatmap: np.ndarray,
                  output_path: str,
                  scale_factor: float = 1.0):
     """
-    Save heatmap
+    Save Heatmap
 
     :param heatmap: heatmap
     :param output_path: output path
@@ -15,8 +15,8 @@ def save_heatmap(heatmap: torch.Tensor,
     """
 
     # convert the heatmap to numpy and normalize between 0 and 255
-    heatmap_np = heatmap.cpu().detach().numpy()
-    heatmap_np = np.uint8(255 * (heatmap_np - heatmap_np.min()) / (heatmap_np.max() - heatmap_np.min()))
+    # heatmap_np = heatmap.cpu().detach().numpy()
+    heatmap_np = np.uint8(255 * (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min()))
 
     # resize the heatmap based on the scale factor
     height, width = heatmap_np.shape

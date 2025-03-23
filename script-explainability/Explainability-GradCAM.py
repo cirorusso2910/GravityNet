@@ -2,7 +2,6 @@ import os
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
-import sys
 import warnings
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -10,7 +9,6 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 import torch
 import numpy as np
 from torch import nn
-
 
 from net.anchors.gravity_points_config import gravity_points_config
 from net.anchors.utility.check_image_shape import check_image_shape
@@ -30,7 +28,6 @@ from net.model.utility.load_model import load_best_model
 from net.parameters.parameters import parameters_parsing
 from net.reproducibility.reproducibility import reproducibility
 from net.utility.execution_mode import execution_mode
-from net.utility.msg.msg_error import msg_error
 from net.utility.msg.msg_load_dataset_complete import msg_load_dataset_complete
 from net.utility.read_split import read_split
 
@@ -200,9 +197,25 @@ def main():
                             num_gravity_points_feature_map=num_gravity_points_feature_map,
                             device=device)
 
-    # ----------- #
-    # READ SAMPLE #
-    # ----------- #
+    # -------- #
+    # GRAD CAM #
+    # -------- #
+    # target layer (ResNet)
+    target_layer = net.module.backboneModel.layer4
+
+    # grad cam
+    grad_cam = MyGradCAM(model=net,
+                         criterion=criterion,
+                         lambda_factor=parser.lambda_factor,
+                         gravity_points=gravity_points,
+                         target_layer=target_layer)
+
+    # -------------- #
+    # EXPLAINABILITY #
+    # -------------- #
+    print("\n---------------"
+          "\nEXPLAINABILITY:"
+          "\n---------------")
     for i in range(parser.num_images):
 
         # sample
@@ -215,69 +228,19 @@ def main():
         image = sample['image'].to(device)
         image = image.unsqueeze(0)  # add batch (B) dimension
         image = image.to(device)
+        image_shape = image.shape  # image shape: B x C x H x W
+        height, width = image_shape[2], image_shape[3]
 
         # read annotation
         annotation = sample['annotation'].to(device)
         annotation = annotation.unsqueeze(0)  # add batch (B) dimension
         annotation = annotation.to(device)
 
-        # switch to eval mode
-        net.eval()
-
-        # -------------- #
-        # EXPLAINABILITY #
-        # -------------- #
-        print("\n---------------"
-              "\nEXPLAINABILITY:"
-              "\n---------------")
-
-        # define target layer for explainability in ResNet model
-        if 'ResNet' in parser.backbone:
-            target_layer = net.module.backboneModel.layer4
-
-        # define target layer for explainability in Swin model
-        elif 'Swin' in parser.backbone:
-            target_layer = net.module.backboneModel.norm
-
-        else:
-            str_err = msg_error(file=__file__,
-                                variable=parser.backbone,
-                                type_variable="backbone (target layer)",
-                                choices="[ResNet, Swin]")
-            sys.exit(str_err)
-
-        # MyGradCAM
-        my_gradcam = MyGradCAM(backbone=parser.backbone)
-        target_layer.register_forward_hook(my_gradcam.forward_hook)
-        target_layer.register_full_backward_hook(my_gradcam.backward_hook)
-
-        # forward pass
-        classifications, regressions = net(image)
-
-        # calculate loss
-        classification_loss, regression_loss = criterion(images=image,
-                                                         classifications=classifications,
-                                                         regressions=regressions,
-                                                         gravity_points=gravity_points,
-                                                         annotations=annotation)
-
-        # compute the final loss
-        loss = classification_loss + parser.lambda_factor * regression_loss
-
-        # reset parameters gradients of the model (net)
-        net.zero_grad()
-
-        # loss gradient backpropagation
-        loss.backward()
-
-        # ------------------ #
-        # GradCam GravityNet #
-        # ------------------ #
-        print("\n-------------------"
-              "\nGradCAM GravityNet:"
-              "\n-------------------")
-        # heatmap
-        heatmap = my_gradcam.heatmap()
+        # ---------------- #
+        # GENERATE HEATMAP #
+        # ---------------- #
+        heatmap = grad_cam.generate_heatmap(image=image,
+                                            annotation=annotation)
 
         # ------------ #
         # SAVE HEATMAP #
@@ -301,10 +264,10 @@ def main():
         # show image overlay
         save_image_overlay(image=image.squeeze(),
                            heatmap=heatmap,
-                           size=(image_shape[1], image_shape[0]),
+                           size=(width, height),
                            output_path=image_overlay_path)
 
-        print("GradCAM GravityNet - Complete")
+        print("{}/{}: image {} saved".format(i + 1, parser.num_images, filename))
 
     # execution mode complete
     execution_mode(mode=parser.mode,

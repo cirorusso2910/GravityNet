@@ -1,8 +1,11 @@
-from typing import Tuple
+from typing import Tuple, Union
 
+import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn
+
+from net.loss.GravityLoss import GravityLoss
 
 
 class MyGradCAM:
@@ -11,111 +14,107 @@ class MyGradCAM:
     """
 
     def __init__(self,
-                 backbone: str):
+                 model: nn.Module,
+                 criterion: Union[GravityLoss],
+                 lambda_factor: int,
+                 gravity_points: np.ndarray,
+                 target_layer):
         """
         __init__ method: run one when instantiating the object
 
-        :param backbone: backbone model
+        :param model: model
+        :param criterion: loss function
+        :param lambda_factor: lambda factor (loss)
+        :param gravity_points: gravity points configuration
+        :param target_layer: target layer
         """
 
+        # model
+        self.model = model
+
+        # criterion
+        self.criterion = criterion
+        self.lambda_factor = lambda_factor
+
+        # gravity points configuration
+        self.gravity_points = gravity_points
+
+        # target layer
+        self.target_layer = target_layer
+
+        # gradients
         self.gradients = None
+
+        # activations
         self.activations = None
 
-        self.backbone = backbone
+        # Register hooks to capture gradients and activations
+        target_layer.register_forward_hook(self._save_activation)
+        target_layer.register_full_backward_hook(self._save_gradient)
 
-    def backward_hook(self,
-                      module: nn.Module,
-                      grad_input: Tuple,
-                      grad_output: Tuple):
+    def _save_activation(self, module, input, output):
         """
-        Backward hook function to capture gradients during the backward pass.
+        Hook function that captures the forward activations of the target layer
+        'output' represents the feature maps produced by this layer when processing the input image
 
-        This function is executed when backpropagation reaches the layer where the hook is registered.
-        It captures the gradients of the loss with respect to the activations of the hooked layer.
-
-        :param module: module (layer) to which the hook is attached
-        :param grad_input: gradients with respect to the inputs of the layer
-        :param grad_output: gradients with respect to the outputs of the layer
+        these activations show what patterns the network detected in the input image
         """
 
-        print("Backward hook is running...")
+        self.activations = output.detach()
 
-        # - ResNet model
-        if 'ResNet' in self.backbone:
-            self.gradients = grad_output  # capture the gradients for use in Grad-CAM
-        # - Swin model
-        elif 'Swin' in self.backbone:
-            self.gradients = grad_output  # capture the gradients for use in Grad-CAM
-            self.gradients = tuple(grad.permute(0, 3, 1, 2) for grad in self.gradients)  # permute gradients
-        else:
-            ValueError('Backward hook only supports: ResNet, Swin')
-
-        print("Gradients Size --> ", self.gradients[0].size())
-
-        # suppress PyCharm warning for unused variables
-        _ = module
-        _ = grad_input
-
-    def forward_hook(self,
-                     module: nn.Module,
-                     input: Tuple,
-                     output: torch.Tensor):
+    def _save_gradient(self, module, grad_input, grad_output):
         """
-        Forward hook function to capture activations during the forward pass.
+        Hook function that captures the gradients flowing back through the target layer during backpropagation
+        'grad_output' contains the gradients of the loss with respect to the outputs of this layer
 
-        This function is executed during the forward pass, capturing the activations (feature maps)
-        from the layer where the hook is registered.
-
-        :param module: module (layer) to which the hook is attached
-        :param input: input to the layer
-        :param output: output (activations) from the layer
+        these gradients indicate how important each activation is for the target class prediction
         """
 
-        print("Forward hook is running...")
+        self.gradients = grad_output[0].detach()
 
-        # - ResNet model
-        if 'ResNet' in self.backbone:
-            self.activations = output  # capture the activations for use in Grad-CAM
-        # - Swin model
-        elif 'Swin' in self.backbone:
-            self.activations = output.permute(0, 3, 1, 2)  # capture the activations for use in Grad-CAM
-        else:
-            ValueError('Backward hook only supports: ResNet, Swin')
-
-        print("Activations Size --> ", self.activations.size())
-
-        # suppress PyCharm warning for unused variables
-        _ = module
-        _ = input
-
-    def heatmap(self) -> torch.Tensor:
+    def generate_heatmap(self,
+                         image: torch.Tensor,
+                         annotation: torch.Tensor) -> Tuple[np.ndarray, torch.Tensor]:
         """
-        Compute Grad-CAM (Gradient-weighted Class Activation Mapping).
+        Generate the activation heatmap
 
-        param gradients: gradients of the output with respect to the feature map of a layer
-        param activations: activations (output feature map) from the forward pass of that layer
-        :return: heatmap generated from the activations and gradients
+        :param image: image
+        :param annotation: annotation
+        :return: normalized activation map
         """
 
-        # pool the gradients across the channels (global average pooling over width and height dimensions)
-        pooled_gradients = torch.mean(self.gradients[0], dim=[0, 2, 3])
+        # set the model to evaluation mode
+        self.model.eval()
 
-        # reshape pooled_gradients for broadcasting
-        pooled_gradients = pooled_gradients.view(1, -1, 1, 1)
+        # forward pass
+        classifications, regressions = self.model(image)
 
-        # weight each channel in the activations by the corresponding pooled gradients (using broadcasting)
-        activations = self.activations * pooled_gradients
+        # compute loss
+        classification_loss, regression_loss = self.criterion(images=image,
+                                                              classifications=classifications,
+                                                              regressions=regressions,
+                                                              gravity_points=self.gravity_points,
+                                                              annotations=annotation)
+
+        # compute final loss
+        loss = classification_loss + self.lambda_factor * regression_loss
+
+        # reset parameters gradients of the model (net)
+        self.model.zero_grad()
+
+        # loss gradient backpropagation
+        loss.backward()
+
+        # calculate the weight coefficients
+        gradients = self.gradients.mean(dim=(2, 3), keepdim=True)
+
+        # multiply weights by activations
+        cam = torch.sum(gradients * self.activations, dim=1).squeeze()
+
+        # apply ReLU to the CAM
+        cam = F.relu(cam)
 
         # normalize
-        activations = F.normalize(activations)
+        cam = cam / (cam.max() + 1e-8)
 
-        # compute the mean of the weighted activations across all channels
-        heatmap = torch.mean(activations, dim=1).squeeze()
-
-        # apply ReLU to remove negative values (keep only positive influences)
-        heatmap = F.relu(heatmap)
-
-        # normalize the heatmap to the range [0, 1] (optional, but useful for visualization)
-        heatmap /= torch.max(heatmap)
-
-        return heatmap
+        return cam.cpu().numpy()

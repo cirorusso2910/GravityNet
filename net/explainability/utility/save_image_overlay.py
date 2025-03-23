@@ -8,7 +8,7 @@ from net.dataset.utility.viewable_image import viewable_image
 
 
 def save_image_overlay(image: torch.Tensor,
-                       heatmap: torch.Tensor,
+                       heatmap: np.ndarray,
                        size: Tuple[int, int],
                        output_path: str):
     """
@@ -26,11 +26,12 @@ def save_image_overlay(image: torch.Tensor,
     image_np = viewable_image(image=image_np)
 
     # convert heatmap to numpy format
-    heatmap_np = heatmap.cpu().detach().numpy()
+    # heatmap_np = heatmap.cpu().detach().numpy()
+    heatmap_np = np.uint8(255 * (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min()))
     # resize heatmap to match original image size
     heatmap_resize = cv2.resize(heatmap_np, size, interpolation=cv2.INTER_LINEAR)
     # apply color map to the heatmap
-    heatmap_color = cv2.applyColorMap(np.uint8(255 * (heatmap_resize ** 2)), cv2.COLORMAP_JET)
+    heatmap_color = cv2.applyColorMap(heatmap_resize, cv2.COLORMAP_JET)
 
     # overlay image
     overlay_image = cv2.addWeighted(image_np, 0.7, heatmap_color, 0.3, 0)
