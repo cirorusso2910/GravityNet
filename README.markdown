@@ -57,7 +57,7 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
             year        =   {2025}, 
             pages       =   {268–278},
             DOI         =   {10.1007/978-3-031-87660-8_20}
-}
+    }
 
 This project is licensed. <br>
 Please review the [LICENSE](LICENSE) file for more information.
