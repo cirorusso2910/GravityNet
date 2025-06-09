@@ -1,5 +1,13 @@
 ![alt text](doc/logo/GravityNet-logo.png)
 
+----------------------------------------------------------------------
+
+<p align="center">
+  <a href="https://pypi.org/project/gravitynet/0.0.11/">
+    <img src="https://badge.fury.io/py/gravitynet.svg" alt="PyPI version">
+  </a>
+</p>
+
 ## :information_source: INFO
 
 **GravityNet** official repository <br>
@@ -29,18 +37,27 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
 ## :page_facing_up: REFERENCE
 **Paper**: [GravityNet for end-to-end small lesion detection](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
 
-    @article{Russo_Bria_Marrocco_2024, <br>
-             title =   {GravityNet for end-to-end small lesion detection}, <br>
-             ISSN={0933-3657}, <br>
-             DOI={10.1016/j.artmed.2024.102842}, <br>
-             journal={Artificial Intelligence in Medicine}, <br>
-             author={Russo, Ciro and Bria, Alessandro and Marrocco, Claudio}, <br>
-             year={2024}, <br>
-             month=mar, <br>
-             pages={102842} <br>
+    @article{Russo_Bria_Marrocco_2024,
+             author     =   {Russo, Ciro and Bria, Alessandro and Marrocco, Claudio},
+             title      =   {GravityNet for end-to-end small lesion detection},
+             journal    =   {Artificial Intelligence in Medicine}, 
+             year       =   {2024},
+             month      =   mar,
+             pages      =   {102842}
+             DOI        =   {10.1016/j.artmed.2024.102842}      
     }
 
 **ArXiv**: https://arxiv.org/abs/2309.12876
+
+    @inproceedings{Russo_Tanriverdi_Bria_Marrocco_2025,
+            author      =   {Russo, Ciro and Tanriverdi, Yusuf B. and Bria, Alessandro and Marrocco, Claudio},
+            title       =   {A Pixel-Based Anchor Approach for Nuclei Detection in Cervical Cytology Imaging}, 
+            booktitle   =   {Pattern Recognition. ICPR 2024 International Workshops and Challenges}, 
+            publisher   =   {Springer Nature Switzerland}, 
+            year        =   {2025}, 
+            pages       =   {268–278},
+            DOI         =   {10.1007/978-3-031-87660-8_20}
+}
 
 This project is licensed. <br>
 Please review the [LICENSE](LICENSE) file for more information.
