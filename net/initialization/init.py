@@ -28,7 +28,7 @@ def initialization(network_name: str,
     dataset_folders = dataset_folders_dict()
 
     # experiment folders
-    experiment_folders = experiment_folders_dict(parser=parser)
+    experiment_folders = experiment_folders_dict()
 
     # ------- #
     # DATASET #

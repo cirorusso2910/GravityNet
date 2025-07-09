@@ -1,11 +1,7 @@
-import argparse
-
-
-def experiment_folders_dict(parser: argparse.Namespace) -> dict:
+def experiment_folders_dict() -> dict:
     """
     Experiment folders dictionary
 
-    :param parser: parser of parameters-parsing
     :return: folders dictionary
     """
 
