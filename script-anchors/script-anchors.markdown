@@ -1,6 +1,6 @@
 # SCRIPT-ANCHORS
 
-## :milky_way: GravityPoints-Configuration.py
+## 🌌 GravityPoints-Configuration.py
 
 Save gravity-points configuration
 
@@ -10,7 +10,7 @@ Save gravity-points configuration
         --config                    =       [grid, dice]
         --save_config
 
-## :milky_way: GravityPoints-Hooking.py
+## 🌌 GravityPoints-Hooking.py
 
 Save gravity-points hooking process
 

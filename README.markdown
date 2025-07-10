@@ -8,23 +8,23 @@
   </a>
 </p>
 
-## :information_source: INFO
+## ℹ️ INFO
 
 **GravityNet** official repository <br>
 by **Eng. Ciro Russo, PhD** <br>
-:man_technologist: [LinkedIn](https://www.linkedin.com/in/ciro-russo-b14056100/) <br>
-:bookmark_tabs: [Google Scholar](https://scholar.google.com/citations?user=XJV2vVsAAAAJ&hl=it&authuser=1) <br>
-:books: [Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
-:computer: [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
+🔗 [LinkedIn](https://www.linkedin.com/in/ciro-russo-b14056100/) <br>
+🎓 [Google Scholar](https://scholar.google.com/citations?user=XJV2vVsAAAAJ&hl=it&authuser=1) <br>
+🧪 [Research Gate](https://www.researchgate.net/profile/Ciro-Russo-4/research) <br>
+🧠 [Kaggle](https://www.kaggle.com/cirorusso2910) <br>
 
-:office: **University of Cassino and Lazio Meridionale** <br>
-:man_teacher: Prof. **Claudio Marrocco** ([Google Scholar](https://scholar.google.it/citations?user=ed4B7I4AAAAJ&hl=it)) <br>
-:man_teacher: Prof. **Alessandro Bria** ([LinkedIn](https://www.linkedin.com/in/alessandro-bria-831ab149/?originalSubdomain=it))<br>
-:man_technologist: **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
-:man_technologist: **Yusuf B. Tanrıverdi** ([LinkedIn](https://www.linkedin.com/in/yusuftengriverdi/)) <br>
+🏛️ **University of Cassino and Lazio Meridionale** <br>
+👨‍🎓 Prof. **Claudio Marrocco** ([Google Scholar](https://scholar.google.it/citations?user=ed4B7I4AAAAJ&hl=it)) <br>
+👨‍🎓 Prof. **Alessandro Bria** ([LinkedIn](https://www.linkedin.com/in/alessandro-bria-831ab149/?originalSubdomain=it))<br>
+👨‍💻 **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
+👨‍💻 **Yusuf B. Tanrıverdi** ([LinkedIn](https://www.linkedin.com/in/yusuftengriverdi/)) <br>
 
 ----------------------------------------------------------------------
-## :rocket: GRAVITY NET
+## 🚀 GRAVITY NET 🚀
 
 **GravityNet** is novel **one-stage** **end-to-end** **detector** specifically designed to **detect** **small** **lesions** in **medical** **images**.
 Precise localization of small lesions presents challenges due to their appearance and the diverse contextual backgrounds in which they are found.
@@ -34,8 +34,9 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
 <img src="doc/architecture/GravityNet-architecture.png" width="80%" height="80%" alt="">
 
 ----------------------------------------------------------------------
-## :page_facing_up: REFERENCE
+## 📄 REFERENCES
 **Paper**: [GravityNet for end-to-end small lesion detection](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
+**ArXiv**: [GravityNet for end-to-end small lesion detection](https://arxiv.org/abs/2309.12876)
 
     @article{Russo_Bria_Marrocco_2024,
              author     =   {Russo, Ciro and Bria, Alessandro and Marrocco, Claudio},
@@ -47,7 +48,7 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
              DOI        =   {10.1016/j.artmed.2024.102842}      
     }
 
-**ArXiv**: https://arxiv.org/abs/2309.12876
+**Paper**: [A Pixel-Based Anchor Approach for Nuclei Detection in Cervical Cytology Imaging](https://link.springer.com/chapter/10.1007/978-3-031-87660-8_20)
 
     @inproceedings{Russo_Tanriverdi_Bria_Marrocco_2025,
             author      =   {Russo, Ciro and Tanriverdi, Yusuf B. and Bria, Alessandro and Marrocco, Claudio},
@@ -59,11 +60,24 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
             DOI         =   {10.1007/978-3-031-87660-8_20}
     }
 
+**Paper**: [A Two-Stage Deep Learning Approach for Large Vessel Occlusion Detection and Volume Assessment](https://ieeexplore.ieee.org/document/11058806) 
+
+    @inproceedings{Russo_Russo_Oliver_Lladó_Terceño_Silva_Bria_Marrocco_2025,
+            author      =   {Russo, Ciro and Russo, Giulio and Oliver, Arnau and Lladó, Xavier and Terceño, Mikel and Silva, Yolanda and Bria, Alessandro and Marrocco, Claudio},
+            title       =   {A Two-Stage Deep Learning Approach for Large Vessel Occlusion Detection and Volume Assessment},
+            booktitle   =   {2025 IEEE 38th International Symposium on Computer-Based Medical Systems (CBMS)},
+            publisher   =   {IEEE},
+            year        =   {2025}, 
+            pages       =   {813–818},
+            DOI         =   {10.1109/cbms65348.2025.00166},
+    }
+
+
 This project is licensed. <br>
 Please review the [LICENSE](LICENSE) file for more information.
 
 ----------------------------------------------------------------------
-## :inbox_tray: INSTALLATION
+## 📦 INSTALLATION
 
 **GravityNet** is available on [PyPI](https://pypi.org/project/gravitynet/) 
 
@@ -74,11 +88,11 @@ Can be imported as:
     import gravitynet
 
 ----------------------------------------------------------------------
-## :robot: HOW TO GRAVITY
+## ⚙️ HOW TO GRAVITY
 
 <!-- :construction: UNDERGOING MAINTENANCE :construction: -->
 
-### :one: PARAMETERS
+### 1️⃣ 🧰 PARAMETERS 
 This framework uses parameters-parsing, so each **new** parameter **must** be added paying attention to the reference section 
 (for details see [parameters](doc/code/parameters.markdown)).
 
@@ -90,7 +104,7 @@ For details about the [requirements](doc/requirements/requirements.markdown)
     !pip install -r requirements.txt
 
 ----------------------------------------------------------------------
-### :two: INITIALIZATION
+### 2️⃣ 🧭 INITIALIZATION
 Before starting the experiment, it is necessary to define the working paths:
 
     --dataset_path -> path where the dataset is located
@@ -102,7 +116,7 @@ For details about the [dataset-structure](./datasets/dataset-structure.markdown)
 For details about the [experiments-structure](./doc/experiments/experiments-structure.markdown) <br>
 
 ----------------------------------------------------------------------
-### :three: CLASS DATASET
+### 3️⃣ 🗂️ CLASS DATASET
 The **Class Dataset** is defined according to the structure of the dataset (see [dataset-structure](./datasets/dataset-structure.markdown)). 
 
 **NOTE**: run **Dataset-Statistics.py** ([script-dataset](script-dataset/script-dataset.markdown)) to save the dataset statistics.
@@ -112,7 +126,7 @@ The **Class Dataset** is defined according to the structure of the dataset (see 
 | Dataset-Statistics.py | Save dataset statistics |
 
 ----------------------------------------------------------------------
-### :four: SPLIT DATA
+### 4️⃣ ✂️ SPLIT DATA
 To split the data into the **train**, **validation**, and **test** subsets,
 the framework uses a **split** file defined in the dataset folder.
 
@@ -125,7 +139,7 @@ The splits used in the experiments are reported in [datasets](datasets).
 | Cervix93    | nuclei              | [Cervix93 split](datasets/Cervix93/split)       | [Cervix93 reference](https://github.com/parham-ap/cytology_dataset)                                                                                                                                                                                                                                                                                                                                                                                |
 
 ----------------------------------------------------------------------
-### :five: DATASET INFORMATION
+### 5️⃣ 📊 DATASET INFORMATION
 All information about the dataset are reported in the **statistics** of the corresponding [datasets](datasets).
 
 | DATASET     | STATISTICS                                                   |
@@ -135,7 +149,7 @@ All information about the dataset are reported in the **statistics** of the corr
 | Cervix93    | [Cervix93 statistics](../datasets/Cervix93/statistics)       |
 
 ----------------------------------------------------------------------
-### :six: DATASET TRANSFORMS
+### 6️⃣ 🪄 DATASET TRANSFORMS
 Transformations on each **sample** in the dataset are defined by a **Class**.
 
 The framework uses a **collate function** to define the transformations to be applied,
@@ -147,7 +161,7 @@ to this end, we provide basic transformations.
 **Augmentation transformations** can be applied to the train dataset, as: **Horizontal**, **Vertical Flipping**
 
 ----------------------------------------------------------------------
-### :seven: GRAVITY-POINTS CONFIGURATION
+### 7️⃣ 🎯 GRAVITY‑POINTS CONFIGURATION
 To see the **gravity-points configuration** and the **hooking process** in [script-anchors](script-anchors/script-anchors.markdown) are provided the codes
 
 | SCRIPT-ANCHORS                  | DESCRIPTION                         |
@@ -156,7 +170,7 @@ To see the **gravity-points configuration** and the **hooking process** in [scri
 | Gravity-Points-Hooking.py       | Save gravity-points hooking process |
 
 ----------------------------------------------------------------------
-### :eight: GRAVITY NET ARCHITECTURE
+### 8️⃣ 🏗️ GRAVITY NET ARCHITECTURE
 GravityNet is a **one-stage** **end-to-end** **detector** composed of a backbone network and two specific subnetworks. <br>
 The **backbone** is a convolutional network and plays the role of feature extractor. <br>
 The **first subnet** performs convolutional object classification on the backbone's output. <br>
@@ -175,9 +189,8 @@ The available **backbone**:
 |            |                   |              | EfficientNet-B6 |                  |                 |
 |            |                   |              | EfficientNet-B7 |                  |                 |
 
-
 ----------------------------------------------------------------------
-### :nine: EXECUTION MODE
+### 9️⃣ 🎬 EXECUTION MODE
 The available **execution mode**:
 
 | EXECUTION MODE | DESCRIPTION                                                  |
@@ -187,7 +200,7 @@ The available **execution mode**:
 | train_test     | train and test model                                         |
 
 ----------------------------------------------------------------------
-### :keycap_ten: SCRIPT EXECUTION MODE
+### 🔟 💻 SCRIPT EXECUTION MODE
 The available **script execution mode**
 
 | SCRIPT EXECUTION MODE | DESCRIPTION                   | DOCUMENTATION                                                                               |
@@ -197,7 +210,7 @@ The available **script execution mode**
 | explainability        | explainability mode           | [script-explainability documentation](script-explainability/script-explainability.markdown) |
 
 ----------------------------------------------------------------------
-### :telescope: EXAMPLE OF EXECUTION
+###  🔭 EXAMPLE OF EXECUTION
 
     CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -u GravityNet.py train_test 
         --dataset_path              =       "path to dataset main folder"

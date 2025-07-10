@@ -1,6 +1,6 @@
 # SCRIPT-EXPLAINABILITY
 
-## :flashlight: Explainability-GradCAM.py
+## 🔦 Explainability-GradCAM.py
 
 Apply Explainable AI Grad-CAM method
 
