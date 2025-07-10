@@ -1,7 +1,5 @@
 import numpy as np
 
-from scipy import integrate
-
 
 def AUFROC(FPS: np.ndarray,
            sens: np.ndarray,
@@ -46,6 +44,6 @@ def AUFROC(FPS: np.ndarray,
     if len(FPS_cropped) < 2:
         AUFROC_value = np.nan
     else:
-        AUFROC_value = integrate.trapz(y=sens_cropped_sorted, x=FPS_cropped_sorted) / FPS_upper_bound
+        AUFROC_value = np.trapz(y=sens_cropped_sorted, x=FPS_cropped_sorted) / FPS_upper_bound
 
     return AUFROC_value
