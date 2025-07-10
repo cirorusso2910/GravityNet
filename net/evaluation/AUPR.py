@@ -1,7 +1,5 @@
 import numpy as np
 
-from scipy import integrate
-
 
 def AUPR(precision: np.ndarray,
          recall: np.ndarray) -> float:
@@ -14,6 +12,6 @@ def AUPR(precision: np.ndarray,
     """
 
     # compute AUPR value
-    AUPR_value = integrate.trapz(y=recall, x=precision)
+    AUPR_value = np.trapz(y=recall, x=precision)
 
     return AUPR_value
