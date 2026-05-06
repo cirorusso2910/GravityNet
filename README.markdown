@@ -20,8 +20,7 @@ by **Eng. Ciro Russo, PhD** <br>
 🏛️ **University of Cassino and Lazio Meridionale** <br>
 👨‍🎓 Prof. **Claudio Marrocco** ([Google Scholar](https://scholar.google.it/citations?user=ed4B7I4AAAAJ&hl=it)) <br>
 👨‍🎓 Prof. **Alessandro Bria** ([LinkedIn](https://www.linkedin.com/in/alessandro-bria-831ab149/?originalSubdomain=it))<br>
-👨‍💻 **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
-👨‍💻 **Yusuf B. Tanrıverdi** ([LinkedIn](https://www.linkedin.com/in/yusuftengriverdi/)) <br>
+👨‍💻 Eng. **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
 
 ----------------------------------------------------------------------
 ## 🚀 GRAVITY NET 🚀
