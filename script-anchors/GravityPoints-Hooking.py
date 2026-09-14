@@ -178,13 +178,13 @@ def main():
           "\nHooked Annotations: {} / {}".format(len(torch.unique(assigned_annotations[:, 0])), num_annotations))
 
     # init result folder
-    result_folder_filename = "GravityPoints-Hooking|config={}".format(parser.config)
+    result_folder_filename = "GravityPoints-Hooking{}config={}".format(parser.sep, parser.config)
     doc_folder = "./doc/gravity-points-hooking"
     result_folder_path = os.path.join(doc_folder, result_folder_filename)
     create_folder(path=result_folder_path)
 
     # init result path
-    hooking_image_filename = "GravityPoints-Hooking|filename={}|config={}|hook={}.png".format(sample['filename'], parser.config, parser.hook)
+    hooking_image_filename = "GravityPoints-Hooking{}filename={}{}config={}{}hook={}.png".format(parser.sep, sample['filename'], parser.sep, parser.config, parser.sep, parser.hook)
     hooking_image_path = os.path.join(result_folder_path, hooking_image_filename)
 
     # debug hooking

@@ -7,14 +7,17 @@ class MyHorizontalFlip(object):
     """
 
     def __init__(self,
-                 num_channels: int):
+                 num_channels: int,
+                 sep: str):
         """
         __init__ method: run one when instantiating the object
 
         :param num_channels: image num channels
+        :param sep: separator in experiment ID
         """
 
         self.num_channels = num_channels
+        self.sep = sep
 
     def __call__(self,
                  sample: dict) -> dict:
@@ -27,7 +30,7 @@ class MyHorizontalFlip(object):
         """
 
         # filename
-        filename = sample['filename'] + "|HorizontalFlip"
+        filename = sample['filename'] + self.sep + "HorizontalFlip"
 
         # flip image horizontal
         if self.num_channels == 1:

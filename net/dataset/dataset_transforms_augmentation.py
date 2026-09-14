@@ -40,7 +40,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalFlip(num_channels=parser.num_channels),  # My Horizontal Flip
+            MyHorizontalFlip(num_channels=parser.num_channels,
+                            sep=parser.sep),  # My Horizontal Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -53,7 +54,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyVerticalFlip(num_channels=parser.num_channels),  # My Vertical Flip
+            MyVerticalFlip(num_channels=parser.num_channels,
+                          sep=parser.sep),  # My Vertical Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -66,7 +68,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels),  # My Horizontal and Vertical Flip
+            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels,
+                                       sep=parser.sep),  # My Horizontal and Vertical Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -87,7 +90,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalFlip(num_channels=parser.num_channels),  # My Horizontal Flip
+            MyHorizontalFlip(num_channels=parser.num_channels,
+                            sep=parser.sep),  # My Horizontal Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -102,7 +106,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyVerticalFlip(num_channels=parser.num_channels),  # My Vertical Flip
+            MyVerticalFlip(num_channels=parser.num_channels,
+                          sep=parser.sep),  # My Vertical Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -117,7 +122,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels),  # My Horizontal and Vertical Flip
+            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels,
+                                       sep=parser.sep),  # My Horizontal and Vertical Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -140,7 +146,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalFlip(num_channels=parser.num_channels),  # My Horizontal Flip
+            MyHorizontalFlip(num_channels=parser.num_channels,
+                            sep=parser.sep),  # My Horizontal Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -155,7 +162,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyVerticalFlip(num_channels=parser.num_channels),  # My Vertical Flip
+            MyVerticalFlip(num_channels=parser.num_channels,
+                          sep=parser.sep),  # My Vertical Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)
@@ -170,7 +178,8 @@ def dataset_transforms_augmentation(normalization: str,
             Rescale(rescale=parser.rescale,
                     num_channels=parser.num_channels),  # Rescale images and annotations
             # DATA AUGMENTATION
-            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels),  # My Horizontal and Vertical Flip
+            MyHorizontalAndVerticalFlip(num_channels=parser.num_channels,
+                                       sep=parser.sep),  # My Horizontal and Vertical Flip
             # DATA PREPARATION
             Add3ChannelsImage(num_channels=parser.num_channels),  # Add 3 Channels to image [C, H, W]
             AnnotationPadding(max_padding=parser.max_padding),  # annotation padding (for batch dataloader)

@@ -23,7 +23,8 @@ def test(experiment_ID: str,
          do_output_gravity: bool,
          do_NMS: bool,
          NMS_box_radius: int,
-         device: torch.device
+         device: torch.device,
+         sep: str
          ):
     """
     Test function on best trained model
@@ -43,6 +44,7 @@ def test(experiment_ID: str,
     :param do_NMS: NMS option
     :param NMS_box_radius: NMS box radius
     :param device: device
+    :param sep: separator in experiment ID
     """
 
     # if detections already exists: delete
@@ -93,7 +95,8 @@ def test(experiment_ID: str,
                                      device=device,
                                      do_output_gravity=do_output_gravity,
                                      do_NMS=do_NMS,
-                                     NMS_box_radius=NMS_box_radius)
+                                     NMS_box_radius=NMS_box_radius,
+                                     sep=sep)
 
             # batch time
             time_batch = time.time() - time_batch_start

@@ -30,6 +30,7 @@ def detections_test_distance(experiment_ID: str,
                              do_output_gravity: bool,
                              do_NMS: bool,
                              NMS_box_radius: int,
+                             sep: str,
                              ):
     """
     Compute detections in test with DISTANCE metrics and save in detections.csv
@@ -69,6 +70,7 @@ def detections_test_distance(experiment_ID: str,
     :param do_output_gravity: output gravity option
     :param do_NMS: NMS option
     :param NMS_box_radius: NMS box radius
+    :param sep: separator in experiment ID
     """
 
     # batch size
@@ -275,7 +277,7 @@ def detections_test_distance(experiment_ID: str,
             output_gravity(image=image,
                            annotation=annotation,
                            detections=detections,
-                           output_gravity_path=os.path.join(output_gravity_path, "{}-output-gravity|{}.png".format(filename, experiment_ID)))
+                           output_gravity_path=os.path.join(output_gravity_path, "{}-output-gravity{}{}.png".format(filename, sep, experiment_ID)))
 
         # delete predictions with label '-1' (possibleTP) '-3' (FP no normals) '-4' (out mask)
         detections = detections[detections[:, 1] != -1]

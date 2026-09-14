@@ -82,7 +82,8 @@ def main():
         debug_anchors(config=parser.config,
                       image_shape=image_shape,
                       gravity_points_initial_config=gravity_points_feature_map,
-                      gravity_points=gravity_points)
+                      gravity_points=gravity_points,
+                      sep=parser.sep)
 
         print("\nSave Gravity Points Configuration: Complete")
 

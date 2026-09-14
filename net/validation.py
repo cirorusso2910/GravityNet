@@ -25,7 +25,8 @@ def validation(num_epoch: int,
                output_gravity_path: str,
                filename_output_gravity: str,
                do_output_gravity: bool,
-               device: torch.device
+               device: torch.device,
+               sep: str
                ):
     """
     Validation function to test the trained model after each epoch on validation dataset
@@ -46,6 +47,7 @@ def validation(num_epoch: int,
     :param filename_output_gravity: filename for output gravity
     :param do_output_gravity: output gravity option
     :param device: device
+    :param sep: separator in experiment ID
     """
 
     # if detections already exists: delete
@@ -93,7 +95,7 @@ def validation(num_epoch: int,
                                            detections_path=detections_path,
                                            FP_list_path=FP_list_path,
                                            filename_output_gravity=filename_output_gravity,
-                                           output_gravity_path=os.path.join(output_gravity_path, "{}-output-gravity-epoch={}|{}.png".format(filename_output_gravity, num_epoch, experiment_ID)),
+                                           output_gravity_path=os.path.join(output_gravity_path, "{}-output-gravity-epoch={}{}{}.png".format(filename_output_gravity, num_epoch, sep, experiment_ID)),
                                            device=device,
                                            do_output_gravity=do_output_gravity)
 

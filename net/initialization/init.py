@@ -119,68 +119,68 @@ def initialization(network_name: str,
     # RESULT PATH #
     # ----------- #
     # detections
-    detections_validation_filename = "detections-validation|" + experiment_ID + ".csv"
+    detections_validation_filename = "detections-validation" + parser.sep + experiment_ID + ".csv"
     detections_validation_path = os.path.join(experiment_results_path['detections'], detections_validation_filename)
 
-    detections_test_filename = "detections-test|" + experiment_ID + ".csv"
+    detections_test_filename = "detections-test" + parser.sep + experiment_ID + ".csv"
     detections_test_path = os.path.join(experiment_results_path['detections'], detections_test_filename)
 
     # metrics-train
-    metrics_train_filename = "metrics-train|" + experiment_ID + ".csv"
+    metrics_train_filename = "metrics-train" + parser.sep + experiment_ID + ".csv"
     metrics_train_path = os.path.join(experiment_results_path['metrics_train'], metrics_train_filename)
 
     # metrics-test
-    metrics_test_filename = "metrics-test|" + experiment_ID + ".csv"
+    metrics_test_filename = "metrics-test" + parser.sep + experiment_ID + ".csv"
     metrics_test_path = os.path.join(experiment_results_path['metrics_test'], metrics_test_filename)
 
     # models best
-    model_best_sensitivity_10_FPS_filename = network_name + "-best-model-sensitivity-10-FPS|" + experiment_ID + ".tar"
+    model_best_sensitivity_10_FPS_filename = network_name + "-best-model-sensitivity-10-FPS" + parser.sep + experiment_ID + ".tar"
     model_best_sensitivity_10_FPS_path = os.path.join(experiment_results_path['models'], model_best_sensitivity_10_FPS_filename)
 
-    model_best_AUFROC_0_10_filename = network_name + "-best-model-AUFROC=[0,10]|" + experiment_ID + ".tar"
+    model_best_AUFROC_0_10_filename = network_name + "-best-model-AUFROC=[0,10]" + parser.sep + experiment_ID + ".tar"
     model_best_AUFROC_0_10_path = os.path.join(experiment_results_path['models'], model_best_AUFROC_0_10_filename)
 
-    model_best_AUPR_filename = network_name + "-best-model-AUPR|" + experiment_ID + ".tar"
+    model_best_AUPR_filename = network_name + "-best-model-AUPR" + parser.sep + experiment_ID + ".tar"
     model_best_AUPR_path = os.path.join(experiment_results_path['models'], model_best_AUPR_filename)
 
     # plots-train
-    loss_filename = "Loss|" + experiment_ID + ".png"
+    loss_filename = "Loss" + parser.sep + experiment_ID + ".png"
     loss_path = os.path.join(experiment_results_path['plots_train'], loss_filename)
 
-    learning_rate_filename = "LearningRate|" + experiment_ID + ".png"
+    learning_rate_filename = "LearningRate" + parser.sep + experiment_ID + ".png"
     learning_rate_path = os.path.join(experiment_results_path['plots_train'], learning_rate_filename)
 
     # plots-validation
-    sensitivity_filename = "Sensitivity|" + experiment_ID + ".png"
+    sensitivity_filename = "Sensitivity" + parser.sep + experiment_ID + ".png"
     sensitivity_path = os.path.join(experiment_results_path['plots_validation'], sensitivity_filename)
 
-    AUC_filename = "AUC|" + experiment_ID + ".png"
+    AUC_filename = "AUC" + parser.sep + experiment_ID + ".png"
     AUC_path = os.path.join(experiment_results_path['plots_validation'], AUC_filename)
 
-    AUFROC_filename = "AUFROC|" + experiment_ID + ".png"
+    AUFROC_filename = "AUFROC" + parser.sep + experiment_ID + ".png"
     AUFROC_path = os.path.join(experiment_results_path['plots_validation'], AUFROC_filename)
 
-    AUPR_filename = "AUPR|" + experiment_ID + ".png"
+    AUPR_filename = "AUPR" + parser.sep + experiment_ID + ".png"
     AUPR_path = os.path.join(experiment_results_path['plots_validation'], AUPR_filename)
 
     # plots-test
-    FROC_test_filename = "FROC|" + experiment_ID + ".png"
+    FROC_test_filename = "FROC" + parser.sep + experiment_ID + ".png"
     FROC_test_path = os.path.join(experiment_results_path['plots_test'], FROC_test_filename)
 
-    FROC_test_linear_filename = "FROC-Linear|" + experiment_ID + ".png"
+    FROC_test_linear_filename = "FROC-Linear" + parser.sep + experiment_ID + ".png"
     FROC_test_linear_path = os.path.join(experiment_results_path['plots_test'], FROC_test_linear_filename)
 
-    ROC_test_filename = "ROC|" + experiment_ID + ".png"
+    ROC_test_filename = "ROC" + parser.sep + experiment_ID + ".png"
     ROC_test_path = os.path.join(experiment_results_path['plots_test'], ROC_test_filename)
 
-    score_distribution_filename = "Score-Distribution|" + experiment_ID + ".png"
+    score_distribution_filename = "Score-Distribution" + parser.sep + experiment_ID + ".png"
     score_distribution_path = os.path.join(experiment_results_path['plots_test'], score_distribution_filename)
 
     # coords test
-    FROC_test_coords_filename = "FROC-coords|" + experiment_ID + ".csv"
+    FROC_test_coords_filename = "FROC-coords" + parser.sep + experiment_ID + ".csv"
     FROC_test_coords_path = os.path.join(experiment_results_path['coords_test'], FROC_test_coords_filename)
 
-    ROC_test_coords_filename = "ROC-coords|" + experiment_ID + ".csv"
+    ROC_test_coords_filename = "ROC-coords" + parser.sep + experiment_ID + ".csv"
     ROC_test_coords_path = os.path.join(experiment_results_path['coords_test'], ROC_test_coords_filename)
 
     path = {

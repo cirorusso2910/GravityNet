@@ -14,7 +14,8 @@ from net.initialization.utility.create_folder import create_folder
 def debug_anchors(image_shape: np.ndarray,
                   config: str,
                   gravity_points_initial_config: torch.Tensor,
-                  gravity_points: torch.Tensor):
+                  gravity_points: torch.Tensor,
+                  sep: str):
     """
     DEBUG ANCHORS
 
@@ -31,6 +32,7 @@ def debug_anchors(image_shape: np.ndarray,
     :param config: configuration
     :param gravity_points_initial_config: gravity points initial configuration
     :param gravity_points: gravity points configuration
+    :param sep: separator in experiment ID
     """
 
     # num gravity points
@@ -40,7 +42,7 @@ def debug_anchors(image_shape: np.ndarray,
     num_gravity_points_feature_map = gravity_points_initial_config.shape[0]
 
     # init result folder
-    result_folder_filename = "GravityPoints-Configuration|config={}".format(config)
+    result_folder_filename = "GravityPoints-Configuration{}config={}".format(sep, config)
     doc_folder = "./doc/gravity-points-configuration"
     result_folder_path = os.path.join(doc_folder, result_folder_filename)
     create_folder(path=result_folder_path)
@@ -50,22 +52,22 @@ def debug_anchors(image_shape: np.ndarray,
     create_folder(path=result_folder_image_path)
 
     # init result path
-    gravity_points_initial_config_image_filename_pdf = "GravityPoints-InitialConfiguration|config={}|gravity-points-per-feature-map={}.pdf".format(config, num_gravity_points_feature_map)
+    gravity_points_initial_config_image_filename_pdf = "GravityPoints-InitialConfiguration{}config={}{}gravity-points-per-feature-map={}.pdf".format(sep, config, sep, num_gravity_points_feature_map)
     gravity_points_initial_config_image_path_pdf = os.path.join(result_folder_image_path, gravity_points_initial_config_image_filename_pdf)
 
-    gravity_points_initial_config_image_filename_png = "GravityPoints-InitialConfiguration|config={}|gravity-points-per-feature-map={}.png".format(config, num_gravity_points_feature_map)
+    gravity_points_initial_config_image_filename_png = "GravityPoints-InitialConfiguration{}config={}{}gravity-points-per-feature-map={}.png".format(sep, config, sep, num_gravity_points_feature_map)
     gravity_points_initial_config_image_path_png = os.path.join(result_folder_image_path, gravity_points_initial_config_image_filename_png)
 
     gravity_points_initial_config_template_image_filename = "{}-template.pdf".format(config)
     gravity_points_initial_config_template_image_path = os.path.join(result_folder_image_path, gravity_points_initial_config_template_image_filename)
 
-    gravity_points_initial_config_csv_filename = "GravityPoints-InitialConfiguration|config={}|gravity-points-per-feature-map={}.csv".format(config, num_gravity_points_feature_map)
+    gravity_points_initial_config_csv_filename = "GravityPoints-InitialConfiguration{}config={}{}gravity-points-per-feature-map={}.csv".format(sep, config, sep, num_gravity_points_feature_map)
     gravity_points_initial_config_csv_path = os.path.join(result_folder_csv_path, gravity_points_initial_config_csv_filename)
 
-    gravity_points_config_image_filename = "GravityPoints|config={}|gravity-points={}.png".format(config, num_gravity_points)
+    gravity_points_config_image_filename = "GravityPoints{}config={}{}gravity-points={}.png".format(sep, config, sep, num_gravity_points)
     gravity_points_config_image_path = os.path.join(result_folder_image_path, gravity_points_config_image_filename)
 
-    gravity_points_config_csv_filename = "GravityPoints|config={}|gravity-points={}.csv".format(config, num_gravity_points)
+    gravity_points_config_csv_filename = "GravityPoints{}config={}{}gravity-points={}.csv".format(sep, config, sep, num_gravity_points)
     gravity_points_config_csv_path = os.path.join(result_folder_csv_path, gravity_points_config_csv_filename)
 
     feature_grid_filename = "FeatureGrid.png"

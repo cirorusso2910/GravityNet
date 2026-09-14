@@ -355,7 +355,8 @@ def main():
                                                                               idx=parser.idx),
                        output_gravity_path=path['output']['gravity']['validation'],
                        do_output_gravity=parser.do_output_gravity,
-                       device=device)
+                       device=device,
+                       sep=parser.sep)
             time_val = time.time() - time_val_start
 
             # ==================== #
@@ -403,8 +404,8 @@ def main():
                   "\nPLOT VALIDATION:"
                   "\n----------------")
             # FROC plot for each epoch
-            FROC_path = os.path.join(path['plots_validation']['FROC'], "FROC-validation-ep={}|".format(epoch) + experiment_ID + ".png")
-            FROC_coords_path = os.path.join(path['plots_validation']['coords_FROC'], "FROC-validation-ep={}-coords|".format(epoch) + experiment_ID + ".csv")
+            FROC_path = os.path.join(path['plots_validation']['FROC'], "FROC-validation-ep={}".format(epoch) + parser.sep + experiment_ID + ".png")
+            FROC_coords_path = os.path.join(path['plots_validation']['coords_FROC'], "FROC-validation-ep={}-coords".format(epoch) + parser.sep + experiment_ID + ".csv")
             FROC_plot(title="FROC (VALIDATION) | EPOCH={}".format(epoch),
                       color='green',
                       experiment_ID=experiment_ID,
@@ -414,8 +415,8 @@ def main():
                       FROC_coords_path=FROC_coords_path)
 
             # ROC plot for each epoch
-            ROC_path = os.path.join(path['plots_validation']['ROC'], "ROC-validation-ep={}|".format(epoch) + experiment_ID + ".png")
-            ROC_coords_path = os.path.join(path['plots_validation']['coords_ROC'], "ROC-validation-ep={}-coords|".format(epoch) + experiment_ID + ".csv")
+            ROC_path = os.path.join(path['plots_validation']['ROC'], "ROC-validation-ep={}".format(epoch) + parser.sep + experiment_ID + ".png")
+            ROC_coords_path = os.path.join(path['plots_validation']['coords_ROC'], "ROC-validation-ep={}-coords".format(epoch) + parser.sep + experiment_ID + ".csv")
             ROC_plot(title="ROC (VALIDATION) | EPOCH={}".format(epoch),
                      color='green',
                      experiment_ID=experiment_ID,
@@ -425,8 +426,8 @@ def main():
                      ROC_coords_path=ROC_coords_path)
 
             # PR plot for each epoch
-            PR_path = os.path.join(path['plots_validation']['PR'], "PR-validation-ep={}|".format(epoch) + experiment_ID + ".png")
-            PR_coords_path = os.path.join(path['plots_validation']['coords_PR'], "PR-validation-ep={}-coords|".format(epoch) + experiment_ID + ".csv")
+            PR_path = os.path.join(path['plots_validation']['PR'], "PR-validation-ep={}".format(epoch) + parser.sep + experiment_ID + ".png")
+            PR_coords_path = os.path.join(path['plots_validation']['coords_PR'], "PR-validation-ep={}-coords".format(epoch) + parser.sep + experiment_ID + ".csv")
             PR_plot(title="PR (VALIDATION) | EPOCH={}".format(epoch),
                     color='green',
                     experiment_ID=experiment_ID,
@@ -614,7 +615,8 @@ def main():
              do_output_gravity=parser.do_output_gravity,
              do_NMS=parser.do_NMS,
              NMS_box_radius=parser.NMS_box_radius,
-             device=device)
+             device=device,
+             sep=parser.sep)
         time_test = time.time() - time_test_start
 
         # read detections test for evaluation (numpy array)
@@ -689,7 +691,7 @@ def main():
                num_images=parser.num_images,
                detections_path=path['detections']['test'],
                output_path=path['output']['test'],
-               suffix="-output|{}".format(experiment_ID))
+               suffix="-output" + parser.sep + "{}".format(experiment_ID))
 
         # ========= #
         # PLOT TEST #
