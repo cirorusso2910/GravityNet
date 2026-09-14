@@ -24,7 +24,7 @@ def train(num_epoch: int,
           optimizer: Union[Adam, SGD],
           scheduler: Union[ReduceLROnPlateau, StepLR, CosineAnnealingWarmRestarts],
           criterion: Union[GravityLoss],
-          lambda_factor: int,
+          lambda_factor: float,
           device: torch.device,
           parser: argparse.Namespace) -> Tuple[float, float, float]:
     """
@@ -121,6 +121,8 @@ def train(num_epoch: int,
     if parser.scheduler == 'ReduceLROnPlateau':
         scheduler.step(np.mean(epoch_loss_hist))
     elif parser.scheduler == 'StepLR':
+        scheduler.step()
+    elif parser.scheduler == 'CosineAnnealing':
         scheduler.step()
 
     # return avg epoch loss, avg classification loss, avg regression loss (for each epoch)

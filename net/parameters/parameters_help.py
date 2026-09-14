@@ -108,6 +108,7 @@ parameters_help = {
     'lr_patience': f"number of epochs with no improvement after which learning rate will be reduced [scheduler: ReduceLROnPlateau] (default: {parameters_default['lr_patience']})",
     'lr_step_size': f"how much the learning rate decreases [scheduler: StepLR] (default: {parameters_default['lr_step_size']})",
     'lr_gamma': f"multiplicative factor of learning rate decay [scheduler: StepLR] (default: {parameters_default['lr_gamma']})",
+    'lr_T0': f"number of epochs for the first restart [scheduler: CosineAnnealing] (default: {parameters_default['lr_T0']})",
 
     'max_norm': f"max norm of the gradients to be clipped [Clip Gradient] (default: {parameters_default['max_norm']})",
 

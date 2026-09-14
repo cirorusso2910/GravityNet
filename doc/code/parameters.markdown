@@ -3,7 +3,6 @@
 | **EXECUTION MODE** | **DESCRIPTION**                       |
 |--------------------|---------------------------------------|
 | **train**          | train model                           |
-| **resume**         | resume training from a specific epoch |
 | **test**           | test model                            |
 | **train_test**     | train and test model                  |
 |                    |                                       |

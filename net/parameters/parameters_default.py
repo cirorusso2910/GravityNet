@@ -26,7 +26,7 @@ parameters_default = {
     # EXPERIMENT ID #
     # ------------- #
     'typeID': 'default',
-    'sep': '|',
+    'sep': '_',
 
     # ------ #
     # DEVICE #
@@ -81,7 +81,6 @@ parameters_default = {
     # HYPER-PARAMETERS #
     # ---------------- #
     'epochs': 1,
-    'epoch_to_resume': 0,
 
     'optimizer': 'Adam',
     'scheduler': 'ReduceLROnPlateau',
@@ -92,6 +91,7 @@ parameters_default = {
     'lr_patience': 3,  # scheduler: ReduceLROnPlateau
     'lr_step_size': 3,  # scheduler: StepLR
     'lr_gamma': 0.1,  # scheduler: StepLR
+    'lr_T0': 10,  # scheduler: CosineAnnealing
 
     'max_norm': 0.1,
 

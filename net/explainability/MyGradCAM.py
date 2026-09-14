@@ -16,7 +16,7 @@ class MyGradCAM:
     def __init__(self,
                  model: nn.Module,
                  criterion: Union[GravityLoss],
-                 lambda_factor: int,
+                 lambda_factor: float,
                  gravity_points: np.ndarray,
                  target_layer):
         """

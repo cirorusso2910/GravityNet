@@ -85,7 +85,7 @@ def initialization(network_name: str,
     # PATH #
     # ---- #
     # experiment
-    experiment_name = network_name + "|" + experiment_ID
+    experiment_name = network_name + parser.sep + experiment_ID
     experiment_path = os.path.join(parser.experiments_path, experiment_name)
 
     # experiment path

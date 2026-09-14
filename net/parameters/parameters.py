@@ -170,7 +170,7 @@ def parameters_parsing() -> argparse.Namespace:
         # DATASET AUGMENTATION #
         # -------------------- #
         subparser.add_argument('--do_dataset_augmentation',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['do_dataset_augmentation'],
                                help=parameters_help['do_dataset_augmentation'])
 
@@ -207,7 +207,7 @@ def parameters_parsing() -> argparse.Namespace:
                                help=parameters_help['backbone'])
 
         subparser.add_argument('--pretrained',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['pretrained'],
                                help=parameters_help['pretrained'])
 
@@ -220,7 +220,7 @@ def parameters_parsing() -> argparse.Namespace:
                                help=parameters_help['config'])
 
         subparser.add_argument('--save_config',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['save_config'],
                                help=parameters_help['save_config'])
 
@@ -245,7 +245,7 @@ def parameters_parsing() -> argparse.Namespace:
                                help=parameters_help['scheduler'])
 
         subparser.add_argument('--clip_gradient',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['clip_gradient'],
                                help=parameters_help['clip_gradient'])
 
@@ -255,7 +255,7 @@ def parameters_parsing() -> argparse.Namespace:
                                help=parameters_help['learning_rate'])
 
         subparser.add_argument('--lr_momentum',
-                               type=int,
+                               type=float,
                                default=parameters_default['lr_momentum'],
                                help=parameters_help['lr_momentum'])
 
@@ -270,9 +270,14 @@ def parameters_parsing() -> argparse.Namespace:
                                help=parameters_help['lr_step_size'])
 
         subparser.add_argument('--lr_gamma',
-                               type=int,
+                               type=float,
                                default=parameters_default['lr_gamma'],
                                help=parameters_help['lr_gamma'])
+
+        subparser.add_argument('--lr_T0',
+                               type=int,
+                               default=parameters_default['lr_T0'],
+                               help=parameters_help['lr_T0'])
 
         subparser.add_argument('--max_norm',
                                type=float,
@@ -293,7 +298,7 @@ def parameters_parsing() -> argparse.Namespace:
                                help=parameters_help['gamma'])
 
         subparser.add_argument('--lambda_factor',
-                               type=int,
+                               type=float,
                                default=parameters_default['lambda'],
                                help=parameters_help['lambda'])
 
@@ -329,17 +334,17 @@ def parameters_parsing() -> argparse.Namespace:
         # LOAD MODEL #
         # ---------- #
         subparser.add_argument('--load_best_sensitivity_10_FPS_model',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['load_best_sensitivity_10_FPS_model'],
                                help=parameters_help['load_best_sensitivity_10_FPS_model'])
 
         subparser.add_argument('--load_best_AUFROC_0_10_model',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['load_best_AUFROC_0_10_model'],
                                help=parameters_help['load_best_AUFROC_0_10_model'])
 
         subparser.add_argument('--load_best_AUPR_model',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['load_best_AUPR_model'],
                                help=parameters_help['load_best_AUPR_model'])
 
@@ -358,7 +363,7 @@ def parameters_parsing() -> argparse.Namespace:
                                help=parameters_help['box_draw_radius'])
 
         subparser.add_argument('--do_output_gravity',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['do_output_gravity'],
                                help=parameters_help['do_output_gravity'])
 
@@ -376,7 +381,7 @@ def parameters_parsing() -> argparse.Namespace:
         # POST PROCESSING #
         # --------------- #
         subparser.add_argument('--do_NMS',
-                               action='store_true',
+                               action=argparse.BooleanOptionalAction,
                                default=parameters_default['do_NMS'],
                                help=parameters_help['do_NMS'])
 
