@@ -21,7 +21,6 @@
     | - parameters
     | - plot
     | - reproducibility
-    | - resume
     | - scheduler
     | - utility
     |
@@ -49,6 +48,5 @@
 | parameters      | [parameters](parameters/parameters.markdown)                |
 | plot            | [plot](plot/plot.markdown)                                  |
 | reproducibility | [reproducibility](reproducibility/reproducibility.markdown) |
-| resume          | [resume](resume/resume.markdown)                            |
 | scheduler       | [scheduler](scheduler/scheduler.markdown)                   |
 | utility         | [utility](utility/utility.markdown)                         |
