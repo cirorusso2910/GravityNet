@@ -1,5 +1,5 @@
-# Python 3.8.0
-imageio==1.5.33
+# Legacy paper environment (Python 3.8.0). See ../../pyproject.toml for the current environment.
+imageio==2.19.3
 matplotlib==3.5.2
 natsort==8.1.0
 numpy==1.23.5
@@ -12,8 +12,8 @@ scipy==1.8.0
 tifffile==2022.5.4
 
 # conda install nvidia/label/cuda-11.6.0::cuda-toolkit
-# --extra-index-url https://download.pytorch.org/whl/cu116 --no-cache-dir
-torch==1.12+cu116 
+--extra-index-url https://download.pytorch.org/whl/cu116
+torch==1.12.0+cu116
 torchvision==0.13.0+cu116
 
 tqdm==4.64.1
