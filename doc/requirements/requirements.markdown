@@ -1,12 +1,15 @@
 # REQUIREMENTS
-The following packages **must** be installed for correct execution <br>
+
+**Legacy paper environment** (Python 3.8, torch 1.12+cu116). For the current environment
+(Python >= 3.10, torch 2.x) see [pyproject.toml](../../pyproject.toml) and the
+[README installation section](../../README.markdown). Kept only for reproducing the paper results.
 
 | PYTHON | 3.8.0   |
 |--------|---------|
 
 | PACKAGE       | VERSION      |
 |---------------|--------------|
-| imageio       | 1.5.33       |
+| imageio       | 2.19.3       |
 | matplotlib    | 3.5.2        |
 | natsort       | 8.1.0        |
 | numpy         | 1.23.5       |
@@ -17,6 +20,6 @@ The following packages **must** be installed for correct execution <br>
 | scikit-learn  | 1.0.2        |
 | scipy         | 1.8.0        |
 | tifffile      | 2022.5.4     |
-| torch         | 1.12+cu116   |
+| torch         | 1.12.0+cu116 |
 | torchvision   | 0.13.0+cu116 |
 | tqdm          | 4.64.1       |
