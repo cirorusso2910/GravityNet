@@ -1,0 +1,9 @@
+datasets/
+experiments/
+.git
+.venv
+doc/logo/*.psd
+__pycache__
+*.pyc
+.idea
+.DS_Store

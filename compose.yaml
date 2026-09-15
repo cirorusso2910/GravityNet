@@ -1,0 +1,17 @@
+services:
+  gravitynet:
+    build: .
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./datasets:/app/datasets
+      - ./experiments:/app/experiments
+    # default 64MB /dev/shm crashes the DataLoader at num_workers=8
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
