@@ -78,7 +78,7 @@ Please review the [LICENSE](LICENSE) file for more information.
 ----------------------------------------------------------------------
 ## 📦 INSTALLATION
 
-**GravityNet** is available on [PyPI](https://pypi.org/project/gravitynet/) 
+**GravityNet** is also available as a package on [PyPI](https://pypi.org/project/gravitynet/):
 
     pip install gravitynet
 
@@ -86,21 +86,50 @@ Can be imported as:
 
     import gravitynet
 
+To run this repository (training/testing/scripts), set up the environment with one of:
+
+**uv** (recommended -- single source of truth is [pyproject.toml](pyproject.toml)):
+
+    uv sync
+
+**conda**:
+
+    conda env create -f environment.yml
+    conda activate gravitynet
+
+**pip**:
+
+    pip install -r requirements.txt
+
+The baseline environment targets Python >= 3.10 and torch 2.x. On Linux, `uv sync`
+picks up CUDA-enabled torch/torchvision wheels automatically; macOS gets the
+CPU/MPS wheels from PyPI. The exact environment used for the paper (Python 3.8,
+torch 1.12+cu116) is kept at [doc/requirements/requirements.txt](doc/requirements/requirements.txt)
+for reproducibility.
+
+### 🐳 Docker
+
+    docker compose run gravitynet train_test --cfg configs/INbreast.yaml
+
+See [Dockerfile](Dockerfile) and [compose.yaml](compose.yaml). Requires the NVIDIA
+Container Toolkit for GPU access; `./datasets` and `./experiments` are mounted as volumes.
+
 ----------------------------------------------------------------------
 ## ⚙️ HOW TO GRAVITY
 
 <!-- :construction: UNDERGOING MAINTENANCE :construction: -->
 
-### 1️⃣ 🧰 PARAMETERS 
-This framework uses parameters-parsing, so each **new** parameter **must** be added paying attention to the reference section 
+### 1️⃣ 🧰 PARAMETERS
+This framework uses parameters-parsing, so each **new** parameter **must** be added paying attention to the reference section
 (for details see [parameters](doc/code/parameters.markdown)).
 
-The definition of these parameters is essential for the _experiment_ID_ to save the results and avoid overwriting.    
-**NOTE**: for Windows users use a _separator_ equal to ' _ ', while for Linux users the default separator is ' | '.
+The definition of these parameters is essential for the _experiment_ID_ to save the results and avoid overwriting.
+**NOTE**: the default _separator_ is `_` (portable across OSes); pass `--sep '|'` to reproduce experiment
+folders created before this default changed.
 
-For details about the [requirements](doc/requirements/requirements.markdown)
-
-    !pip install -r requirements.txt
+Parameters can also be given as a YAML file with `--cfg path/to/file.yaml` (CLI flags still take
+precedence over it, which takes precedence over the built-in defaults). See [configs](configs) for
+per-dataset presets (`configs/INbreast.yaml`, `configs/E-ophtha-MA.yaml`, `configs/Cervix93.yaml`).
 
 ----------------------------------------------------------------------
 ### 2️⃣ 🧭 INITIALIZATION
@@ -141,11 +170,11 @@ The splits used in the experiments are reported in [datasets](datasets).
 ### 5️⃣ 📊 DATASET INFORMATION
 All information about the dataset are reported in the **statistics** of the corresponding [datasets](datasets).
 
-| DATASET     | STATISTICS                                                   |
-|-------------|--------------------------------------------------------------|
-| INbreast    | [INbreast statistics](../datasets/INbreast/statistics)       |
-| E-ophtha-MA | [E-ophtha-MA statistics](../datasets/E-ophtha-MA/statistics) |
-| Cervix93    | [Cervix93 statistics](../datasets/Cervix93/statistics)       |
+| DATASET     | STATISTICS                                                 |
+|-------------|-------------------------------------------------------------|
+| INbreast    | [INbreast statistics](datasets/INbreast/statistics)          |
+| E-ophtha-MA | [E-ophtha-MA statistics](datasets/E-ophtha-MA/statistics)    |
+| Cervix93    | [Cervix93 statistics](datasets/Cervix93/statistics)          |
 
 ----------------------------------------------------------------------
 ### 6️⃣ 🪄 DATASET TRANSFORMS
@@ -163,10 +192,10 @@ to this end, we provide basic transformations.
 ### 7️⃣ 🎯 GRAVITY‑POINTS CONFIGURATION
 To see the **gravity-points configuration** and the **hooking process** in [script-anchors](script-anchors/script-anchors.markdown) are provided the codes
 
-| SCRIPT-ANCHORS                  | DESCRIPTION                         |
-|---------------------------------|-------------------------------------|
-| Gravity-Points-Configuration.py | Save gravity-points configuration   |
-| Gravity-Points-Hooking.py       | Save gravity-points hooking process |
+| SCRIPT-ANCHORS                | DESCRIPTION                         |
+|--------------------------------|-------------------------------------|
+| GravityPoints-Configuration.py | Save gravity-points configuration   |
+| GravityPoints-Hooking.py       | Save gravity-points hooking process |
 
 ----------------------------------------------------------------------
 ### 8️⃣ 🏗️ GRAVITY NET ARCHITECTURE
@@ -211,32 +240,39 @@ The available **script execution mode**
 ----------------------------------------------------------------------
 ###  🔭 EXAMPLE OF EXECUTION
 
-    CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -u GravityNet.py train_test 
-        --dataset_path              =       "path to dataset main folder"
-        --experiments_path          =       "path to experiments result"
-        --images_extension          =       [png, tif]
-        --images_masks_extension    =       [png, none]
-        --annotations_extension     =       csv
-        --dataset                   =       "Dataset Name"
-        --do_dataset_augmentation
-        --num_channels              =       [1, 3]
-        --small_lesion              =       [microcalcifications, microaneurysms, nuclei]
-        --split                     =       [default, 1-fold, 2-fold]
-        --rescale                   =       [0,5, 1.0]
-        --norm                      =       [none, min-max, std] 
-        --epochs                    =       100
-        --lr                        =       1e-04
-        --bs                        =       8
-        --backbone                  =       ResNet-152
-        --pretrained
-        --config                    =       grid-15
-        --hook                      =       15
-        --eval                      =       distance10
-        --FP_images                 =       [all, normals]
-        --score_threshold           =       0.05
-        --do_NMS                    
-        --NMS_box_radius            =       "Lesion Radius"
-        --do_output_gravity
-        --num_images                =       "Num Images"
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -u GravityNet.py train_test \
+        --dataset_path "path to dataset main folder" \
+        --experiments_path "path to experiments result" \
+        --images_extension tiff \
+        --images_masks_extension png \
+        --annotations_extension csv \
+        --dataset "Dataset Name" \
+        --do_dataset_augmentation \
+        --num_channels 1 \
+        --small_lesion microcalcifications \
+        --split 1-fold \
+        --rescale 1.0 \
+        --norm none \
+        --epochs 100 \
+        --lr 1e-04 \
+        --bs 8 \
+        --backbone ResNet-152 \
+        --pretrained \
+        --config grid-15 \
+        --hook 15 \
+        --eval distance10 \
+        --FP_images normals \
+        --score_threshold 0.05 \
+        --do_NMS \
+        --NMS_box_radius 5 \
+        --do_output_gravity \
+        --num_images 10
+
+Or equivalently, with a YAML config (CLI flags above still override it):
+
+    python3 -u GravityNet.py train_test --cfg configs/INbreast.yaml
+
+**NOTE**: any `--do_*`/`--load_best_*`/`--pretrained`/`--clip_gradient` flag above defaults to
+`False`/`True` (see [parameters](doc/code/parameters.markdown)); pass `--no-<flag>` to force it off.
 
 ----------------------------------------------------------------------

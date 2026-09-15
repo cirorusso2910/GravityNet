@@ -1,6 +1,10 @@
 .idea
-datasets
 experiments
 __pycache__
 .DS_Store
 script-deploy
+.venv
+
+# dataset image/annotation data only -- split/ and statistics/ stay tracked
+datasets/*/annotations
+datasets/*/images

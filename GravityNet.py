@@ -212,21 +212,21 @@ def main():
                                   batch_size=parser.batch_size_train,
                                   shuffle=True,
                                   num_workers=parser.num_workers,
-                                  pin_memory=True)
+                                  pin_memory=torch.cuda.is_available())
 
     # dataloader-val
     dataloader_val = DataLoader(dataset=dataset_val,
                                 batch_size=parser.batch_size_val,
                                 shuffle=False,
                                 num_workers=parser.num_workers,
-                                pin_memory=True)
+                                pin_memory=torch.cuda.is_available())
 
     # dataloader-test
     dataloader_test = DataLoader(dataset=dataset_test,
                                  batch_size=parser.batch_size_test,
                                  shuffle=False,
                                  num_workers=parser.num_workers,
-                                 pin_memory=True)
+                                 pin_memory=torch.cuda.is_available())
 
     # ============== #
     # GRAVITY POINTS #

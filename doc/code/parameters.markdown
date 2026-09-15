@@ -1,5 +1,16 @@
 # PARAMETERS
 
+**NOTE**: every boolean parameter below (`pretrained`, `do_dataset_augmentation`, `save_config`,
+`clip_gradient`, `load_best_sensitivity_10_FPS_model`, `load_best_AUFROC_0_10_model`,
+`load_best_AUPR_model`, `do_output_gravity`, `do_NMS`) uses `argparse.BooleanOptionalAction`:
+pass the flag on its own to enable it, or `--no-<flag>` to force it off (also overrides a default
+of `True`, e.g. `--no-clip_gradient`).
+
+### CONFIGURATION
+| **PARAMETER** | **DESCRIPTION**                                                                          |
+|----------------|-------------------------------------------------------------------------------------------|
+| **cfg**        | path to a YAML file overriding parameter defaults (CLI flags still take precedence over it) |
+
 | **EXECUTION MODE** | **DESCRIPTION**                       |
 |--------------------|---------------------------------------|
 | **train**          | train model                           |
@@ -100,6 +111,7 @@
 | **lr_patience**   | number of epochs with no improvement after which learning rate will be reduced [scheduler: ReduceLROnPlateau] |
 | **lr_step_size**  | how much the learning rate decreases [scheduler: StepLR]                                                      |
 | **lr_gamma**      | multiplicative factor of learning rate decay [scheduler: StepLR]                                              |
+| **lr_T0**         | number of epochs for the first restart [scheduler: CosineAnnealing]                                           |
 |                   |                                                                                                               |
 | **max_norm**      | max norm of the gradients to be clipped [Clip Gradient]                                                       |
 
