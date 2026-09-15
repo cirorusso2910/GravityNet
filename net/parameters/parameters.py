@@ -1,8 +1,39 @@
 import argparse
+import sys
+
+import yaml
 
 from net.parameters.parameters_choices import parameters_choices
 from net.parameters.parameters_default import parameters_default
 from net.parameters.parameters_help import parameters_help
+
+
+def resolve_effective_defaults() -> dict:
+    """
+    Pre-parse '--cfg' (a YAML file of default overrides) so its values can be used as the
+    argparse 'default=' below: CLI flags parsed afterwards still win over them, and YAML values
+    still win over parameters_default. Unknown keys in the YAML file are a hard error (typo guard).
+
+    :return: parameters_default merged with the YAML overrides (or a plain copy if no --cfg given)
+    """
+
+    pre_parser = argparse.ArgumentParser(add_help=False)
+    pre_parser.add_argument('--cfg', type=str, default=None)
+    cfg_path = pre_parser.parse_known_args()[0].cfg
+
+    effective_defaults = dict(parameters_default)
+
+    if cfg_path:
+        with open(cfg_path) as file:
+            overrides = yaml.safe_load(file) or {}
+
+        unknown_keys = sorted(set(overrides) - set(parameters_default))
+        if unknown_keys:
+            sys.exit(f"ERROR: unknown key(s) in --cfg '{cfg_path}': {unknown_keys}")
+
+        effective_defaults.update(overrides)
+
+    return effective_defaults
 
 
 def parameters_parsing() -> argparse.Namespace:
@@ -11,6 +42,9 @@ def parameters_parsing() -> argparse.Namespace:
 
     :return: parser of parameters parsing
     """
+
+    # CLI > YAML (--cfg) > parameters_default
+    parameters_default = resolve_effective_defaults()
 
     # parser
     parser = argparse.ArgumentParser(description='Argument Parser')
@@ -45,6 +79,14 @@ def parameters_parsing() -> argparse.Namespace:
 
     # for each subparser 'mode'
     for subparser in execution_mode:
+
+        # ------ #
+        # CONFIG #
+        # ------ #
+        subparser.add_argument('--cfg',
+                               type=str,
+                               default=None,
+                               help="path to a YAML file overriding parameter defaults (CLI flags still take precedence)")
 
         # -------------- #
         # INITIALIZATION #

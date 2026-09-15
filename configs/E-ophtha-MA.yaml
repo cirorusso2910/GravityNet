@@ -1,0 +1,7 @@
+# Overrides only (see net/parameters/parameters_default.py for every other default).
+# Usage: python GravityNet.py train --cfg configs/E-ophtha-MA.yaml
+
+dataset: E-ophtha-MA
+small_lesion: microaneurysms
+image_height: 1360
+image_width: 1024

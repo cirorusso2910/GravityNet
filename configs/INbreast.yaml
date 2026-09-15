@@ -1,0 +1,7 @@
+# Overrides only (see net/parameters/parameters_default.py for every other default).
+# Usage: python GravityNet.py train --cfg configs/INbreast.yaml
+
+dataset: INbreast
+small_lesion: calcifications
+image_height: 3328
+image_width: 2560

@@ -184,6 +184,8 @@ def initialization(network_name: str,
     ROC_test_coords_path = os.path.join(experiment_results_path['coords_test'], ROC_test_coords_filename)
 
     path = {
+        'experiment_path': experiment_path,
+
         'dataset': path_dataset_dict,
 
         'detections': {

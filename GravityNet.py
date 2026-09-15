@@ -49,6 +49,7 @@ from net.output.output import output
 from net.output.utility.select_output_gravity_filename import select_output_gravity_filename
 from net.parameters.parameters import parameters_parsing
 from net.parameters.parameters_summary import parameters_summary
+from net.parameters.save_resolved_config import save_resolved_config
 from net.plot.AUC_plot import AUC_plot
 from net.plot.AUFROC_plot import AUFROC_plot
 from net.plot.FROC_linear_plot import FROC_linear_plot
@@ -109,6 +110,11 @@ def main():
     path = initialization(network_name="GravityNet",
                           experiment_ID=experiment_ID,
                           parser=parser)
+
+    # save resolved configuration (CLI + YAML + defaults) for reproducibility
+    if parser.mode in ['train', 'train_test']:
+        save_resolved_config(parser=parser,
+                             experiment_path=path['experiment_path'])
 
     # read data split
     data_split = read_split(path_split=path['dataset']['split'])
