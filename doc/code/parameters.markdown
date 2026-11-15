@@ -1,4 +1,14 @@
-# PARAMETERS
+# Parameter reference
+
+For the shortest setup path, follow the [README quick start](../../README.markdown#quick-start). Use this page when you want to customize an experiment.
+
+Run `python GravityNet.py train_test --help` from the repository root for CLI flags and choices. Settings resolve in this order: **CLI flags > YAML file > built-in defaults**. The [default settings](../../net/parameters/parameters_default.py) define YAML keys; the [parser](../../net/parameters/parameters.py) defines CLI spellings and aliases.
+
+```bash
+python GravityNet.py train_test --cfg configs/INbreast.yaml --epochs 50
+```
+
+YAML uses names without `--`, such as `epochs: 50` and `batch_size_train: 1`. Use `lambda` in YAML and `--lambda_factor` on the CLI. Unknown YAML keys are rejected. Keep your input YAML: the generated experiment `config.yaml` contains extra snapshot fields and cannot be passed directly to `--cfg`.
 
 **NOTE**: every boolean parameter below (`pretrained`, `do_dataset_augmentation`, `save_config`,
 `clip_gradient`, `load_best_sensitivity_10_FPS_model`, `load_best_AUFROC_0_10_model`,
@@ -25,8 +35,8 @@ of `True`, e.g. `--no-clip_gradient`).
 ### INITIALIZATION
 | **PARAMETER**        | **DESCRIPTION** |
 |----------------------|-----------------|
-| **dataset_path**     | dataset path    |
-| **experiments_path** | experiment path |
+| **dataset_path**     | parent of the dataset folder; reads `<dataset_path>/<dataset>/`    |
+| **experiments_path** | output root; create it before training and use a separate root for independent runs |
 
 ### LOAD DATASET
 | **PARAMETER**    | **DESCRIPTION**  |
@@ -35,12 +45,12 @@ of `True`, e.g. `--no-clip_gradient`).
 | **small_lesion** | small lesion     |
 | **image_height** | image height (H) |
 | **image_width**  | image width (W)  |
-| **split**        | dataset split    |
+| **split**        | selects `split/split-<value>.csv`; Cervix93 uses `default`    |
 
 ## UTILITY DATASET
 | **PARAMETER**              | **DESCRIPTION**       |
 |----------------------------|-----------------------|
-| **image_extension**        | image extension       |
+| **images_extension**        | image extension       |
 | **images_masks_extension** | image mask extension  |
 | **annotations_extension**  | annotations extension |
 
@@ -48,12 +58,12 @@ of `True`, e.g. `--no-clip_gradient`).
 | **PARAMETER** | **DESCRIPTION**          |
 |---------------|--------------------------|
 | **typeID**    | experiment ID type       |
-| **sep**       | separator experiment ID  |
+| **sep**       | experiment ID separator (`_` by default; use the original separator when testing an older run)  |
 
 ### DEVICE
 | **PARAMETER**   | **DESCRIPTION**   |
 |-----------------|-------------------|
-| **GPU**         | GPU device name   |
+| **GPU**         | label included in the experiment ID; use CUDA_VISIBLE_DEVICES to select visible GPUs   |
 | **num_threads** | number of threads |
 
 ### REPRODUCIBILITY
@@ -91,7 +101,7 @@ of `True`, e.g. `--no-clip_gradient`).
 | **PARAMETER**  | **DESCRIPTION**  |
 |----------------|------------------|
 | **backbone**   | Backbone model   |
-| **pretrained** | PreTrained model |
+| **pretrained** | initialize the backbone with pretrained weights (may download them) |
 
 ### GRAVITY POINTS
 | **PARAMETER**  | **DESCRIPTION**              |
@@ -120,7 +130,7 @@ of `True`, e.g. `--no-clip_gradient`).
 |---------------|-----------------------------------------------------------------------|
 | **alpha**     | alpha parameter for loss                                              |
 | **gamma**     | gamma parameter for loss                                              |
-| **lambda**    | lambda factor for loss sum                                            |
+| **lambda_factor** | loss weight (YAML key: `lambda`)                                            |
 | **hook**      | hook distance                                                         |
 | **gap**       | hook gap distance in classification loss for rejection gravity points |
 
@@ -144,7 +154,7 @@ of `True`, e.g. `--no-clip_gradient`).
 | **type_draw**         | type output draw           |
 | **box_draw_radius**   | box radius to draw         |
 | **do_output_gravity** | do output gravity          |
-| **num_image**         | num images to show in test |
+| **num_images**         | num images to show in test |
 | **idx**               | index image in dataset     |
 
 ### POST PROCESSING

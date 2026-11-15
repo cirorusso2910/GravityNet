@@ -1,14 +1,259 @@
-![alt text](doc/logo/GravityNet-logo.png)
+![GravityNet logo](doc/logo/GravityNet-logo.png)
 
-----------------------------------------------------------------------
+# GravityNet
 
-<p align="center">
-  <a href="https://pypi.org/project/gravitynet/0.0.11/">
-    <img src="https://badge.fury.io/py/gravitynet.svg" alt="PyPI version">
-  </a>
-</p>
+GravityNet detects small lesions in medical images using **gravity points**: pixel-based anchors that move toward a lesion. It combines a feature-extraction backbone with classification and point-regression subnetworks.
 
-## ℹ️ INFO
+This repository contains the training, evaluation, and visualization code. Start with the four steps below to run an experiment on your own prepared data.
+
+[Quick start](#quick-start) · [Configuration](#configure-an-experiment) · [Train and test](#train-and-test) · [Docker and other installers](#other-installation-options) · [Troubleshooting](#troubleshooting) · [References](#references)
+
+```mermaid
+flowchart LR
+    A[Install environment] --> B[Prepare images and annotations]
+    B --> C[Choose dataset configuration]
+    C --> D[Generate dataset statistics]
+    D --> E[Train and validate]
+    E --> F[Test saved model]
+    F --> G[Inspect metrics and images]
+```
+
+## Quick start
+
+You need Python 3.10 or newer, [uv](https://docs.astral.sh/uv/), and access to the dataset you want to use. An NVIDIA GPU is useful for training; the launcher uses CUDA when available and otherwise runs on CPU. It does not currently select Apple MPS.
+
+**The repository includes split files and statistics, but no source images or annotations.** Obtain and prepare those before launching an experiment. The presets describe datasets; they do not download or convert them.
+
+Run all commands below from the repository root in a Bash/Zsh-compatible shell.
+
+### 1. Install and check the environment
+
+```bash
+git clone https://github.com/cirorusso2910/GravityNet.git
+cd GravityNet
+uv sync --locked
+source .venv/bin/activate
+python GravityNet.py train_test --help
+```
+
+The last command lists the available options without starting training. Activate the environment again whenever you open a new terminal. With uv, you can also replace `python` with `uv run python`.
+
+### 2. Prepare your dataset
+
+For the INbreast example, place your prepared data under `datasets/INbreast/`:
+
+```text
+datasets/INbreast/
+├── images/all/<name>.tiff
+├── annotations/csv/all/<name>.csv
+├── lists/normals.txt
+├── split/split-1-fold.csv
+└── statistics/rescale=1.0/
+```
+
+Each image needs an annotation CSV with `X,Y` columns. Split filenames and list entries use the image name **without its extension**. The default evaluation uses `lists/normals.txt`, listing images with no lesions, one name per line. See the [dataset preparation guide](datasets/dataset-structure.markdown) for examples, optional masks, and custom datasets.
+
+### 3. Choose a configuration and generate statistics
+
+Copy a preset so you can keep your experiment settings in one place:
+
+```bash
+cp configs/INbreast.yaml configs/my-experiment.yaml
+mkdir -p experiments datasets/INbreast/statistics/rescale=1.0
+```
+
+Open `configs/my-experiment.yaml` and add these settings for a first run:
+
+```yaml
+dataset_path: datasets
+experiments_path: experiments
+epochs: 1
+batch_size_train: 1
+batch_size_val: 1
+batch_size_test: 1
+num_workers: 0
+```
+
+Then compute statistics from your prepared data:
+
+```bash
+PYTHONPATH=. python script-dataset/Dataset-Statistics.py script_dataset \
+  --cfg configs/my-experiment.yaml
+```
+
+This writes `datasets/INbreast/statistics/rescale=1.0/split-1-fold-statistics.csv`. Generate it again whenever you change the data, split, or rescale factor. The bundled statistics are usable only if your prepared dataset matches them.
+
+### 4. Train, test, and inspect results
+
+```bash
+python -u GravityNet.py train_test --cfg configs/my-experiment.yaml
+```
+
+This trains for one epoch, validates, loads the best saved checkpoint by validation sensitivity at 10 false positives per image, and evaluates the test subset. The first run checks your setup; increase `epochs` in your YAML for a longer experiment.
+
+Results are written under `experiments/GravityNet_<generated-ID>/`:
+
+| Folder or file | What to inspect |
+| --- | --- |
+| `config.yaml` | Snapshot of the resolved settings used for training |
+| `models/` | Best model checkpoints (`.tar`) |
+| `metrics-train/`, `metrics-test/` | Training/validation and test metrics as CSV |
+| `plots-train/`, `plots-validation/`, `plots-test/` | Loss and evaluation curves |
+| `detections/` | Validation and test detections |
+| `output/output-test/` | Test images with drawn detections |
+
+Keep your input YAML for subsequent commands. The generated `config.yaml` is an inspection snapshot and is not directly accepted by `--cfg`.
+
+## Configure an experiment
+
+Use a YAML file for the settings you want to keep and CLI flags for temporary overrides:
+
+```bash
+python GravityNet.py train_test --cfg configs/my-experiment.yaml --epochs 50
+```
+
+```mermaid
+flowchart LR
+    A[Built-in defaults] --> B[Apply YAML values]
+    B --> C[Apply command-line overrides]
+    C --> D[Run with resolved settings]
+    D --> E[Save config.yaml during training]
+```
+
+**Priority: CLI flags > YAML values > built-in defaults.** YAML keys match the names in [parameters_default.py](net/parameters/parameters_default.py); unknown keys cause an error. For example, use `batch_size_train` in YAML and `--batch_size_train` or `--bs` on the CLI. The loss weight uses the YAML key `lambda` and CLI flag `--lambda_factor`.
+
+| Preset | Target | Bundled splits |
+| --- | --- | --- |
+| [INbreast](configs/INbreast.yaml) | Calcifications | `1-fold`, `2-fold` |
+| [E-ophtha-MA](configs/E-ophtha-MA.yaml) | Microaneurysms | `1-fold`, `2-fold` |
+| [Cervix93](configs/Cervix93.yaml) | Nuclei | `default` |
+
+Presets override only a few dataset settings. Check your image extension, channel layout, split, and paths against your prepared files. See [all parameters](doc/code/parameters.markdown) and [available backbones](net/parameters/parameters_choices.py) for advanced options.
+
+The two paths have different roles:
+
+- `dataset_path` is the **parent** of the dataset folder: `dataset_path: /data` plus `dataset: INbreast` reads `/data/INbreast/`.
+- `experiments_path` is the output root. Create it before training with `mkdir -p <your-output-root>`.
+
+Boolean flags can be enabled with `--pretrained` or disabled with `--no-pretrained`; the same pattern applies to flags such as `--do_NMS` and `--clip_gradient`. In YAML, use `true` or `false`. Pretrained backbone weights are optional and may require a download.
+
+### Keep runs separate and find checkpoints
+
+GravityNet builds the experiment ID from selected settings, including dataset, split, rescale, normalization, epochs, learning rate, training batch size, backbone, gravity-point configuration, hook distance, evaluation criterion, and GPU label. **The ID does not include every setting**, so a new seed or another configuration change can still reuse the same output folder.
+
+Use a different `experiments_path` for each independent run, for example `experiments/run-02`, and create that directory first. Training starts from epoch 1; it does not automatically resume an earlier run. Reusing a folder can overwrite results.
+
+For a later test, keep the training YAML and its output root, including the original `epochs` and training batch size, so the generated ID still locates the checkpoint. The default separator is `_`; use `--sep '|'` only when accessing older folders created with that separator.
+
+## Train and test
+
+| Task | Command |
+| --- | --- |
+| Train and validate | `python GravityNet.py train --cfg configs/my-experiment.yaml` |
+| Train, validate, then test | `python GravityNet.py train_test --cfg configs/my-experiment.yaml` |
+| Test an existing experiment | `python GravityNet.py test --cfg configs/my-experiment.yaml` |
+
+`test` requires a matching saved checkpoint and the prepared dataset, split, statistics, and evaluation list. It evaluates the annotated test subset; it is not a standalone command for predicting on an arbitrary image folder.
+
+```mermaid
+flowchart TD
+    A[Prepared data and matching configuration] --> B{Execution mode}
+    B -->|train| C[Train and validate each epoch]
+    B -->|train_test| C
+    C --> D[Save best validation checkpoints]
+    D --> E{Test requested?}
+    E -->|No: train| F[Inspect training results]
+    E -->|Yes: train_test| G[Load selected checkpoint]
+    B -->|test| G
+    H[Existing matching experiment] --> G
+    G --> I[Evaluate test subset]
+    I --> J[Save metrics, curves, and detection images]
+```
+
+By default, testing loads the checkpoint with the best validation sensitivity at 10 false positives per image. To select AUFROC instead, disable the default selector and enable the alternative:
+
+```bash
+python GravityNet.py test --cfg configs/my-experiment.yaml \
+  --no-load_best_sensitivity_10_FPS_model --load_best_AUFROC_0_10_model
+```
+
+### Optional analysis tools
+
+These are separate script entry points; run them from the repository root with `PYTHONPATH=.`. Follow each guide for its command and prerequisites.
+
+| Goal | Guide |
+| --- | --- |
+| Generate dataset statistics | [Dataset tools](script-dataset/script-dataset.markdown) |
+| Visualize gravity points and hooking | [Anchor tools](script-anchors/script-anchors.markdown) |
+| Inspect model explanations | [Grad-CAM](script-explainability/script-explainability.markdown) |
+| Explore the architecture | [Model documentation](net/model/model.markdown) |
+
+<img src="doc/architecture/GravityNet-architecture.png" width="80%" alt="GravityNet backbone with classification and gravity-point regression subnetworks">
+
+## Other installation options
+
+Choose one environment manager. The quick-start commands use `python` from whichever environment you activate.
+
+<details>
+<summary>Conda or pip</summary>
+
+With Conda:
+
+```bash
+conda env create -f environment.yml
+conda activate gravitynet
+```
+
+With pip in a virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+[pyproject.toml](pyproject.toml) defines the current dependencies; uv uses [uv.lock](uv.lock) for locked versions. The [legacy requirements](doc/requirements/requirements.markdown) describe the original paper environment.
+
+</details>
+
+<details>
+<summary>Docker with an NVIDIA GPU</summary>
+
+The supplied [Compose service](compose.yaml) requests an NVIDIA GPU and requires Docker Compose plus the NVIDIA Container Toolkit. It mounts `./datasets` and `./experiments` into `/app`. Prepare your dataset and configuration as above, using container-relative paths `datasets` and `experiments` in YAML.
+
+```bash
+mkdir -p experiments datasets/INbreast/statistics/rescale=1.0
+docker compose build
+docker compose run --rm --entrypoint python gravitynet \
+  script-dataset/Dataset-Statistics.py script_dataset --cfg configs/my-experiment.yaml
+docker compose run --rm gravitynet train_test --cfg configs/my-experiment.yaml
+```
+
+The image includes your configuration at build time. Rebuild after editing YAML or source code. Ensure the container user (UID 1000) can write to the mounted output and statistics directories.
+
+</details>
+
+<details>
+<summary>PyPI library</summary>
+
+The separately distributed [PyPI package](https://pypi.org/project/gravitynet/) can be installed with `pip install gravitynet` and imported with `import gravitynet`. The setup and launch commands in this README use this repository checkout and its scripts.
+
+</details>
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| Dataset or split file not found | `dataset_path` must point to the parent folder. Match `split` to `split-<value>.csv`; Cervix93 uses `default`. |
+| Statistics file not found | Create `statistics/rescale=<value>/` and run the statistics script with the same dataset, split, and rescale settings. |
+| Missing `normals.txt` or `all.txt` | Supply the list selected by `FP_images`; see the [dataset guide](datasets/dataset-structure.markdown). |
+| Checkpoint not found in `test` | Train first, then reuse the original experiment settings, output root, and separator. |
+| Out of memory | Reduce all three batch sizes. If you change `rescale`, regenerate statistics for that scale. |
+| DataLoader worker errors | Start with `num_workers: 0`, as in the quick start. |
+| `No module named net` in a helper script | Run from the repository root with `PYTHONPATH=.`. |
+| Training runs on CPU | Check `python -c "import torch; print(torch.cuda.is_available())"`. The launcher selects CUDA only when PyTorch reports it available. |
+
+## Authors and license
 
 **GravityNet** official repository <br>
 by **Eng. Ciro Russo, PhD** <br>
@@ -22,18 +267,8 @@ by **Eng. Ciro Russo, PhD** <br>
 👨‍🎓 Prof. **Alessandro Bria** ([LinkedIn](https://www.linkedin.com/in/alessandro-bria-831ab149/?originalSubdomain=it))<br>
 👨‍💻 Eng. **Giulio Russo** ([LinkedIn](https://www.linkedin.com/in/russogiulio/)) <br>
 
-----------------------------------------------------------------------
-## 🚀 GRAVITY NET 🚀
 
-**GravityNet** is novel **one-stage** **end-to-end** **detector** specifically designed to **detect** **small** **lesions** in **medical** **images**.
-Precise localization of small lesions presents challenges due to their appearance and the diverse contextual backgrounds in which they are found.
-To address this, our approach introduces a **new type of pixel-based anchor** that dynamically moves towards the targeted lesion for detection.
-We refer to this new architecture as **GravityNet**, and the novel anchors as **gravity points** since they appear to be “attracted” by the lesions.
-
-<img src="doc/architecture/GravityNet-architecture.png" width="80%" height="80%" alt="">
-
-----------------------------------------------------------------------
-## 📄 REFERENCES
+## References
 **Paper**: [GravityNet for end-to-end small lesion detection](https://www.sciencedirect.com/science/article/abs/pii/S0933365724000848#preview-section-snippets) <br>
 **ArXiv**: [GravityNet for end-to-end small lesion detection](https://arxiv.org/abs/2309.12876)
 
@@ -74,205 +309,3 @@ We refer to this new architecture as **GravityNet**, and the novel anchors as **
 
 This project is licensed. <br>
 Please review the [LICENSE](LICENSE) file for more information.
-
-----------------------------------------------------------------------
-## 📦 INSTALLATION
-
-**GravityNet** is also available as a package on [PyPI](https://pypi.org/project/gravitynet/):
-
-    pip install gravitynet
-
-Can be imported as:
-
-    import gravitynet
-
-To run this repository (training/testing/scripts), set up the environment with one of:
-
-**uv** (recommended -- single source of truth is [pyproject.toml](pyproject.toml)):
-
-    uv sync
-
-**conda**:
-
-    conda env create -f environment.yml
-    conda activate gravitynet
-
-**pip**:
-
-    pip install -r requirements.txt
-
-The baseline environment targets Python >= 3.10 and torch 2.x. On Linux, `uv sync`
-picks up CUDA-enabled torch/torchvision wheels automatically; macOS gets the
-CPU/MPS wheels from PyPI. The exact environment used for the paper (Python 3.8,
-torch 1.12+cu116) is kept at [doc/requirements/requirements.txt](doc/requirements/requirements.txt)
-for reproducibility.
-
-### 🐳 Docker
-
-    docker compose run gravitynet train_test --cfg configs/INbreast.yaml
-
-See [Dockerfile](Dockerfile) and [compose.yaml](compose.yaml). Requires the NVIDIA
-Container Toolkit for GPU access; `./datasets` and `./experiments` are mounted as volumes.
-
-----------------------------------------------------------------------
-## ⚙️ HOW TO GRAVITY
-
-<!-- :construction: UNDERGOING MAINTENANCE :construction: -->
-
-### 1️⃣ 🧰 PARAMETERS
-This framework uses parameters-parsing, so each **new** parameter **must** be added paying attention to the reference section
-(for details see [parameters](doc/code/parameters.markdown)).
-
-The definition of these parameters is essential for the _experiment_ID_ to save the results and avoid overwriting.
-**NOTE**: the default _separator_ is `_` (portable across OSes); pass `--sep '|'` to reproduce experiment
-folders created before this default changed.
-
-Parameters can also be given as a YAML file with `--cfg path/to/file.yaml` (CLI flags still take
-precedence over it, which takes precedence over the built-in defaults). See [configs](configs) for
-per-dataset presets (`configs/INbreast.yaml`, `configs/E-ophtha-MA.yaml`, `configs/Cervix93.yaml`).
-
-----------------------------------------------------------------------
-### 2️⃣ 🧭 INITIALIZATION
-Before starting the experiment, it is necessary to define the working paths:
-
-    --dataset_path -> path where the dataset is located
-    --experiments_path -> path where to save the result of the experiment
-
-**NOTE**: the _dataset_path_ is concatenated to the dataset name (see [parameters](doc/code/parameters.markdown))
-
-For details about the [dataset-structure](./datasets/dataset-structure.markdown) <br>
-For details about the [experiments-structure](./doc/experiments/experiments-structure.markdown) <br>
-
-----------------------------------------------------------------------
-### 3️⃣ 🗂️ CLASS DATASET
-The **Class Dataset** is defined according to the structure of the dataset (see [dataset-structure](./datasets/dataset-structure.markdown)). 
-
-**NOTE**: run **Dataset-Statistics.py** ([script-dataset](script-dataset/script-dataset.markdown)) to save the dataset statistics.
-
-| SCRIPT-DATASET        | DESCRIPTION             |
-|-----------------------|-------------------------|
-| Dataset-Statistics.py | Save dataset statistics |
-
-----------------------------------------------------------------------
-### 4️⃣ ✂️ SPLIT DATA
-To split the data into the **train**, **validation**, and **test** subsets,
-the framework uses a **split** file defined in the dataset folder.
-
-The splits used in the experiments are reported in [datasets](datasets).
-
-| DATASET     | SMALL LESION        | SPLIT                                           | REFERENCE                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|-------------|---------------------|-------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| INbreast    | microcalcifications | [INbreast split](datasets/INbreast/split)       | [INbreast reference](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiAoL7NgK2BAxXE0wIHHWurDDMQFnoECBQQAQ&url=https%3A%2F%2Fwww.sciencedirect.com%2Fscience%2Farticle%2Fabs%2Fpii%2FS107663321100451X&usg=AOvVaw1r-qXP0Rk4qGao1LfKkqCc&opi=89978449)                                                                                                                                                      |
-| E-ophtha-MA | microaneurysms      | [E-ophtha-MA split](datasets/E-ophtha-MA/split) | [E-ophtha-MA reference](https://www.sciencedirect.com/user/identity/landing?code=Um_NMyFZ6dAD9fJwYGT9iOtLbjcoF1g8f48bRZ-G&state=retryCounter%3D0%26csrfToken%3D23a2ff6e-a0a8-42a5-ae5d-b904009ac4d4%26idpPolicy%3Durn%253Acom%253Aelsevier%253Aidp%253Apolicy%253Aproduct%253Ainst_assoc%26returnUrl%3D%252Fscience%252Farticle%252Fpii%252FS1959031813000237%253Fvia%25253Dihub%26prompt%3Dnone%26cid%3Darp-f12057f3-3362-4f06-9758-826d42268be4) |
-| Cervix93    | nuclei              | [Cervix93 split](datasets/Cervix93/split)       | [Cervix93 reference](https://github.com/parham-ap/cytology_dataset)                                                                                                                                                                                                                                                                                                                                                                                |
-
-----------------------------------------------------------------------
-### 5️⃣ 📊 DATASET INFORMATION
-All information about the dataset are reported in the **statistics** of the corresponding [datasets](datasets).
-
-| DATASET     | STATISTICS                                                 |
-|-------------|-------------------------------------------------------------|
-| INbreast    | [INbreast statistics](datasets/INbreast/statistics)          |
-| E-ophtha-MA | [E-ophtha-MA statistics](datasets/E-ophtha-MA/statistics)    |
-| Cervix93    | [Cervix93 statistics](datasets/Cervix93/statistics)          |
-
-----------------------------------------------------------------------
-### 6️⃣ 🪄 DATASET TRANSFORMS
-Transformations on each **sample** in the dataset are defined by a **Class**.
-
-The framework uses a **collate function** to define the transformations to be applied,
-depending on the normalization type: **none**, **min-max**, and **std**.
-
-The **transformations** to be applied vary depending on the application and the type of data used, 
-to this end, we provide basic transformations. 
-
-**Augmentation transformations** can be applied to the train dataset, as: **Horizontal**, **Vertical Flipping**
-
-----------------------------------------------------------------------
-### 7️⃣ 🎯 GRAVITY‑POINTS CONFIGURATION
-To see the **gravity-points configuration** and the **hooking process** in [script-anchors](script-anchors/script-anchors.markdown) are provided the codes
-
-| SCRIPT-ANCHORS                | DESCRIPTION                         |
-|--------------------------------|-------------------------------------|
-| GravityPoints-Configuration.py | Save gravity-points configuration   |
-| GravityPoints-Hooking.py       | Save gravity-points hooking process |
-
-----------------------------------------------------------------------
-### 8️⃣ 🏗️ GRAVITY NET ARCHITECTURE
-GravityNet is a **one-stage** **end-to-end** **detector** composed of a backbone network and two specific subnetworks. <br>
-The **backbone** is a convolutional network and plays the role of feature extractor. <br>
-The **first subnet** performs convolutional object classification on the backbone's output. <br>
-The **second subnet** performs convolutional gravity-points regression.
-
-The available **backbone**:
-
-| ResNet     | ResNeXt           | DenseNet     | EfficientNet    | EfficientNetV2   | SwinTransformer | 
-|------------|-------------------|--------------|-----------------|------------------|-----------------|
-| ResNet-18  | ResNeXt-50_32x4d  | DenseNet-121 | EfficientNet-B0 | EfficientNetV2-S | Swin-T          |
-| ResNet-34  | ResNeXt-101_32x8d | DenseNet-161 | EfficientNet-B1 | EfficientNetV2-M | Swin-S          |
-| ResNet-50  | ResNeXt-101_64x4d | DenseNet-169 | EfficientNet-B2 | EfficientNetV2-L | Swin-B          |
-| ResNet-101 |                   | DenseNet-201 | EfficientNet-B3 |                  |                 |
-| ResNet-152 |                   |              | EfficientNet-B4 |                  |                 |
-|            |                   |              | EfficientNet-B5 |                  |                 |
-|            |                   |              | EfficientNet-B6 |                  |                 |
-|            |                   |              | EfficientNet-B7 |                  |                 |
-
-----------------------------------------------------------------------
-### 9️⃣ 🎬 EXECUTION MODE
-The available **execution mode**:
-
-| EXECUTION MODE | DESCRIPTION                                                  |
-|----------------|--------------------------------------------------------------|
-| train          | train model                                                  |
-| test           | test model                                                   |
-| train_test     | train and test model                                         |
-
-----------------------------------------------------------------------
-### 🔟 💻 SCRIPT EXECUTION MODE
-The available **script execution mode**
-
-| SCRIPT EXECUTION MODE | DESCRIPTION                   | DOCUMENTATION                                                                               |
-|-----------------------|-------------------------------|---------------------------------------------------------------------------------------------|
-| script_anchors        | script-anchors execution mode | [script-anchors documentation](script-anchors/script-anchors.markdown)                      |
-| script_dataset        | script-dataset execution mode | [script-dataset documentation](script-dataset/script-dataset.markdown)                      |
-| explainability        | explainability mode           | [script-explainability documentation](script-explainability/script-explainability.markdown) |
-
-----------------------------------------------------------------------
-###  🔭 EXAMPLE OF EXECUTION
-
-    CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -u GravityNet.py train_test \
-        --dataset_path "path to dataset main folder" \
-        --experiments_path "path to experiments result" \
-        --images_extension tiff \
-        --images_masks_extension png \
-        --annotations_extension csv \
-        --dataset "Dataset Name" \
-        --do_dataset_augmentation \
-        --num_channels 1 \
-        --small_lesion microcalcifications \
-        --split 1-fold \
-        --rescale 1.0 \
-        --norm none \
-        --epochs 100 \
-        --lr 1e-04 \
-        --bs 8 \
-        --backbone ResNet-152 \
-        --pretrained \
-        --config grid-15 \
-        --hook 15 \
-        --eval distance10 \
-        --FP_images normals \
-        --score_threshold 0.05 \
-        --do_NMS \
-        --NMS_box_radius 5 \
-        --do_output_gravity \
-        --num_images 10
-
-Or equivalently, with a YAML config (CLI flags above still override it):
-
-    python3 -u GravityNet.py train_test --cfg configs/INbreast.yaml
-
-**NOTE**: any `--do_*`/`--load_best_*`/`--pretrained`/`--clip_gradient` flag above defaults to
-`False`/`True` (see [parameters](doc/code/parameters.markdown)); pass `--no-<flag>` to force it off.
-
-----------------------------------------------------------------------

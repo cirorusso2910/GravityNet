@@ -2,6 +2,7 @@
 # Usage: python GravityNet.py train --cfg configs/Cervix93.yaml
 
 dataset: Cervix93
+split: default
 small_lesion: nuclei
 image_height: 1024
 image_width: 768
