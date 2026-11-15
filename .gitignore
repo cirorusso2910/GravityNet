@@ -4,6 +4,7 @@ __pycache__
 .DS_Store
 script-deploy
 .venv
+.claude
 
 # dataset image/annotation data only -- split/ and statistics/ stay tracked
 datasets/*/annotations
